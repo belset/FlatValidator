@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <Title>A validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.</Title>
+    <Description>A validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.</Description>
+    <Authors>Ilya Rudenka (@belset)</Authors>
+    <Version>1.0.0-rc</Version>
+    <PackageVersion>1.0.0-rc</PackageVersion>
+    <PackageId>FlatValidator</PackageId>
+    <PackageTags>validation validator InputValidation DataAnnotation</PackageTags>
+    <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/belset/FlatValidator</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/belset/FlatValidator</PackageProjectUrl>
+    <PackageIcon>logo.png</PackageIcon>
+
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <ContinuousIntegrationBuild Condition="'$(Configuration)'=='Release'">true</ContinuousIntegrationBuild>
+
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>default</LangVersion>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <OptimizationPreference>Speed</OptimizationPreference>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE" Pack="true" PackagePath="" />
+    <None Include="README.md" Pack="true" PackagePath="" />
+    <None Include="Properties\logo.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>
