@@ -1,4 +1,6 @@
-﻿The `FlatValidator` is a validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.
+﻿<p align="center"><img src="doc/images/logo.png" alt="logo" style="width:10em;height:auto;"></p>
+
+The `FlatValidator` is a validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.
 
 ### Quick examples
 
