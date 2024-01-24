@@ -60,5 +60,5 @@ var result = await FlatValidator.ValidateAsync(model, v =>
 
 ### Release Notes and Change Log
 
-Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/CHANGELOG.md).
+Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md).
 

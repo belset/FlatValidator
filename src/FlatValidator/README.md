@@ -93,12 +93,10 @@ List<ValidationFailure> failures = results.Errors;
 
 ### Release Notes and Change Log
 
-Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/CHANGELOG.md).
+Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md).
 
 ### Supporting the project
 
-Please be informed, if you are going to use the `FlatValidator` in a commercial project, 
-we will have an expectation you sponsor the project `FlatValidator` financially.
 The `FlatValidator` is developed and supported by [@belset](https://github.com/belset) for 
 free in spare time, so that financial help keeps the project to be going successfully.
 
