@@ -95,70 +95,15 @@ public static class FlatValidatorExstensions
             case ExpressionType.Invoke:
                 return GetMemberName(((InvocationExpression)expression).Expression);
 
+            case ExpressionType.ArrayIndex:
+                return $"{GetMemberName(((BinaryExpression)expression).Left)}[{GetMemberName(((BinaryExpression)expression).Right)}]";
+
             case ExpressionType.ArrayLength:
-                return $"{GetMemberPath(((UnaryExpression)expression).Operand)}.Length";
+                return $"{GetMemberName(((UnaryExpression)expression).Operand)}.Length";
 
             default:
                 throw new Exception("not a proper member selector");
         }
-    }
-
-    public static string GetMemberPath(this Expression expression) =>
-        expression switch
-        {
-            LambdaExpression lambdaExpression
-                => GetMemberPath(lambdaExpression.Body),
-
-            MemberExpression memberExpression when memberExpression.Expression?.NodeType is ExpressionType.MemberAccess
-                => $"{GetMemberPath(memberExpression.Expression!)}.{memberExpression.Member.Name}",
-
-            MemberExpression memberExpression when memberExpression.Expression?.NodeType is ExpressionType.Call
-                => $"{GetMemberPath(memberExpression.Expression!)}.{memberExpression.Member.Name}",
-
-            MemberExpression memberExpression when memberExpression.NodeType is not ExpressionType.Parameter
-                => memberExpression.Member.Name,
-
-            MethodCallExpression methodCallExpression
-                => methodCallExpression.Method.Name,
-            
-            UnaryExpression unaryExpression when unaryExpression.Operand is MethodCallExpression methodCallExpressionOperand
-                => $"{GetMemberPath(methodCallExpressionOperand)}.{methodCallExpressionOperand.Method.Name}",
-
-            UnaryExpression unaryExpression when unaryExpression.NodeType == ExpressionType.ArrayLength && unaryExpression.Operand is MemberExpression
-                => $"{GetMemberPath(unaryExpression.Operand)}.Length",
-
-            UnaryExpression unaryExpression when unaryExpression.Operand is MemberExpression memberExpressionOperand
-                => memberExpressionOperand.Member.Name,
-
-            BinaryExpression binaryExpression when binaryExpression.NodeType == ExpressionType.ArrayIndex
-                => $"{GetMemberPath(binaryExpression.Left)}[{GetMemberPath(binaryExpression.Right)}]",
-
-            ConstantExpression constantExpression
-                => constantExpression?.Value is null ? string.Empty : constantExpression!.Value!.ToString() ?? string.Empty,
-
-            _ => throw new ArgumentException("Unsupported expression format.", expression.ToString())
-        };
-
-    /// <summary>
-    /// Extract from expression 'o => o.Thing1.Thing2' something like 'Thing1.Thing2'
-    /// </summary>
-    public static string GetExpressionPath(this Expression expression)
-    {
-        var str = expression.ToString().AsSpan();
-
-        var pos = str.IndexOf(" => ");
-        if (pos >= 0) str = str.Slice(pos + 4); // length of " => "
-
-        pos = str.IndexOf("ArrayLength(");
-        if (pos >= 0)
-        {
-            str = str.Slice(pos + 12); // length of "ArrayLength("
-            pos = str.IndexOf('.');
-            if (pos >= 0) str = str.Slice(pos + 1);
-            return str.Slice(0, str.IndexOf(')')).ToString() + ".Length";
-        }
-
-        return str.Slice(str.IndexOf('.') + 1).ToString();
     }
 
     #endregion // Member selectors
