@@ -1,6 +1,6 @@
-﻿The `FlatValidator` is a validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.
+﻿The `FlatValidator` is a validation library for .NET that delivers an high-performance and memory prudence by using lambda-based and strongly-typed rules.
 
-The `FlatValidator.DependencyInjection` package extends the `FlatValidator` package to provide a possibility to register all custom inherited validators in the `IServiceCollection` (Microsoft.Extensions.Dependencyinjection.Abstractions) automatically.
+The `FlatValidator.DependencyInjection` package extends the `FlatValidator` package to register all custom inherited validators in the `IServiceCollection` (Microsoft.Extensions.Dependencyinjection.Abstractions) automatically.
 
 ```c#
 public static IServiceCollection AddCustomValidators(this IServiceCollection services)
@@ -61,4 +61,14 @@ var result = await FlatValidator.ValidateAsync(model, v =>
 ### Release Notes and Change Log
 
 Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md).
+
+
+### Supporting the project
+
+If you like my activities, it may be great to give me a ⭐ and/or share this link with friends 🤗
+
+The `FlatValidator` is developed and supported by [@belset](https://github.com/belset) for free in spare time, so that financial help keeps the projects to be going successfully.
+<div>
+  <a href="https://www.buymeacoffee.com/belset" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="150" /></a>
+</div>
 

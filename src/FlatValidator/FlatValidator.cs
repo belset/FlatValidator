@@ -487,19 +487,18 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
             var errorMessage = rule.Error is not null ? ((Func<TModel, string>)rule.Error)(model) : rule.ErrorMessage;
             if (errorMessage is not null)
             {
-                ProcessError(errorMessage, rule.MemberSelector1, validationResult);
-                ProcessError(errorMessage, rule.MemberSelector2, validationResult);
-                ProcessError(errorMessage, rule.MemberSelector3, validationResult);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ProcessError(string errorMessage, Expression memberSelector, FlatValidationResult validationResult)
-        {
-            if (memberSelector is not null)
-            {
-                var memberPath = memberSelector.GetMemberName();
-                validationResult.AddError(new FlatValidationError(memberPath, errorMessage));
+                if (rule.MemberSelector1 is not null)
+                {
+                    validationResult.AddError(new FlatValidationError(rule.MemberSelector1.GetMemberName(), errorMessage));
+                }
+                if (rule.MemberSelector2 is not null)
+                {
+                    validationResult.AddError(new FlatValidationError(rule.MemberSelector2.GetMemberName(), errorMessage));
+                }
+                if (rule.MemberSelector3 is not null)
+                {
+                    validationResult.AddError(new FlatValidationError(rule.MemberSelector3.GetMemberName(), errorMessage));
+                }
             }
         }
     }

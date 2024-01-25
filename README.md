@@ -90,6 +90,11 @@ bool success = results.IsValid;
 List<ValidationFailure> failures = results.Errors;
 ```
 
+### Benchmarks
+
+![With no errors](doc/images/Benchmark_with_NoErrors.png)
+
+![With many errors](doc/images/Benchmark_with_ManyErrors.png)
 
 ## Installation
 [![Nuget](https://img.shields.io/nuget/v/FlatValidator)](https://www.nuget.org/packages/FlatValidator/)

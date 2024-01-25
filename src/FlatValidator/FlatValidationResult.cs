@@ -58,6 +58,7 @@ public class FlatValidationResult
     #region Operators
 
     /// <summary>Extracts actual result for <see cref="TypedResults.ValidationProblem(...)"/>..</summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator bool(in FlatValidationResult result) => result.IsValid;
 
     #endregion // Operators
@@ -69,7 +70,8 @@ public class FlatValidationResult
     /// </summary>
     /// <param name="groupedBy">Ensure to grouping by property name.</param>
     /// <returns>A dictionary after grouping by PropertyName.</returns>
-    public Dictionary<string, string[]> ToDictionary() => Errors.GroupedByPropertyName();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Dictionary<string, string[]> ToDictionary() => this.errors.GroupedByPropertyName();
 
     /// <summary>
     /// Adds an validation error object to the end of the Errors list.

@@ -42,7 +42,11 @@ public class BenchmarkWithNoErrors
         {
             var validationResult = new FlatValidatorForBigModel().Validate(model);
             var validationStatus = validationResult.IsValid;
-            Debug.Assert(validationStatus);
+            if (!validationStatus)
+            {
+                var problems = validationResult.ToDictionary();
+                Debug.Assert(problems.Count > 0);
+            }
         }
     }
 
@@ -53,7 +57,11 @@ public class BenchmarkWithNoErrors
         {
             var validationResult = new FluentValidatorForBigModel().Validate(model);
             var validationStatus = validationResult.IsValid;
-            Debug.Assert(validationStatus);
+            if (!validationStatus)
+            {
+                var problems = validationResult.ToDictionary();
+                Debug.Assert(problems.Count > 0);
+            }
         }
     }
 }
