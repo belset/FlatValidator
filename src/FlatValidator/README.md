@@ -41,7 +41,7 @@ var result = await FlatValidator.ValidateAsync(model, v =>
 });
 ```
 
-### 2. Inheritance the `FlatValidator` class
+### 2. Inheritance of the `FlatValidator` class
 
 > Another way is to inherit the `FlatValidator` to define custom rules in the constructor. 
 Also you can pass dependencies into constructor to get additional functionality inside of the validation rules.

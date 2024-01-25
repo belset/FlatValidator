@@ -13,7 +13,7 @@ public static IServiceCollection AddCustomValidators(this IServiceCollection ser
 
 ## Quick examples
 
-### 1. Inheritance the `FlatValidator` class
+### 1. Inheritance of the `FlatValidator` class
 
 ```c#
 public record UserModel(string Phone, string ShipmentAddress, string PostalCode);

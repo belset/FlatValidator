@@ -6,7 +6,7 @@ The `FlatValidator` is a validation library for .NET that delivers an high perfo
 
 In general, there are two simple ways to validate custom data with the `FlatValidator`.
 
-### 1. Inline mode:
+### 1. Inline mode
 
 > You can define validation rules in your code to validate object locally.
 
@@ -43,7 +43,7 @@ var result = await FlatValidator.ValidateAsync(model, v =>
 });
 ```
 
-### 2. Inheritance the `FlatValidator` class
+### 2. Inheritance of the `FlatValidator` class
 
 > Another way is to inherit the `FlatValidator` to define custom rules in the constructor. 
 Also you can pass dependencies into constructor to get additional functionality inside of the validation rules.
