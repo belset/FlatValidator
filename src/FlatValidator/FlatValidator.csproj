@@ -5,6 +5,9 @@
     <Title>A validation library for .NET that provides high performance and memory efficiency with the usage of strongly-typed and lambda-based rules.</Title>
     <Description>A validation library for .NET that delivers an high-performance and memory prudence by using lambda-based and strongly-typed rules.</Description>
     <Authors>Ilya Rudenka (@belset)</Authors>
+    <Copyright>© Ilya Rudenka (@belset) 2024</Copyright>
+    <Product>FlatValidator</Product>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <Version>1.0.0-rc</Version>
     <PackageVersion>1.0.0-rc</PackageVersion>
     <PackageId>FlatValidator</PackageId>

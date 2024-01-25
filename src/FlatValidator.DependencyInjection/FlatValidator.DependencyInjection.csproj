@@ -5,6 +5,9 @@
     <Title>Extention of the FlatValidator package to register custom inherited validators in the IServiceCollection (Microsoft.Extensions.Dependencyinjection.Abstractions) automatically.</Title>
     <Description>The FlatValidator.DependencyInjection package extends the FlatValidator package to register all custom inherited validators in the IServiceCollection (Microsoft.Extensions.Dependencyinjection.Abstractions) automatically. A validation library for .NET that provides high performance and memory efficiency with the usage of strongly-typed and lambda-based rules.</Description>
     <Authors>Ilya Rudenka (@belset)</Authors>
+    <Copyright>© Ilya Rudenka (@belset) 2024</Copyright>
+    <Product>FlatValidator</Product>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <Version>1.0.0-rc</Version>
     <PackageVersion>1.0.0-rc</PackageVersion>
     <PackageId>FlatValidator.DependencyInjection</PackageId>
