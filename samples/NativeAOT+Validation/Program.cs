@@ -44,7 +44,7 @@ app.MapGet("/validate", () =>
         results.Add(result);
     }
     var groupedProblems = results.ToDictionary(); // group each model results into one collection
-    //return TypedResults.ValidationProblem(groupedProblems);
+    return TypedResults.ValidationProblem(groupedProblems);
 
 /* // same logic but a bit shortly
 
