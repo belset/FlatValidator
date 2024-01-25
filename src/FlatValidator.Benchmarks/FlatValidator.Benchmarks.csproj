@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FlatValidator\FlatValidator.csproj" />
-    <ProjectReference Include="..\FleeValidator\FleeValidator.csproj" />
   </ItemGroup>
 
 </Project>

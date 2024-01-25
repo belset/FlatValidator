@@ -2,20 +2,20 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
-    <Title>A validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.</Title>
-    <Description>A validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.</Description>
+    <Title>A validation library for .NET that provides high performance and memory efficiency with the usage of strongly-typed and lambda-based rules.</Title>
+    <Description>A validation library for .NET that delivers an high-performance and memory prudence by using lambda-based and strongly-typed rules.</Description>
     <Authors>Ilya Rudenka (@belset)</Authors>
     <Version>1.0.0-rc</Version>
     <PackageVersion>1.0.0-rc</PackageVersion>
     <PackageId>FlatValidator</PackageId>
     <PackageTags>validation validator InputValidation DataAnnotation</PackageTags>
-    <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryUrl>https://github.com/belset/FlatValidator</RepositoryUrl>
     <PackageProjectUrl>https://github.com/belset/FlatValidator</PackageProjectUrl>
-    <PackageIcon>logo.png</PackageIcon>
+    <PackageIcon>flatValidator128x128.png</PackageIcon>
 
     <EnablePackageValidation>true</EnablePackageValidation>
     <ContinuousIntegrationBuild Condition="'$(Configuration)'=='Release'">true</ContinuousIntegrationBuild>
@@ -27,10 +27,38 @@
     <OptimizationPreference>Speed</OptimizationPreference>
   </PropertyGroup>
 
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <IsAotCompatible>True</IsAotCompatible>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <IsAotCompatible>True</IsAotCompatible>
+  </PropertyGroup>
+
+
   <ItemGroup>
     <None Include="LICENSE" Pack="true" PackagePath="" />
     <None Include="README.md" Pack="true" PackagePath="" />
-    <None Include="Properties\logo.png" Pack="true" PackagePath="" />
+    <None Include="Properties\flatValidator128x128.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>

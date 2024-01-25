@@ -59,7 +59,6 @@ internal class CapacityCache
     }
 }
 
-[StructLayout(LayoutKind.Auto)]
 internal struct RuleList<TModel>
 {
     #region Nested classes

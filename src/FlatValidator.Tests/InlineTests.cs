@@ -341,6 +341,35 @@ public class InlineTests
         Assert.True(dict.ContainsKey("Level1.Level2.Name2"));
     }
 
+    [Fact]
+    public void _07_ToDictionary_for_FlatValidatorResults()
+    {
+        var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
+
+        var results = new FlatValidationResult[2];
+        results[0] = FlatValidator.Validate(model, v =>
+        {
+            v.ErrorIf(m => m.Id <= 0, "Error0", m => m.Id);
+        });
+        results[1] = FlatValidator.Validate(model, v =>
+        {
+            v.ErrorIf(m => m.Id <= 0, "Error1", m => m.Id);
+        });
+        Assert.False(results[0].IsValid);
+        Assert.False(results[1].IsValid);
+
+        Assert.Contains(results[0].Errors, e => e.ErrorMessage == "Error0");
+        Assert.Contains(results[1].Errors, e => e.ErrorMessage == "Error1");
+
+        var dict = results.ToDictionary<TestModel>();
+        Assert.True(string.Join(", ", dict.Keys) == nameof(TestModel.Id));
+
+        var messages = dict[nameof(TestModel.Id)];
+        Assert.True(messages.Length == 2);
+        Assert.Contains(messages, msg => msg == "Error0");
+        Assert.Contains(messages, msg => msg == "Error1");
+    }
+
     //[Fact]
     //public void _07_Error_With_Tag()
     //{

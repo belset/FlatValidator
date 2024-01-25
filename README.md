@@ -90,8 +90,19 @@ bool success = results.IsValid;
 List<ValidationFailure> failures = results.Errors;
 ```
 
-> **TIP** -
-> The package **`FlatValidator.DependencyInjection`** helps you to register all inherited validators in the ServiceCollection automatically.
+
+## Installation
+[![Nuget](https://img.shields.io/nuget/v/FlatValidator)](https://www.nuget.org/packages/FlatValidator/)
+
+Install the [FlatValidator](https://www.nuget.org/packages/FlatValidator) from NuGet:
+``` console
+❯ dotnet add package FlatValidator
+```
+
+If installing into an ASP.NET Core project, consider using the [FlatValidator.DependencyInjection](https://www.nuget.org/packages/FlatValidator.DependencyInjection) package that adds extensions specific to ASP.NET Core
+``` console
+❯ dotnet add package FlatValidator.DependencyInjection
+```
 
 ### Release Notes and Change Log
 
@@ -99,7 +110,11 @@ Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/b
 
 ### Supporting the project
 
-The `FlatValidator` is developed and supported by [@belset](https://github.com/belset) for 
-free in spare time, so that financial help keeps the project to be going successfully.
+If you like my activities, it may be great to give me a ⭐ and/or share this link with friends 🤗
 
-The project may be sponsored via either [GitHub sponsors](https://github.com/sponsors/belset).
+The `FlatValidator` is developed and supported by [@belset](https://github.com/belset) for free in spare time, so that financial help keeps the projects to be going successfully.
+<div>
+  <a href="https://www.buymeacoffee.com/belset" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="150" /></a>
+</div>
+
+---

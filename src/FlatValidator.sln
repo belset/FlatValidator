@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatValidator.DependencyInj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatValidator.Profiling", "FlatValidator.Profiling\FlatValidator.Profiling.csproj", "{33A09DC5-E3E2-4BA8-B304-B63067763E83}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FleeValidator", "FleeValidator\FleeValidator.csproj", "{B6D2A59D-3C9D-4F74-B750-D002EF21E661}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
