@@ -1,10 +1,10 @@
 ﻿The `FlatValidator` is a validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.
 
-### Quick examples
+## Quick examples
 
 In general, there are two simple ways to validate custom data with the `FlatValidator`.
 
-#### 1. Inline mode:
+### 1. Inline mode
 
 > You can define validation rules in your code to validate object locally.
 
@@ -41,7 +41,7 @@ var result = await FlatValidator.ValidateAsync(model, v =>
 });
 ```
 
-#### 2. Inheritance of the `FlatValidator`
+### 2. Inheritance the `FlatValidator` class
 
 > Another way is to inherit the `FlatValidator` to define custom rules in the constructor. 
 Also you can pass dependencies into constructor to get additional functionality inside of the validation rules.
@@ -92,15 +92,17 @@ List<ValidationFailure> failures = results.Errors;
 > The package **`FlatValidator.DependencyInjection`** helps you to register all inherited validators in the ServiceCollection automatically.
 
 
-### Release Notes and Change Log
+
+## Release Notes and Change Log
 
 Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md).
 
-### Supporting the project
+
+
+## Supporting the project
 
 If you like my activities, it may be great to give me a ⭐ and/or share this link with friends 🤗
 
 The `FlatValidator` is developed and supported by [@belset](https://github.com/belset) for free in spare time, so that financial help keeps the projects to be going successfully.
-<div>
-  <a href="https://www.buymeacoffee.com/belset" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="150" /></a>
-</div>
+
+[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png 'Buy me a coffee')](https://www.buymeacoffee.com/belset)

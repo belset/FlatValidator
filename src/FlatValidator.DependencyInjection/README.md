@@ -11,9 +11,9 @@ public static IServiceCollection AddCustomValidators(this IServiceCollection ser
 }
 ```
 
-### Quick examples
+## Quick examples
 
-#### 1. Inheritance of the `FlatValidator`
+### 1. Inheritance the `FlatValidator` class
 
 ```c#
 public record UserModel(string Phone, string ShipmentAddress, string PostalCode);
@@ -34,17 +34,17 @@ public class UserValidator: FlatValidator<UserModel>
     }
 }
 
-// .... we want to use synchronous version to validate here!
+// .... we want a synchronous version to validate here!
 var result = new UserValidator().Validate(new UserModel(...)); 
 
 ```
 
-#### 2. Usage of the `FlatValidator` in inline mode:
+### 2. Using `FlatValidator` in inline mode:
 
 ```c#
 var model = new Model(Email: "email", BirthDate: DateTime.Now, Rate: -100);
 
-// use asynchronous version
+// .... now use an asynchronous version!
 var result = await FlatValidator.ValidateAsync(model, v => 
 {
     // IsEmail() is one of funcs for typical data formats like Phone, Url, CreditCard, etc.
@@ -53,22 +53,22 @@ var result = await FlatValidator.ValidateAsync(model, v =>
     v.ErrorIf(async m => await userService.IsUserExistAsync(m.Email),
               m => $"Email {m.Email} already registered", m => m.Email);
 });
+if (!result) { ..... }
 ```
 >**Note** -
 > You don't need to install the `FlatValidator.DependencyInjection` package for inline mode usage.
 
 
-### Release Notes and Change Log
+## Release Notes and Change Log
 
 Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md).
 
 
-### Supporting the project
+## Supporting the project
 
 If you like my activities, it may be great to give me a ⭐ and/or share this link with friends 🤗
 
 The `FlatValidator` is developed and supported by [@belset](https://github.com/belset) for free in spare time, so that financial help keeps the projects to be going successfully.
-<div>
-  <a href="https://www.buymeacoffee.com/belset" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="150" /></a>
-</div>
+
+[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png 'Buy me a coffee')](https://www.buymeacoffee.com/belset)
 
