@@ -342,7 +342,32 @@ public class InlineTests
     }
 
     [Fact]
-    public void _07_ToDictionary_for_FlatValidatorResults()
+    public void _07_empty_list_of_FlatValidatorResult_ToDictionary()
+    {
+        try
+        {
+            var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
+
+            var results = new FlatValidationResult[0];
+            var dict = results.ToDictionary();
+
+            var resultsOf1 = new FlatValidationResult[1];
+            resultsOf1[0] = FlatValidator.Validate(model, v => { });
+            dict = resultsOf1.ToDictionary();
+
+            var resultsOf2 = new FlatValidationResult[2];
+            resultsOf2[0] = FlatValidator.Validate(model, v => { });
+            resultsOf2[1] = FlatValidator.Validate(model, v => { });
+            dict = resultsOf2.ToDictionary();
+        }
+        catch
+        {
+            Assert.True(false);
+        }
+    }
+
+    [Fact]
+    public void _07_list_of_FlatValidatorResult_ToDictionary()
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
 
@@ -361,7 +386,7 @@ public class InlineTests
         Assert.Contains(results[0].Errors, e => e.ErrorMessage == "Error0");
         Assert.Contains(results[1].Errors, e => e.ErrorMessage == "Error1");
 
-        var dict = results.ToDictionary<TestModel>();
+        var dict = results.ToDictionary();
         Assert.True(string.Join(", ", dict.Keys) == nameof(TestModel.Id));
 
         var messages = dict[nameof(TestModel.Id)];

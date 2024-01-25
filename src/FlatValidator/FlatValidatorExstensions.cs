@@ -30,7 +30,7 @@ public static class FlatValidatorExstensions
             g => g.Select(x => x.PropertyName).Distinct().ToArray()
         );
 
-    public static IDictionary<string, string[]> ToDictionary<TModel>(this IEnumerable<FlatValidationResult> validationResults)
+    public static Dictionary<string, string[]> ToDictionary(this IEnumerable<FlatValidationResult> validationResults)
     {
         ArgumentNullException.ThrowIfNull(validationResults);
 
@@ -45,22 +45,6 @@ public static class FlatValidatorExstensions
                         Values = errorMessages.Distinct().ToArray()
                     })
                 .ToDictionary(x => x.Key, x => x.Values);
-
-        //var failures = validationResults.SelectMany(r => r.Errors).ToArray();
-        //if (failures.Length > 0)
-        //{
-        //    return failures
-        //        .GroupBy(
-        //            x => x.PropertyName,
-        //            x => x.ErrorMessage,
-        //            (propertyName, errorMessages) => new
-        //            {
-        //                Key = propertyName,
-        //                Values = errorMessages.Distinct().ToArray()
-        //            })
-        //        .ToDictionary(x => x.Key, x => x.Values);
-        //}
-        //return new Dictionary<string, string[]>();
     }
 
     #endregion // Grouping methods
