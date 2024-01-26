@@ -31,7 +31,7 @@ public interface IFlatValidator<TModel>
     /// <param name="instance">The instance to validate</param>
     /// <param name="cancellation">The <see cref="CancellationToken"/> token to observe.</param>
     /// <returns>A ValidationResult object containing any validation failures.</returns>
-    ValueTask<FlatValidationResult> ValidateAsync(TModel model, CancellationToken cancellation);
+    ValueTask<FlatValidationResult> ValidateAsync(TModel model, CancellationToken cancellation = default);
 
     /// <summary>
     /// Validate the specified instance asynchronously
@@ -42,5 +42,5 @@ public interface IFlatValidator<TModel>
     /// </param>
     /// <param name="cancellation">The <see cref="CancellationToken"/> token to observe.</param>
     /// <returns>A ValidationResult object containing any validation failures.</returns>
-    ValueTask<FlatValidationResult> ValidateAsync(TModel model, TimeSpan timeout, CancellationToken cancellation);
+    ValueTask<FlatValidationResult> ValidateAsync(TModel model, TimeSpan timeout, CancellationToken cancellation = default);
 }
