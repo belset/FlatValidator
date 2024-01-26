@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace System.Validation;
+﻿namespace System.Validation;
 
 /// <summary>
 /// Defines a validator for a particular type.

@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
-using System.Validation;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FlatValidator.DependencyInjection;
+namespace System.Validation;
 
 public static class ServiceCollectionExtensions
 {
