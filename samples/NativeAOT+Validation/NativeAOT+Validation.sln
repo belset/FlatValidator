@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeAOT", "NativeAOT.csproj", "{4EAF8E21-FFD1-44C1-A5A6-73DCA8A0A4CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeAOT+Validation", "NativeAOT+Validation.csproj", "{4EAF8E21-FFD1-44C1-A5A6-73DCA8A0A4CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
