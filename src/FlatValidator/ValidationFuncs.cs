@@ -83,7 +83,7 @@ public static class ValidationFuncs
     /// <summary>
     /// Must be at least 10 characters
     /// Must contain at least one one lower case letter, one upper case letter, one digit and one special character
-    /// Valid special characters are -   @#$%^&+=
+    /// Valid special characters are -   @#$%^&amp;+=
     /// </summary>
     const string _password = @"^.*(?=.{NNN,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
     public static bool IsPassword(this string? password, byte minLength = 7) =>
