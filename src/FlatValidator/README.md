@@ -103,6 +103,6 @@ Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/b
 
 If you like my activities, it may be great to give me a ⭐ and/or share this link with friends 🤗
 
-The `FlatValidator` is developed and supported by [@belset](https://github.com/belset) for free in spare time, so that financial help keeps the projects to be going successfully.
+The `FlatValidator` is developed and supported by [`@belset`](https://github.com/belset) for free in spare time, so that financial help keeps the projects to be going successfully.
 
-[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png 'Buy me a coffee')](https://www.buymeacoffee.com/belset)
+ You can sponsor the project via [**`Buy me a coffee`**](https://www.buymeacoffee.com/belset).
