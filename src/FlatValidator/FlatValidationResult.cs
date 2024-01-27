@@ -3,11 +3,21 @@ using System.Runtime.CompilerServices;
 
 namespace System.Validation;
 
+/// <summary>
+/// Define a validation error contaner
+/// </summary>
 [Serializable]
 public record class FlatValidationError(string PropertyName, string ErrorMessage)
 {
+    /// <summary>
+    /// Userfriendly representation of the error
+    /// </summary>
     public override string ToString() => $"{PropertyName}: {ErrorMessage}";
 }
+
+/// <summary>
+/// Define a validation error contaner
+/// </summary>
 
 [Serializable, DebuggerDisplay("{DebuggerDisplay(),nq}")]
 public class FlatValidationResult
@@ -44,7 +54,7 @@ public class FlatValidationResult
     /// <summary>
     /// Creates a new ValidationResult from a collection of errors
     /// </summary>
-    /// <param name="error">Instance of <see cref="Exception"/> which is later available through the <see cref="Errors"/> property.</param>
+    /// <param name="exception">Instance of <see cref="Exception"/> which is later available through the <see cref="Errors"/> property.</param>
     public FlatValidationResult(Exception exception) => Exception = exception;
 
     /// <summary>
@@ -57,7 +67,7 @@ public class FlatValidationResult
 
     #region Operators
 
-    /// <summary>Extracts actual result for <see cref="TypedResults.ValidationProblem(...)"/>..</summary>
+    /// <summary>Extracts actual result for <see cref="TypedResults.ValidationProblem()"/>..</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator bool(in FlatValidationResult result) => result.IsValid;
 
@@ -68,7 +78,6 @@ public class FlatValidationResult
     /// <summary>
     /// Converts the ValidationResult's errors collection into a simple dictionary representation  grouped by PropertyName.
     /// </summary>
-    /// <param name="groupedBy">Ensure to grouping by property name.</param>
     /// <returns>A dictionary after grouping by PropertyName.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Dictionary<string, string[]> ToDictionary() => this.errors.GroupedByPropertyName();
