@@ -1,4 +1,11 @@
-﻿# 1.0.0-rc - 2024-01-24
+﻿# 1.0.0 - 2024-01-27
+
+- Additional tests implemented 
+- Fix of IFlatValidator interface to provide default CancellationToken
+- Fix of warnings in part of method summaries
+- Fix of documentation
+
+# 1.0.0-rc - 2024-01-24
 
 ### Features
 
