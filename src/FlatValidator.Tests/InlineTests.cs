@@ -187,6 +187,24 @@ public class InlineTests
     }
 
     [Fact]
+    public void _04_ValidIf_with_2_MemberSelectors()
+    {
+        var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
+
+        var result = FlatValidator.Validate(model, v =>
+        {
+            const string errorMessage = "Only personal info or company info may be represented at the same time";
+            v.ValidIf(m => m.Id > 0 && m.CompanyName.NotEmpty(), errorMessage, m => m.Id, m => m.CompanyName);
+        });
+
+        Assert.False(result.IsValid);
+
+        Assert.True(result.Errors.Count == 2);
+        Assert.Contains(result.Errors, e => e.PropertyName == nameof(TestModel.Id));
+        Assert.Contains(result.Errors, e => e.PropertyName == nameof(TestModel.CompanyName));
+    }
+
+    [Fact]
     public void _04_ValidIf_with_2_MemberSelectors_FmtErrMsg()
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "", null!);
@@ -280,6 +298,7 @@ public class InlineTests
     }
     #endregion // _05_ErrorIf_with_3_MemberSelectors(+FmtErrMsg) + _05_ValidIf_with_3_MemberSelectors(+FmtErrMsg)
 
+    #region _06_Group_NestedGroup_ExecutionOrder()
     [Fact]
     public void _06_Group_NestedGroup_ExecutionOrder()
     {
@@ -340,7 +359,9 @@ public class InlineTests
         Assert.True(dict.ContainsKey("Level1.Level2.Id"));
         Assert.True(dict.ContainsKey("Level1.Level2.Name2"));
     }
+    #endregion // _06_Group_NestedGroup_ExecutionOrder()
 
+    #region _07_empty_list_of_FlatValidatorResult_ToDictionary()
     [Fact]
     public void _07_empty_list_of_FlatValidatorResult_ToDictionary()
     {
@@ -365,7 +386,9 @@ public class InlineTests
             Assert.True(false);
         }
     }
+    #endregion // _07_empty_list_of_FlatValidatorResult_ToDictionary()
 
+    #region _07_list_of_FlatValidatorResult_ToDictionary()
     [Fact]
     public void _07_list_of_FlatValidatorResult_ToDictionary()
     {
@@ -394,6 +417,96 @@ public class InlineTests
         Assert.Contains(messages, msg => msg == "Error0");
         Assert.Contains(messages, msg => msg == "Error1");
     }
+    #endregion // _07_list_of_FlatValidatorResult_ToDictionary()
+
+    #region _08_Group_Simple_execution
+    [Fact]
+    public void _08_Group_Simple_execution()
+    {
+        var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
+        var r = FlatValidator.Validate(model, v =>
+        {
+            // synchronous condition
+            v.Grouped(m => false, m =>
+            {
+                Assert.True(false, "This line must never be reached (1).");
+            });
+            v.Grouped(m => true, m => 
+            {
+                // it's OK
+            },
+            @else: m =>
+            {
+                Assert.True(false, "This line must never be reached (2).");
+            });
+
+            // asynchronous condition
+            v.Grouped(async m => await ValueTask.FromResult(false), m =>
+            {
+                Assert.True(false, "This line must never be reached (3).");
+            });
+            v.Grouped(async m => await ValueTask.FromResult(true), m =>
+            {
+                // it's OK
+            },
+            @else: m =>
+            {
+                Assert.True(false, "This line must never be reached (4).");
+            });
+
+            // complete asynchronous
+            v.Grouped(async m => await ValueTask.FromResult(false), async m =>
+            {
+                Assert.True(await ValueTask.FromResult(false), "This line must never be reached (5).");
+            });
+            v.Grouped(async m => await ValueTask.FromResult(true), m =>
+            {
+                // it's OK
+            },
+            @else: async m =>
+            {
+                Assert.True(await ValueTask.FromResult(false), "This line must never be reached (6).");
+            });
+        });
+    }
+    #endregion // _08_Group_Simple_execution
+
+    #region _09_Simple_Error
+    [Fact]
+    public void _09_Simple_Error()
+    {
+        var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
+        var ret = FlatValidator.Validate(model, v =>
+        {
+            v.Error(m => "Error(1.func)", m => m.Id);
+            v.Error("Error(1.str)", m => m.Id);
+
+            v.Error(m => "Error(2.func)", m => m.Id, m => m.BirthDate);
+            v.Error("Error(2.str)", m => m.Id, m => m.BirthDate);
+
+            v.Error(m => "Error(3.func)", m => m.Id, m => m.BirthDate, m => m.Rate);
+            v.Error("Error(3.str)", m => m.Id, m => m.BirthDate, m => m.Rate);
+        });
+
+        Assert.True(ret.Errors.Count == 12);
+
+        int idx1 = 0, idx2 = 0;
+        Assert.True(ret.Errors[idx1++].PropertyName == "Id" && ret.Errors[idx2++].ErrorMessage == "Error(1.func)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "Id" && ret.Errors[idx2++].ErrorMessage == "Error(1.str)");
+        
+        Assert.True(ret.Errors[idx1++].PropertyName == "Id" && ret.Errors[idx2++].ErrorMessage == "Error(2.func)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "BirthDate" && ret.Errors[idx2++].ErrorMessage == "Error(2.func)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "Id" && ret.Errors[idx2++].ErrorMessage == "Error(2.str)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "BirthDate" && ret.Errors[idx2++].ErrorMessage == "Error(2.str)");
+
+        Assert.True(ret.Errors[idx1++].PropertyName == "Id" && ret.Errors[idx2++].ErrorMessage == "Error(3.func)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "BirthDate" && ret.Errors[idx2++].ErrorMessage == "Error(3.func)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "Rate" && ret.Errors[idx2++].ErrorMessage == "Error(3.func)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "Id" && ret.Errors[idx2++].ErrorMessage == "Error(3.str)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "BirthDate" && ret.Errors[idx2++].ErrorMessage == "Error(3.str)");
+        Assert.True(ret.Errors[idx1++].PropertyName == "Rate" && ret.Errors[idx2++].ErrorMessage == "Error(3.str)");
+    }
+    #endregion // _09_Simple_Error
 
     //[Fact]
     //public void _07_Error_With_Tag()
