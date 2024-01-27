@@ -5,7 +5,7 @@ Accept: application/json
 
 ###
 
-GET {{NativeAOT_HostAddress}}/todos/1
+GET {{NativeAOT_HostAddress}}/validate
 Accept: application/json
 
 ###
