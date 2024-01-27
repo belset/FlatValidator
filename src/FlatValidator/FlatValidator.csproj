@@ -8,8 +8,8 @@
     <Copyright>© Ilya Rudenka (@belset) 2024</Copyright>
     <Product>FlatValidator</Product>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-    <Version>1.0.0-rc</Version>
-    <PackageVersion>1.0.0-rc</PackageVersion>
+    <Version>1.0.0</Version>
+    <PackageVersion>1.0.0</PackageVersion>
     <PackageId>FlatValidator</PackageId>
     <PackageTags>validation validator InputValidation DataAnnotation</PackageTags>
     <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md</PackageReleaseNotes>
@@ -28,33 +28,40 @@
     <LangVersion>default</LangVersion>
     <InvariantGlobalization>true</InvariantGlobalization>
     <OptimizationPreference>Speed</OptimizationPreference>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <NoWarn>1701;1702;1574;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <NoWarn>1701;1702;1574;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <IsAotCompatible>True</IsAotCompatible>
+    <NoWarn>1701;1702;1574;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <NoWarn>1701;1702;1574;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <NoWarn>1701;1702;1574;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <IsAotCompatible>True</IsAotCompatible>
+    <NoWarn>1701;1702;1574;1591;</NoWarn>
   </PropertyGroup>
 
 
