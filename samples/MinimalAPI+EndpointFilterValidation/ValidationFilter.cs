@@ -9,14 +9,11 @@ public class ValidationFilter<T>(IServiceProvider serviceProvider) : IEndpointFi
 {
     /// <summary>
     /// Some validation logic associated with the filter given a <see cref="EndpointFilterInvocationContext"/>.
-    /// Warning! Be informed, this implementation is just an example, it is not ready for production!
     /// </summary>
     /// <param name="context">The <see cref="EndpointFilterInvocationContext"/> associated with the current request/response.</param>
     /// <param name="next">The next filter in the pipeline.</param>
     /// <returns>An awaitable result of calling the handler and apply any modifications made by filters in the pipeline.</returns>
-    public async ValueTask<object?> InvokeAsync(
-        EndpointFilterInvocationContext context,
-        EndpointFilterDelegate next)
+    public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
         if (context.Arguments.FirstOrDefault(x => x?.GetType() == typeof(T)) is not T model)
         {
