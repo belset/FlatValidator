@@ -20,9 +20,9 @@ internal enum RuleType : int
     WarningSynch,
     WarningAsync,
 
-    GroupSynch,
-    GroupAsync,
-    GroupCancelledAsync,
+    IfSynch,
+    IfAsync,
+    IfCancelledAsync,
 }
 
 [StructLayout(LayoutKind.Auto)]
@@ -30,8 +30,8 @@ public struct Rule
 {
     internal RuleType RuleType;
     internal Delegate Conditions;
-    internal Delegate GroupThen;
-    internal Delegate GroupElse;
+    internal Delegate IfThen;
+    internal Delegate IfElse;
     internal Delegate FuncMessage;
     internal string ConstMessage;
     internal Expression MemberSelector1;
@@ -110,8 +110,8 @@ internal struct RuleList<TModel>
 
         rule.RuleType = ruleType;
         rule.Conditions = conditions;
-        rule.GroupThen = groupThen;
-        rule.GroupElse = groupElse;
+        rule.IfThen = groupThen;
+        rule.IfElse = groupElse;
         rule.FuncMessage = error;
         rule.ConstMessage = errorMessage;
         rule.MemberSelector1 = memberSelector1;
