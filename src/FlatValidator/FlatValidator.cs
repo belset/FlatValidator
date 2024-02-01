@@ -20,16 +20,16 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void If(Func<TModel, bool> conditions, Action<TModel> @then, Action<TModel> @else = null!)
-        => rules.Add(RuleType.GroupSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
+        => rules.Add(RuleType.IfSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void If(Func<TModel, ValueTask<bool>> conditions, Action<TModel> @then, Action<TModel> @else = null!)
-        => rules.Add(RuleType.GroupAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+        => rules.Add(RuleType.IfAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void If(Func<TModel, CancellationToken, ValueTask<bool>> conditions, 
                             Action<TModel, CancellationToken> @then, Action<TModel, CancellationToken> @else = null!)
-        => rules.Add(RuleType.GroupCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+        => rules.Add(RuleType.IfCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
 
     #endregion // If methods
 
@@ -527,51 +527,51 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         }
                         break;
 
-                    case RuleType.GroupSynch:
-                        var groupSyncResult = ((Func<TModel, bool>)rule.Conditions)(model);
-                        if (groupSyncResult && rule.GroupThen is not null)
+                    case RuleType.IfSynch:
+                        var syncConditionsResult = ((Func<TModel, bool>)rule.Conditions)(model);
+                        if (syncConditionsResult && rule.IfThen is not null)
                         {
-                            var groupIndex = rules.Count;
-                            ((Action<TModel>)rule.GroupThen)(model);
-                            await ProcessRules(groupIndex, rules.Count, validationResult);
+                            var startIndex = rules.Count;
+                            ((Action<TModel>)rule.IfThen)(model);
+                            await ProcessRules(startIndex, rules.Count, validationResult);
                         }
-                        else if (!groupSyncResult && rule.GroupElse is not null)
+                        else if (!syncConditionsResult && rule.IfElse is not null)
                         {
-                            var groupIndex = rules.Count;
-                            ((Action<TModel>)rule.GroupElse)(model);
-                            await ProcessRules(groupIndex, rules.Count, validationResult);
-                        }
-                        break;
-
-                    case RuleType.GroupAsync:
-                        var groupAsyncResult = await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model);
-                        if (groupAsyncResult && rule.GroupThen is not null)
-                        {
-                            var groupIndex = rules.Count;
-                            ((Action<TModel>)rule.GroupThen)(model);
-                            await ProcessRules(groupIndex, rules.Count, validationResult);
-                        }
-                        else if (!groupAsyncResult && rule.GroupElse is not null)
-                        {
-                            var groupIndex = rules.Count;
-                            ((Action<TModel>)rule.GroupElse)(model);
-                            await ProcessRules(groupIndex, rules.Count, validationResult);
+                            var startIndex = rules.Count;
+                            ((Action<TModel>)rule.IfElse)(model);
+                            await ProcessRules(startIndex, rules.Count, validationResult);
                         }
                         break;
 
-                    case RuleType.GroupCancelledAsync:
-                        var groupCancelledAsyncResult = await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation);
-                        if (groupCancelledAsyncResult && rule.GroupThen is not null)
+                    case RuleType.IfAsync:
+                        var asyncConditionsResult = await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model);
+                        if (asyncConditionsResult && rule.IfThen is not null)
                         {
-                            var groupIndex = rules.Count;
-                            ((Action<TModel, CancellationToken>)rule.GroupThen)(model, cancellation);
-                            await ProcessRules(groupIndex, rules.Count, validationResult);
+                            var startIndex = rules.Count;
+                            ((Action<TModel>)rule.IfThen)(model);
+                            await ProcessRules(startIndex, rules.Count, validationResult);
                         }
-                        else if (!groupCancelledAsyncResult && rule.GroupElse is not null)
+                        else if (!asyncConditionsResult && rule.IfElse is not null)
                         {
-                            var groupIndex = rules.Count;
-                            ((Action<TModel, CancellationToken>)rule.GroupElse)(model, cancellation);
-                            await ProcessRules(groupIndex, rules.Count, validationResult);
+                            var startIndex = rules.Count;
+                            ((Action<TModel>)rule.IfElse)(model);
+                            await ProcessRules(startIndex, rules.Count, validationResult);
+                        }
+                        break;
+
+                    case RuleType.IfCancelledAsync:
+                        var isCancelledAsyncResult = await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation);
+                        if (isCancelledAsyncResult && rule.IfThen is not null)
+                        {
+                            var startIndex = rules.Count;
+                            ((Action<TModel, CancellationToken>)rule.IfThen)(model, cancellation);
+                            await ProcessRules(startIndex, rules.Count, validationResult);
+                        }
+                        else if (!isCancelledAsyncResult && rule.IfElse is not null)
+                        {
+                            var startIndex = rules.Count;
+                            ((Action<TModel, CancellationToken>)rule.IfElse)(model, cancellation);
+                            await ProcessRules(startIndex, rules.Count, validationResult);
                         }
                         break;
                 }
