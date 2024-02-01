@@ -2,7 +2,7 @@
 
 The `FlatValidator.DependencyInjection` package extends the `FlatValidator` package to register all custom inherited validators in the `IServiceCollection` (Microsoft.Extensions.Dependencyinjection.Abstractions) automatically.
 
-```c#
+```js
 public static IServiceCollection AddCustomValidators(this IServiceCollection services)
 {
     services.AddFlatValidatorsFromAssembly(Assembly.GetExecutingAssembly());
