@@ -1,8 +1,5 @@
-using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Validation;
-
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -34,7 +31,7 @@ app.MapGet("/validate", () =>
             v.ErrorIf(m => m.Id <= 0, $"Invalid Id", m => m.Id);
             v.ErrorIf(m => m.DueBy is null, "DueBy can not be null.", m => m.DueBy);
 
-            v.Grouped(m => m.Title.NotEmpty(), m =>
+            v.If(m => m.Title.NotEmpty(), @then: m =>
             {
                 v.ValidIf(m => m.Title!.Contains('r'), 
                           m => $"Title '{m.Title}' does not contain 'r'.", 
