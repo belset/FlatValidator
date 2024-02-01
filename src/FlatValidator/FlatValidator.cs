@@ -16,22 +16,22 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
     #endregion // Members
 
-    #region Grouped methods
+    #region If methods
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Grouped(Func<TModel, bool> conditions, Action<TModel> @then, Action<TModel> @else = null!)
+    public void If(Func<TModel, bool> conditions, Action<TModel> @then, Action<TModel> @else = null!)
         => rules.Add(RuleType.GroupSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Grouped(Func<TModel, ValueTask<bool>> conditions, Action<TModel> @then, Action<TModel> @else = null!)
+    public void If(Func<TModel, ValueTask<bool>> conditions, Action<TModel> @then, Action<TModel> @else = null!)
         => rules.Add(RuleType.GroupAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Grouped(Func<TModel, CancellationToken, ValueTask<bool>> conditions, 
+    public void If(Func<TModel, CancellationToken, ValueTask<bool>> conditions, 
                             Action<TModel, CancellationToken> @then, Action<TModel, CancellationToken> @else = null!)
         => rules.Add(RuleType.GroupCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
 
-    #endregion // Grouped methods
+    #endregion // If methods
 
     #region Constant Error
 
@@ -311,6 +311,89 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
     #endregion // Asynchronous ValidIf with Cancellation
 
+    #region Synchronous WarnigIf
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> warning,
+                                    Expression<Func<TModel, T1>> memberSelector)
+        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector.Body, null!, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1, T2>(Func<TModel, bool> conditions, Func<TModel, string> warning,
+                                    Expression<Func<TModel, T1>> memberSelector1,
+                                    Expression<Func<TModel, T2>> memberSelector2)
+        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1, T2, T3>(Func<TModel, bool> conditions, Func<TModel, string> warning,
+                                    Expression<Func<TModel, T1>> memberSelector1,
+                                    Expression<Func<TModel, T2>> memberSelector2,
+                                    Expression<Func<TModel, T3>> memberSelector3)
+        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+
+    //
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1>(Func<TModel, bool> conditions, string warningMessage,
+                                    Expression<Func<TModel, T1>> memberSelector)
+        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector.Body, null!, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1, T2>(Func<TModel, bool> conditions, string warningMessage,
+                                    Expression<Func<TModel, T1>> memberSelector1,
+                                    Expression<Func<TModel, T2>> memberSelector2)
+        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1, T2, T3>(Func<TModel, bool> conditions, string warningMessage,
+                                    Expression<Func<TModel, T1>> memberSelector1,
+                                    Expression<Func<TModel, T2>> memberSelector2,
+                                    Expression<Func<TModel, T3>> memberSelector3)
+        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+
+    #endregion // Synchronous WarningIf
+
+    #region Asynchronous WarningIf
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
+    public ref Rule WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+                                 Expression<Func<TModel, T1>> memberSelector)
+    => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
+    public ref Rule WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+                               Expression<Func<TModel, T1>> memberSelector1,
+                               Expression<Func<TModel, T2>> memberSelector2)
+    => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
+    public ref Rule WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+                                  Expression<Func<TModel, T1>> memberSelector1,
+                                  Expression<Func<TModel, T2>> memberSelector2,
+                                  Expression<Func<TModel, T3>> memberSelector3)
+        => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+
+    //
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+                            Expression<Func<TModel, T1>> memberSelector)
+        => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+                                Expression<Func<TModel, T1>> memberSelector1,
+                                Expression<Func<TModel, T2>> memberSelector2)
+        => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    public ref Rule WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+                                    Expression<Func<TModel, T1>> memberSelector1,
+                                    Expression<Func<TModel, T2>> memberSelector2,
+                                    Expression<Func<TModel, T3>> memberSelector3)
+        => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+
+    #endregion // Asynchronous WarningIf
+
+
     #region Validate methods
 
     /// <summary>
@@ -398,10 +481,6 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         }
                         break;
 
-                    case RuleType.ErrorConst:
-                        ProcessRuleErrors(rule, validationResult);
-                        break;
-
                     case RuleType.ErrorAsync:
                         if (await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model))
                         {
@@ -427,6 +506,24 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         if (!await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation))
                         {
                             ProcessRuleErrors(rule, validationResult);
+                        }
+                        break;
+
+                    case RuleType.ErrorConst:
+                        ProcessRuleErrors(rule, validationResult);
+                        break;
+
+                    case RuleType.WarningSynch:
+                        if (((Func<TModel, bool>)rule.Conditions)(model))
+                        {
+                            ProcessRuleWarnings(rule, validationResult);
+                        }
+                        break;
+
+                    case RuleType.WarningAsync:
+                        if (await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model))
+                        {
+                            ProcessRuleWarnings(rule, validationResult);
                         }
                         break;
 
@@ -484,7 +581,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void ProcessRuleErrors(in Rule rule, FlatValidationResult validationResult)
         {
-            var errorMessage = rule.Error is not null ? ((Func<TModel, string>)rule.Error)(model) : rule.ErrorMessage;
+            var errorMessage = rule.FuncMessage is not null ? ((Func<TModel, string>)rule.FuncMessage)(model) : rule.ConstMessage;
             if (errorMessage is not null)
             {
                 if (rule.MemberSelector1 is not null)
@@ -498,6 +595,27 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                 if (rule.MemberSelector3 is not null)
                 {
                     validationResult.AddError(new FlatValidationError(rule.MemberSelector3.GetMemberName(), errorMessage));
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        void ProcessRuleWarnings(in Rule rule, FlatValidationResult validationResult)
+        {
+            var errorMessage = rule.FuncMessage is not null ? ((Func<TModel, string>)rule.FuncMessage)(model) : rule.ConstMessage;
+            if (errorMessage is not null)
+            {
+                if (rule.MemberSelector1 is not null)
+                {
+                    validationResult.AddWarning(new FlatValidationWarning(rule.MemberSelector1.GetMemberName(), errorMessage));
+                }
+                if (rule.MemberSelector2 is not null)
+                {
+                    validationResult.AddWarning(new FlatValidationWarning(rule.MemberSelector2.GetMemberName(), errorMessage));
+                }
+                if (rule.MemberSelector3 is not null)
+                {
+                    validationResult.AddWarning(new FlatValidationWarning(rule.MemberSelector3.GetMemberName(), errorMessage));
                 }
             }
         }
@@ -557,13 +675,13 @@ public static class FlatValidator
     public static FlatValidationResult Validate<TModel>(in TModel model, Action<FlatValidator<TModel>> action)
     {
         var validator = new FlatValidator<TModel>();
-        validator.Grouped((_) => true, m => action(validator));
+        validator.If((_) => true, m => action(validator));
         return validator.Validate(model);
     }
     public static ValueTask<FlatValidationResult> ValidateAsync<TModel>(in TModel model, Action<FlatValidator<TModel>> action, CancellationToken cancellationToken = default)
     {
         var validator = new FlatValidator<TModel>();
-        validator.Grouped((_) => true, m => action(validator));
+        validator.If((_) => true, m => action(validator));
         return validator.ValidateAsync(model, cancellationToken);
     }
     #endregion // Static inline validation methods

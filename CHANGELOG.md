@@ -1,4 +1,12 @@
-﻿# 1.0.0 - 2024-01-27
+﻿# 2.0.0 - 2024-02-01
+
+- Add WarningIf functionality
+- Tests for WarningIf added
+- Warnings collection added into FlatValidatiorResult
+- Grouped() replaced to If()
+- Fix of documentations
+
+# 1.0.0 - 2024-01-27
 
 - Additional tests implemented 
 - Fix of IFlatValidator interface to provide default CancellationToken

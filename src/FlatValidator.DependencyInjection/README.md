@@ -15,7 +15,7 @@ public static IServiceCollection AddCustomValidators(this IServiceCollection ser
 
 ### 1. Inheritance of the `FlatValidator` class
 
-```c#
+```js
 public record UserModel(string Phone, string ShipmentAddress, string PostalCode);
 
 public class UserValidator: FlatValidator<UserModel> 
@@ -25,7 +25,7 @@ public class UserValidator: FlatValidator<UserModel>
         ErrorIf(m => m.Phone.IsPhoneNumber(), "Invalid phone number.", m => m.Phone);
         
         // define one or more groups for preconditions
-        Group(m => m.ShipmentAddress.NotEmpty(), m =>
+        If(m => m.ShipmentAddress.NotEmpty(), @then: m =>
         {
             ValidIf(m => postalService.AddressExistsAsync(m.ShipmentAddress, m.PostalCode), 
                     "Invalid postal address and/or postal code.", 
@@ -41,7 +41,7 @@ var result = new UserValidator().Validate(new UserModel(...));
 
 ### 2. Using `FlatValidator` in inline mode:
 
-```c#
+```js
 var model = new Model(Email: "email", BirthDate: DateTime.Now, Rate: -100);
 
 // .... now use an asynchronous version!
@@ -65,8 +65,6 @@ Release notes [can be found on GitHub](https://github.com/belset/FlatValidator/b
 
 
 ## Supporting the project
-
-If you like my activities, it may be great to give me a ⭐ and/or share this link with friends 🤗
 
 The `FlatValidator` is developed and supported by [`@belset`](https://github.com/belset) for free in spare time, so that financial help keeps the projects to be going successfully.
 

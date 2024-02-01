@@ -61,7 +61,7 @@ public class MultithreadTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.Grouped(
+                validator.If(
                     (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -69,7 +69,7 @@ public class MultithreadTests
 
                         return ValueTask.FromResult(true);
                     },
-                    (model, cancellationToken) =>
+                    @then: (model, cancellationToken) =>
                     {
                         validator.ErrorIf(model => true, "Something wrong.", model => model.Id);
                     }
@@ -96,12 +96,12 @@ public class MultithreadTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.Grouped(
+                validator.If(
                     (model, cancellationToken) =>
                     {
                         return ValueTask.FromResult(true);
                     },
-                    (model, cancellationToken) =>
+                    @then: (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
                         Assert.True(false, "This line must never be reached.");
@@ -131,12 +131,12 @@ public class MultithreadTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.Grouped(
+                validator.If(
                     (model, cancellationToken) =>
                     {
                         return ValueTask.FromResult(false);
                     },
-                    (model, cancellationToken) =>
+                    @then: (model, cancellationToken) =>
                     {
                         Assert.True(false, "This line must never be reached.");
                     },

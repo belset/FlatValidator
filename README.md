@@ -10,8 +10,8 @@ In general, there are two simple ways to validate custom data with the `FlatVali
 
 > You can define validation rules in your code to validate object locally.
 
-```c#
-var model = new Model(Email: "email", BirthDate: DateTime.Now, Rate: -100);
+```js
+var model = new SomeModel(Email: "email", BirthDate: DateTime.Now, Rate: -100);
 
 // synchronous version
 var result =  FlatValidator.Validate(model, v =>
@@ -19,17 +19,11 @@ var result =  FlatValidator.Validate(model, v =>
     // IsEmail() is one of funcs for typical data formats like Phone, Url, CreditCard, etc.
     v.ValidIf(m => m.Email.IsEmail(), "Invalid email", m => m.Email);
 
-    v.ErrorIf(m => m.BirthDate.AddYears(15) >= DateTime.Now, 
-              m => $"Incorrect age: {m.BirthDate}", m => m.BirthDate);
+    v.ErrorIf(m => m.Rate < 0, "Negative Rate", m => m.Rate);
 
-    v.ErrorIf(m => m.Rate < 0 && m.BirthDate.AddYears(15) >= DateTime.Now, 
-             "Rate cannot be negative for age < 15", m => m.Rate);
+    v.WarningIf(m => m.BirthDate.AddYears(10) >= DateTime.Now, 
+                "Age looks like incorrect", m => m.BirthDate);
 });
-if (!result) 
-{
-    // ToDictionary() => IDictionary<PropertyName, ErrorMessage[]>
-    TypedResults.Problems(result.ToDictionary()) 
-}
 
 // or asynchronous version
 var result = await FlatValidator.ValidateAsync(model, v => 
@@ -41,6 +35,15 @@ var result = await FlatValidator.ValidateAsync(model, v =>
     v.ErrorIf(m => userService.IsUserExistAsync(m.Email),
               m => $"Email {m.Email} already registered", m => m.Email);
 });
+
+// to check the validation result
+if (!result) 
+{
+    // ToDictionary() => Dictionary<PropertyName, ErrorMessage[]>
+    return TypedResults.ValidationProblem(result.ToDictionary()) 
+}
+
+
 ```
 
 ### 2. Inheritance of the `FlatValidator` class
@@ -48,7 +51,7 @@ var result = await FlatValidator.ValidateAsync(model, v =>
 > Another way is to inherit the `FlatValidator` to define custom rules in the constructor. 
 Also you can pass dependencies into constructor to get additional functionality inside of the validation rules.
 
-```c#
+```js
 public record UserModel(string Forename, string Surname, ....);
 
 public class UserValidator: FlatValidator<UserModel> 
@@ -57,16 +60,19 @@ public class UserValidator: FlatValidator<UserModel>
     {
         logger.LogInfo("Validating...");
 
-        ErrorIf(m => m.Forename.IsEmpty(), "Forename can not be empty.", m => m.Forename);
-        ValidIf(m => m.Surname.NotEmpty(), "Surname can not be empty.", m => m.Surname);
+        ErrorIf(m => m.Forename.IsEmpty() || m.Surname.IsEmpty(),
+                "Forename and Surname can not be empty.", 
+                m => m.Forename, m => m.Surname);
         
-        // you can define one or more groups of preconditions
-        Group(m => m.ShipmentAddress.NotEmpty(), m =>
+        // use 'If(...)' to control a validation flow
+        If(m => m.ShipmentAddress.NotEmpty(), @then: m =>
         {
             ValidIf(async m => await postalService.AddressExistsAsync(m.Address),
                      "Postal address not found.", m => m.Address);
+
+            WarningIf(m => !m.Phone.IsPhone(), "No contact phone.");
         },
-        @else: m => // optionally
+        @else: m => // @else section is optional
         {
             ValidIf(m => m.Phone.IsPhone(), "invalid phone number.", m => m.Phone);
         });
@@ -74,7 +80,7 @@ public class UserValidator: FlatValidator<UserModel>
 }
 ```
 > Now lets validate some object with it
-```c#
+```js
 // now let's validate
 var validator = new UserValidator();
 var result = validator.Validate(new UserModel(...)); // synchronous call of your UserValidator
