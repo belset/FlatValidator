@@ -313,9 +313,9 @@ public class InlineTests
             v.ErrorIf(m => m.Level1.Level2.Id == 3, "ErrorIf for Level1.Level2.Id", m => m.Level1.Level2.Id);
             v.ValidIf(m => m.Level1.Level2.Id != 3, "ValidIf for Level1.Level2.Id", m => m.Level1.Level2.Id);
 
-            v.Grouped(m => m.Name0.NotEmpty(), m =>
+            v.If(m => m.Name0.NotEmpty(), @then: m =>
             {
-                v.Grouped(m => m.Level1.Name1.NotEmpty(), m =>
+                v.If(m => m.Level1.Name1.NotEmpty(), @then: m =>
                 {
                     v.ErrorIf(m => m.Level1.Level2.Id == 3, "Grouped ErrorIf for Level1.Level2.Id", m => m.Level1.Level2.Id);
                     v.ValidIf(m => m.Level1.Level2.Id != 3, "Grouped ValidIf for Level1.Level2.Id", m => m.Level1.Level2.Id);
@@ -324,7 +324,7 @@ public class InlineTests
                 v.ValidIf(m => m.Level1.Id != 2, "Grouped ValidIf for Level1.Id", m => m.Level1.Id);
             });
 
-            v.Grouped(m => false, m =>
+            v.If(m => false, @then: m =>
             {
                 Assert.True(false, "This line must never be reached.");
             },
@@ -427,11 +427,11 @@ public class InlineTests
         var r = FlatValidator.Validate(model, v =>
         {
             // synchronous condition
-            v.Grouped(m => false, m =>
+            v.If(m => false, m =>
             {
                 Assert.True(false, "This line must never be reached (1).");
             });
-            v.Grouped(m => true, m => 
+            v.If(m => true, m => 
             {
                 // it's OK
             },
@@ -441,11 +441,11 @@ public class InlineTests
             });
 
             // asynchronous condition
-            v.Grouped(async m => await ValueTask.FromResult(false), m =>
+            v.If(async m => await ValueTask.FromResult(false), m =>
             {
                 Assert.True(false, "This line must never be reached (3).");
             });
-            v.Grouped(async m => await ValueTask.FromResult(true), m =>
+            v.If(async m => await ValueTask.FromResult(true), m =>
             {
                 // it's OK
             },
@@ -455,11 +455,11 @@ public class InlineTests
             });
 
             // complete asynchronous
-            v.Grouped(async m => await ValueTask.FromResult(false), async m =>
+            v.If(async m => await ValueTask.FromResult(false), async m =>
             {
                 Assert.True(await ValueTask.FromResult(false), "This line must never be reached (5).");
             });
-            v.Grouped(async m => await ValueTask.FromResult(true), m =>
+            v.If(async m => await ValueTask.FromResult(true), m =>
             {
                 // it's OK
             },
@@ -508,20 +508,115 @@ public class InlineTests
     }
     #endregion // _09_Simple_Error
 
-    //[Fact]
-    //public void _07_Error_With_Tag()
-    //{
-    //    var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
+    #region _10_WarningIf_with_1_MemberSelector
 
-    //    var result = FlatValidator.Validate(model, v =>
-    //    {
-    //        v.ErrorIf(m => m.Id <= 0, "ErrorMessageWithTag", m => m.Id).Tag("Tag1");
-    //        v.ErrorIf(m => m.Id <= 0, m => "ErrorMessageCallbackWithTag", m => m.Id).Tag("Tag2");
-    //    });
+    [Fact]
+    public void _10_WarningIf_with_1_MemberSelector()
+    {
+        var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-    //    Assert.False(result.IsValid);
+        var result = FlatValidator.Validate(model, v =>
+        {
+            v.WarningIf(m => m.Id <= 0, "Id looks like incorrect.", m => m.Id);
+        });
+        Assert.True(result.IsValid);
+        Assert.True(result.Errors.Count == 0);
+        Assert.True(result.Warnings.Count == 1);
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.Id));
+        Assert.Contains(result.Warnings, w => w.WarningMessage == "Id looks like incorrect.");
+    }
+    #endregion // _10_WarningIf_with_1_MemberSelector
 
-    //    Assert.Contains(result.Errors, e => e.ErrorMessage == "ErrorMessageWithTag" && e.Tag == "Tag1");
-    //    Assert.Contains(result.Errors, e => e.ErrorMessage == "ErrorMessageCallbackWithTag" && e.Tag == "Tag2");
-    //}
+    #region _10_WarningIf_with_1_MemberSelector_with_FmtMsg()
+    [Fact]
+    public void _10_WarningIf_with_1_MemberSelector_with_FmtMsg()
+    {
+        var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
+
+        var result = FlatValidator.Validate(model, v =>
+        {
+            v.WarningIf(m => m.Id <= 0, m => $"Id ({m.Id}) looks like incorrect.", m => m.Id);
+        });
+        Assert.True(result.IsValid);
+        Assert.True(result.Errors.Count == 0);
+        Assert.True(result.Warnings.Count == 1);
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.Id));
+        Assert.Contains(result.Warnings, w => w.WarningMessage == "Id (0) looks like incorrect.");
+    }
+    #endregion // _10_Func_WarningIf_with_1_MemberSelector_with_FmtMsg()
+
+    #region _10_WarningIf_with_2_MemberSelector()
+    [Fact]
+    public void _10_WarningIf_with_2_MemberSelector()
+    {
+        var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
+
+        var result = FlatValidator.Validate(model, v =>
+        {
+            v.WarningIf(m => m.Id <= 0, "Id looks like incorrect.", m => m.Id, m => m.CompanyName);
+        });
+        Assert.True(result.IsValid);
+        Assert.True(result.Errors.Count == 0);
+        Assert.True(result.Warnings.Count == 2);
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.Id) && w.WarningMessage == "Id looks like incorrect.");
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.CompanyName) && w.WarningMessage == "Id looks like incorrect.");
+    }
+    #endregion // _10_WarningIf_with_2_MemberSelector()
+
+    #region _10_WarningIf_with_2_MemberSelector_with_FmtMsg()
+    [Fact]
+    public void _10_WarningIf_with_2_MemberSelector_with_FmtMsg()
+    {
+        var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
+
+        var result = FlatValidator.Validate(model, v =>
+        {
+            v.WarningIf(m => m.Id <= 0, m => $"Id ({m.Id}: {m.CompanyName}) looks like incorrect.", m => m.Id, m => m.CompanyName);
+        });
+        Assert.True(result.IsValid);
+        Assert.True(result.Errors.Count == 0);
+        Assert.True(result.Warnings.Count == 2);
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.Id) && w.WarningMessage == "Id (0: Company Ltd) looks like incorrect.");
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.CompanyName) && w.WarningMessage == "Id (0: Company Ltd) looks like incorrect.");
+    }
+    #endregion // _10_WarningIf_with_2_MemberSelector_with_FmtMsg()
+
+    #region _10_WarningIf_with_3_MemberSelector()
+    [Fact]
+    public void _10_WarningIf_with_3_MemberSelector()
+    {
+        var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
+
+        var result = FlatValidator.Validate(model, v =>
+        {
+            v.WarningIf(m => m.Id <= 0, "Id looks like incorrect.", m => m.Id, m => m.CompanyName, m => m.PostalAddress);
+        });
+        Assert.True(result.IsValid);
+        Assert.True(result.Errors.Count == 0);
+        Assert.True(result.Warnings.Count == 3);
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.Id) && w.WarningMessage == "Id looks like incorrect.");
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.CompanyName) && w.WarningMessage == "Id looks like incorrect.");
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.PostalAddress) && w.WarningMessage == "Id looks like incorrect.");
+    }
+    #endregion // _10_WarningIf_with_3_MemberSelector()
+
+    #region _10_WarningIf_with_3_MemberSelector_with_FmtMsg()
+    [Fact]
+    public void _10_WarningIf_with_3_MemberSelector_with_FmtMsg()
+    {
+        var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", "Some address");
+
+        var result = FlatValidator.Validate(model, v =>
+        {
+            v.WarningIf(m => m.Id <= 0, m => $"Id ({m.Id}: {m.CompanyName}, {m.PostalAddress}) looks like incorrect.", 
+                            m => m.Id, m => m.CompanyName, m => m.PostalAddress);
+        });
+        Assert.True(result.IsValid);
+        Assert.True(result.Errors.Count == 0);
+        Assert.True(result.Warnings.Count == 3);
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.Id) && w.WarningMessage == "Id (0: Company Ltd, Some address) looks like incorrect.");
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.CompanyName) && w.WarningMessage == "Id (0: Company Ltd, Some address) looks like incorrect.");
+        Assert.Contains(result.Warnings, w => w.PropertyName == nameof(TestModel.PostalAddress) && w.WarningMessage == "Id (0: Company Ltd, Some address) looks like incorrect.");
+    }
+    #endregion // _10_WarningIf_with_3_MemberSelector_with_FmtMsg()
 }

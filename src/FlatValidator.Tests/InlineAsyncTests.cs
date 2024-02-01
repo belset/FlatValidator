@@ -384,7 +384,7 @@ public class InlineAsyncTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.Grouped(
+                validator.If(
                     (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -421,7 +421,7 @@ public class InlineAsyncTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.Grouped(
+                validator.If(
                     (model, cancellationToken) =>
                     {
                         return ValueTask.FromResult(true);
@@ -458,7 +458,7 @@ public class InlineAsyncTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.Grouped(
+                validator.If(
                     (model, cancellationToken) =>
                     {
                         return ValueTask.FromResult(false);

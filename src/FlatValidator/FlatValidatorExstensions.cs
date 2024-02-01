@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 
+
 namespace System.Validation;
 
 public static class FlatValidatorExstensions
@@ -30,6 +31,29 @@ public static class FlatValidatorExstensions
             g => g.Select(x => x.PropertyName).Distinct().ToArray()
         );
 
+    /// <summary>
+    /// Converts the <see cref="FlatValidationResult.Warnings"/> collection into a simple dictionary grouped by PropertyName.
+    /// </summary>
+    public static Dictionary<string, string[]> GroupedByPropertyName(this IEnumerable<FlatValidationWarning> warnings) =>
+        warnings.GroupBy(x => x.PropertyName).ToDictionary(
+            g => g.Key,
+            g => g.Select(x => x.WarningMessage).Distinct().ToArray()
+        );
+
+    /// <summary>
+    /// Converts the <see cref="FlatValidationResult.Warnings"/> collection into a simple dictionary grouped by ErrorMessage.
+    /// </summary>
+    public static Dictionary<string, string[]> GroupedByErrorMessage(this IEnumerable<FlatValidationWarning> warnings) =>
+        warnings.GroupBy(x => x.WarningMessage).ToDictionary(
+            g => g.Key,
+            g => g.Select(x => x.PropertyName).Distinct().ToArray()
+        );
+
+    /// <summary>
+    /// Group collection of the FlatValidationResult into one dictionary.
+    /// </summary>
+    /// <param name="validationResults">Collection of the <see cref="FlatValidationResult"/></param>
+    /// <returns>A dictionary that's grouped by PropertyName.</returns>
     public static Dictionary<string, string[]> ToDictionary(this IEnumerable<FlatValidationResult> validationResults)
     {
         ArgumentNullException.ThrowIfNull(validationResults);
@@ -91,5 +115,4 @@ public static class FlatValidatorExstensions
     }
 
     #endregion // Member selectors
-
 }
