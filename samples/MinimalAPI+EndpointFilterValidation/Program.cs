@@ -35,7 +35,7 @@ public class RegisterRequestValidator : FlatValidator<RegisterRequest>
 {
     public RegisterRequestValidator(EmailService emailService)
     {
-        Grouped(model => model.EmailOrUsername.IsEmail(), model =>
+        If(model => model.EmailOrUsername.IsEmail(), model =>
         {
             ErrorIf(model => emailService.EmailExists(model),
                     model => $"Email {model.EmailOrUsername} has already been registered.",
