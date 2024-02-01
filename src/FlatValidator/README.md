@@ -8,7 +8,7 @@ In general, there are two simple ways to validate custom data with the `FlatVali
 
 > You can define validation rules in your code to validate object locally.
 
-```c#
+```js
 var model = new Model(Email: "email", BirthDate: DateTime.Now, Rate: -100);
 
 // synchronous version
