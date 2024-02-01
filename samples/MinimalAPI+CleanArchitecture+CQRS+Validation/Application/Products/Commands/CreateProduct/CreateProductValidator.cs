@@ -12,7 +12,7 @@ internal class CreateProductValidator : FlatValidator<CreateProductCommand>
         ErrorIf(m => m.ProductName.IsEmpty(), "Product name cannot be empty.", m => m.ProductName);
         ErrorIf(m => m.BrandName.IsEmpty(), "Brand name cannot be empty.", m => m.BrandName);
 
-        Grouped(m => brandRepository.BrandExists(m.BrandName), m =>
+        If(m => brandRepository.BrandExists(m.BrandName), @then: m =>
         {
             ErrorIf(m => productRepository.ProductExists(m.ProductName, m.BrandName), 
                     m => $"Product '{m.ProductName}' for '{m.BrandName}' already exists.", 
