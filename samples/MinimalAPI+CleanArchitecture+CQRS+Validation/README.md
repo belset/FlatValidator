@@ -20,7 +20,7 @@ Let's pay your attention to some moments of the quick example below.
 5. Synchronous and Asynchronous are supported completely.
 6. You can implement a validation inside of independent class or _inline mode_ may be used.
 
-```c#
+```js
 public class CreateProductValidator : FlatValidator<CreateProductCommand>
 {
     public CreateProductValidator(IProductRepository productRepository, IBrandRepository brandRepository)
@@ -28,7 +28,7 @@ public class CreateProductValidator : FlatValidator<CreateProductCommand>
         ErrorIf(m => m.ProductName.IsEmpty(), "Product name cannot be empty.", m => m.ProductName);
         ErrorIf(m => m.BrandName.IsEmpty(), "Brand name cannot be empty.", m => m.BrandName);
 
-        Grouped(m => brandRepository.BrandExists(m.BrandName), m =>
+        If(m => brandRepository.BrandExists(m.BrandName), @then: m =>
         {
             ErrorIf(m => productRepository.ProductExists(m.ProductName, m.BrandName), 
                     m => $"Product '{m.ProductName}' for '{m.BrandName}' already exists.", 
@@ -51,13 +51,18 @@ var result = await validator.ValidateAsync(model, cancellationToken);
 
 ### Inline mode
 
-```c#
+You can also define validation rules "in place".
+
+```js
+
+// synchronous version
 var result = FlatValidator.Validate(model, v =>
 {
     v.ErrorIf(m => m.Id <= 0, "Invalid Id", m => m.Id);
     v.ErrorIf(m => m.DueBy is null, "DueBy can not be null.", m => m.DueBy);
 });
 
+// or asynchronous version
 var result = await FlatValidator.ValidateAsync(model, v =>
 {
     v.ValidIf(m => m.Id > 0, "Invalid Id", m => m.Id);
