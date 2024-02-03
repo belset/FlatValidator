@@ -1,10 +1,8 @@
 namespace System.Validation;
 
 /// <summary>
-/// FlatValidation for HTTP router
+/// FlatValidator EndpointFilter for HTTP routers
 /// </summary>
-/// <typeparam name="T"></typeparam>
-/// <param name="serviceProvider"></param>
 public class ValidationFilter<T>(IServiceProvider serviceProvider) : IEndpointFilter
 {
     /// <summary>
