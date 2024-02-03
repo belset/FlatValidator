@@ -1,8 +1,11 @@
-namespace System.Validation;
+using System.Validation;
+
 
 /// <summary>
-/// FlatValidator EndpointFilter for HTTP routers
+/// FlatValidation for HTTP router
 /// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="serviceProvider"></param>
 public class ValidationFilter<T>(IServiceProvider serviceProvider) : IEndpointFilter
 {
     /// <summary>
@@ -13,17 +16,17 @@ public class ValidationFilter<T>(IServiceProvider serviceProvider) : IEndpointFi
     /// <returns>An awaitable result of calling the handler and apply any modifications made by filters in the pipeline.</returns>
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        if (context.Arguments.FirstOrDefault(x => x?.GetType() == typeof(T)) is not T model)
-        {
-            return TypedResults.Problem(
-                        detail: "Parameter that's declared for validation is not defined.",
-                        statusCode: StatusCodes.Status500InternalServerError);
-        }
-
         var validators = serviceProvider.GetServices<IFlatValidator<T>>();
         foreach (var validator in validators)
         {
-            var result = await validator.ValidateAsync(model, CancellationToken.None);
+            if (context.Arguments.FirstOrDefault(x => x?.GetType() == typeof(T)) is not T model)
+            {
+                return TypedResults.Problem(
+                            detail: "Parameter that's declared for validation is not defined.", 
+                            statusCode: StatusCodes.Status500InternalServerError);
+            }
+
+            var result = await validator.ValidateAsync(model);
             if (!result)
             {
                 return TypedResults.ValidationProblem(result.ToDictionary());

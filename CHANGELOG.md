@@ -1,4 +1,9 @@
-﻿# 2.0.0 - 2024-02-01
+﻿#
+
+- Added EndpointFilter with validation in the example NativeAOT
+- Modified the example MinimalAPI+EndpoinFilter+Validation
+
+# 2.0.0 - 2024-02-01
 
 - Add WarningIf functionality
 - Tests for WarningIf added

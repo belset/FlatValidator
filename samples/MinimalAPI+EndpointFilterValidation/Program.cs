@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,51 +8,40 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddFlatValidatorsFromAssembly(typeof(RegisterRequestValidator).Assembly);
-builder.Services.AddScoped<EmailService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddFlatValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+// register example of custom service to use inside of validator
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
 app.UseSwagger().UseSwaggerUI();
 app.UseHttpsRedirection();
 
-app.MapPost("/", (RegisterRequest entity, CancellationToken cancellationToken) =>
+
+app.MapPost("/emails", (RegisterRequest entity, CancellationToken cancellationToken) =>
 {
     return TypedResults.Ok(entity);
-
 })
 .AddEndpointFilter<ValidationFilter<RegisterRequest>>()
-.WithName("FlatValidator")
 .WithOpenApi();
 
+// The entity will be valid if entity.RateId is empty (look into RateRequest.cs)
+app.MapPost("/rates", (RateRequest entity, CancellationToken cancellationToken) =>
+{
+    return TypedResults.Ok(entity);
+})
+.AddEndpointFilter<ValidationFilter<RateRequest>>()
+.WithOpenApi();
+
+// The entity will be valid if entity.RateId is NOT empty  (look into RateRequest.cs)
+app.MapPut("/rates", (RateRequest entity, CancellationToken cancellationToken) =>
+{
+    return TypedResults.Ok(entity);
+})
+.AddEndpointFilter<ValidationFilter<RateRequest>>()
+.WithOpenApi();
+
+
 app.Run();
-
-public record class RegisterRequest(string EmailOrUsername, string Password);
-
-/// <summary>
-/// It was registered above - builder.Services.AddFlatValidatorsFromAssembly()
-/// </summary>
-public class RegisterRequestValidator : FlatValidator<RegisterRequest>
-{
-    public RegisterRequestValidator(EmailService emailService)
-    {
-        If(model => model.EmailOrUsername.IsEmail(), model =>
-        {
-            ErrorIf(model => emailService.EmailExists(model),
-                    model => $"Email {model.EmailOrUsername} has already been registered.",
-                    model => model.EmailOrUsername);
-        });
-
-        ValidIf(model => model.Password.IsPassword(5),
-                "Must be at least 5 symbols with lower and upper case letter, digits, special symbols - @#$%^&+=", 
-                model => model.Password);
-    }
-}
-
-/// <summary>
-/// It was registered above - builder.Services.AddScoped<EmailService>() 
-/// </summary>
-public class EmailService
-{
-    public ValueTask<bool> EmailExists(RegisterRequest entity) => ValueTask.FromResult(true);
-}

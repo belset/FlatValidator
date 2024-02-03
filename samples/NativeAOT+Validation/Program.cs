@@ -1,14 +1,7 @@
 using System.Text.Json.Serialization;
 using System.Validation;
 
-var builder = WebApplication.CreateSlimBuilder(args);
-
-builder.Services.AddProblemDetails().ConfigureHttpJsonOptions(options 
-    => options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default));
-
-var app = builder.Build();
-
-var sampleTodos = new Todo[] {
+var sampleTodos = new List<Todo> {
     new(0, "Record with incorrect Id"),
     new(1, "Walk the dog"),
     new(2, "Do the dishes", DateOnly.FromDateTime(DateTime.Now)),
@@ -17,56 +10,71 @@ var sampleTodos = new Todo[] {
     new(5, "Clean the car", DateOnly.FromDateTime(DateTime.Now.AddDays(2)))
 };
 
-app.MapGet("/todos", () => sampleTodos);
+var builder = WebApplication.CreateSlimBuilder(args);
 
-app.MapGet("/validate", () =>
+builder.Services.AddProblemDetails().ConfigureHttpJsonOptions(options 
+    => options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default));
+
+// register array of test models
+builder.Services.AddSingleton(sampleTodos);
+
+// register a validator for the Todo model
+builder.Services.AddScoped<IFlatValidator<Todo>, TodoValidator>();
+
+var app = builder.Build();
+
+app.MapGet("/demo", () =>
 {
-    List<FlatValidationResult> results = new();
-
-    foreach (var model in sampleTodos)
-    {
-        // no need to create any class outside, just define rules inside
-        var result = FlatValidator.Validate(model, v =>
-        {
-            v.ErrorIf(m => m.Id <= 0, $"Invalid Id", m => m.Id);
-            v.ErrorIf(m => m.DueBy is null, "DueBy can not be null.", m => m.DueBy);
-
-            v.If(m => m.Title.NotEmpty(), @then: m =>
-            {
-                v.ValidIf(m => m.Title!.Contains('r'), 
-                          m => $"Title '{m.Title}' does not contain 'r'.", 
-                          m => m.Title);
-            });
-        });
-        results.Add(result);
-    }
-    var groupedProblems = results.ToDictionary(); // group each model results into one collection
-    return TypedResults.ValidationProblem(groupedProblems);
-
-/* // same logic but a bit shortly
-
-    var ret = sampleTodos.Select(m => FlatValidator.Validate(m, v =>
+    var ret = sampleTodos.Select(m => FlatValidator.Validate(m, v => // inline validation
     {
         v.ErrorIf(m => m.Id <= 0, $"Invalid Id", m => m.Id);
         v.ErrorIf(m => m.DueBy is null, "DueBy can not be null.", m => m.DueBy);
 
-        v.Grouped(m => m.Title.NotEmpty(), m =>
+        v.If(m => m.Title.NotEmpty(), m =>
         {
             v.ValidIf(m => m.Title!.Contains('r'),
                       m => $"Title '{m.Title}' does not contain 'r'.",
                       m => m.Title);
         });
-    })).ToDictionary());
+    })).ToDictionary();
 
     return TypedResults.ValidationProblem(ret);
-*/
 });
+
+app.MapGet("/todos", () => sampleTodos);
+
+app.MapPost("/todos", (Todo todo) => sampleTodos.Add(todo))
+   .AddEndpointFilter<ValidationFilter<Todo>>();
 
 app.Run();
 
+
+// Model to test validation functionality
 public record Todo(int Id, string? Title, DateOnly? DueBy = null, bool IsComplete = false);
 
-[JsonSerializable(typeof(Todo[]))]
+
+// TodoValidator will be called from ValidationFilter for the request 'POST:todos'
+public class TodoValidator : FlatValidator<Todo>
+{
+    public TodoValidator(List<Todo> todos)
+    {
+        ErrorIf(m => m.Id <= 0, $"Invalid Id", m => m.Id);
+        ErrorIf(m => m.DueBy is null, "DueBy can not be null.", m => m.DueBy);
+
+        If(m => m.Title.NotEmpty(), @then: m =>
+        {
+            ValidIf(m => m.Title!.Contains('r'),
+                      m => $"Title '{m.Title}' does not contain 'r'.",
+                      m => m.Title);
+        });
+
+        ErrorIf(m => todos.Any(x => x.Id == m.Id), m => $"Id {m.Id} already exists.", m => m.Id);
+    }
+}
+
+
+// NativeAOT supporting
+[JsonSerializable(typeof(List<Todo>))]
 [JsonSerializable(typeof(Microsoft.AspNetCore.Mvc.ProblemDetails))]
 internal partial class AppJsonSerializerContext : JsonSerializerContext
 { }
