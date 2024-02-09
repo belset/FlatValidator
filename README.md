@@ -74,7 +74,7 @@ public class UserValidator: FlatValidator<UserModel>
         },
         @else: m => // @else section is optional
         {
-            ValidIf(m => m.Phone.IsPhone(), "invalid phone number.", m => m.Phone);
+            ValidIf(m => m.Phone.IsPhone(), "Invalid phone number.", m => m.Phone);
         });
     }
 }
