@@ -70,7 +70,7 @@ internal struct RuleList<TModel>
     internal ref Rule GetRule(int index) => ref rules[index];
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal ref Rule Add(
+    internal void Add(
         RuleType ruleType,
         Delegate conditions,
         Delegate groupThen,
@@ -95,8 +95,6 @@ internal struct RuleList<TModel>
         rule.MemberSelector1 = memberSelector1;
         rule.MemberSelector2 = memberSelector2;
         rule.MemberSelector3 = memberSelector3;
-
-        return ref rule;
     }
 
     internal Snapshot MakeSnapshot() => new Snapshot(count);

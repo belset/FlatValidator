@@ -16,22 +16,22 @@ public class FlatValidationResult
     private List<FlatValidationWarning> warnings = new();
 
     /// <summary>
-    /// A collection of errors
+    /// A collection of errors.
     /// </summary>
     public IReadOnlyList<FlatValidationError> Errors => errors;
 
     /// <summary>
-    /// A collection of warnings
+    /// A collection of warnings.
     /// </summary>
     public IReadOnlyList<FlatValidationWarning> Warnings => warnings;
 
     /// <summary>
-    /// Exception if it occured during validation
+    /// Exception if it occured during validation.
     /// </summary>
     public Exception? Exception { get; internal set; } = null!;
 
     /// <summary>
-    /// Whether validation succeeded
+    /// Whether validation succeeded.
     /// </summary>
     public bool IsValid => errors.Count == 0 && Exception is null;
 
@@ -40,19 +40,23 @@ public class FlatValidationResult
     #region Constructors
 
     /// <summary>
-    /// Creates a new ValidationResult
+    /// Creates a new ValidationResult.
     /// </summary>
     public FlatValidationResult()
-    { }
+    {
+    }
 
     /// <summary>
-    /// Creates a new ValidationResult from a collection of errors
+    /// Creates a new ValidationResult from a collection of errors.
     /// </summary>
     /// <param name="exception">Instance of <see cref="Exception"/> which is later available through the <see cref="Exception"/> property.</param>
-    public FlatValidationResult(Exception exception) => Exception = exception;
+    public FlatValidationResult(Exception exception)
+    {
+        Exception = exception;
+    }
 
     /// <summary>
-    /// Creates a new ValidationResult from a collection of errors
+    /// Creates a new ValidationResult from a collection of errors.
     /// </summary>
     /// <param name="result">Another instance of the <see cref="FlatValidationResult"/> that has to be cloned.</param>
     public FlatValidationResult(FlatValidationResult result)
@@ -66,7 +70,7 @@ public class FlatValidationResult
 
     #region Operators
 
-    /// <summary>Extracts actual result for <see cref="TypedResults.ValidationProblem()"/>..</summary>
+    /// <summary>Extracts actual result for <see cref="TypedResults.ValidationProblem()"/>.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator bool(in FlatValidationResult result) => result.IsValid;
 
@@ -103,14 +107,12 @@ public class FlatValidationResult
     /// <summary>
     /// Generates a string representation of the error messages separated by new lines.
     /// </summary>
-    /// <returns></returns>
     public override string ToString() => ToString(Environment.NewLine);
 
     /// <summary>
     /// Generates a string representation of the error messages separated by the specified character.
     /// </summary>
     /// <param name="separator">The character to separate the error messages.</param>
-    /// <returns></returns>
     public string ToString(string separator) => string.Join(separator, errors);
 
     string DebuggerDisplay() => ToString(", ");
