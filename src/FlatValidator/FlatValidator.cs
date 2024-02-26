@@ -36,360 +36,360 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     #region Constant Error
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule Error<T1>(Func<TModel, string> error, Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector, null!, null!);
+    public void Error<T1>(Func<TModel, string> error, Expression<Func<TModel, T1>> memberSelector)
+        => rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule Error<T1, T2>(Func<TModel, string> error,
+    public void Error<T1, T2>(Func<TModel, string> error,
                                 Expression<Func<TModel, T1>> memberSelector1,
                                 Expression<Func<TModel, T2>> memberSelector2)
-    => ref rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    => rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule Error<T1, T2, T3>(Func<TModel, string> error,
+    public void Error<T1, T2, T3>(Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule Error<T1>(string errorMessage, Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    public void Error<T1>(string errorMessage, Expression<Func<TModel, T1>> memberSelector)
+        => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule Error<T1, T2>(string errorMessage, Expression<Func<TModel, T1>> memberSelector1, Expression<Func<TModel, T2>> memberSelector2) 
-        => ref rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    public void Error<T1, T2>(string errorMessage, Expression<Func<TModel, T1>> memberSelector1, Expression<Func<TModel, T2>> memberSelector2) 
+        => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule Error<T1, T2, T3>(string errorMessage, Expression<Func<TModel, T1>> memberSelector1, Expression<Func<TModel, T2>> memberSelector2, Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    public void Error<T1, T2, T3>(string errorMessage, Expression<Func<TModel, T1>> memberSelector1, Expression<Func<TModel, T2>> memberSelector2, Expression<Func<TModel, T3>> memberSelector3)
+        => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
 
     #endregion // Constant Error
 
     #region Synchronous ErrorIf
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> error, 
+    public void ErrorIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> error, 
                                     Expression<Func<TModel, T1>> memberSelector) 
-        => ref rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector.Body, null!, null!);
+        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector.Body, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1, T2>(Func<TModel, bool> conditions, Func<TModel, string> error,
+    public void ErrorIf<T1, T2>(Func<TModel, bool> conditions, Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2) 
-        => ref rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, null!);
+        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1, T2, T3>(Func<TModel, bool> conditions, Func<TModel, string> error,
+    public void ErrorIf<T1, T2, T3>(Func<TModel, bool> conditions, Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3) 
-        => ref rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1>(Func<TModel, bool> conditions, string errorMessage, 
+    public void ErrorIf<T1>(Func<TModel, bool> conditions, string errorMessage, 
                                     Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector.Body, null!, null!);
+        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector.Body, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1, T2>(Func<TModel, bool> conditions, string errorMessage,
+    public void ErrorIf<T1, T2>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, null!);
+        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1, T2, T3>(Func<TModel, bool> conditions, string errorMessage,
+    public void ErrorIf<T1, T2, T3>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
 
     #endregion // Synchronous ErrorIf
 
     #region Asynchronous ErrorIf
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule ErrorIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error, 
+    public void ErrorIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error, 
                                  Expression<Func<TModel, T1>> memberSelector)
-    => ref rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule ErrorIf<T1,T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ErrorIf<T1,T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-    => ref rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule ErrorIf<T1,T2,T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ErrorIf<T1,T2,T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage, 
+    public void ErrorIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage, 
                             Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+        => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void ErrorIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                                 Expression<Func<TModel, T1>> memberSelector1,
                                 Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+        => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void ErrorIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
 
     #endregion // Asynchronous ErrorIf
 
     #region Asynchronous ErrorIf with Cancellation
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
-    public ref Rule ErrorIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ErrorIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
-    public ref Rule ErrorIf<T1,T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error, 
+    public void ErrorIf<T1,T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error, 
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
-    public ref Rule ErrorIf<T1,T2,T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ErrorIf<T1,T2,T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
+    public void ErrorIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1, T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
+    public void ErrorIf<T1, T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                                 Expression<Func<TModel, T1>> memberSelector1,
                                 Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ErrorIf<T1, T2, T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
+    public void ErrorIf<T1, T2, T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
 
     #endregion // Asynchronous ErrorIf with Cancellation
 
     #region Synchronous ValidIf
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> error, 
+    public void ValidIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> error, 
                                     Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector.Body, null!, null!);
+        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector.Body, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1,T2>(Func<TModel, bool> conditions, Func<TModel, string> error,
+    public void ValidIf<T1,T2>(Func<TModel, bool> conditions, Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, null!);
+        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1,T2,T3>(Func<TModel, bool> conditions, Func<TModel, string> error,
+    public void ValidIf<T1,T2,T3>(Func<TModel, bool> conditions, Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1>(Func<TModel, bool> conditions, string errorMessage,
+    public void ValidIf<T1>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector.Body, null!, null!);
+        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector.Body, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1, T2>(Func<TModel, bool> conditions, string errorMessage,
+    public void ValidIf<T1, T2>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, null!);
+        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1, T2, T3>(Func<TModel, bool> conditions, string errorMessage,
+    public void ValidIf<T1, T2, T3>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
 
     #endregion // Synchronous ValidIf
 
     #region Asynchronous ValidIf
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule ValidIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ValidIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                             Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule ValidIf<T1,T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ValidIf<T1,T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule ValidIf<T1,T2,T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ValidIf<T1,T2,T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2,
                                Expression<Func<TModel, T3>> memberSelector3)
-       => ref rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+       => rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void ValidIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void ValidIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector1,
                             Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void ValidIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
 
     #endregion // Asynchronous ValidIf
 
     #region Asynchronous ValidIf with Cancellation
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
-    public ref Rule ValidIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ValidIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                             Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
-    public ref Rule ValidIf<T1,T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ValidIf<T1,T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
-    public ref Rule ValidIf<T1,T2,T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void ValidIf<T1,T2,T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
+    public void ValidIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1, T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
+    public void ValidIf<T1, T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector1,
                             Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule ValidIf<T1, T2, T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
+    public void ValidIf<T1, T2, T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
 
     #endregion // Asynchronous ValidIf with Cancellation
 
     #region Synchronous WarnigIf
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> warning,
+    public void WarningIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> warning,
                                     Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector.Body, null!, null!);
+        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector.Body, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1, T2>(Func<TModel, bool> conditions, Func<TModel, string> warning,
+    public void WarningIf<T1, T2>(Func<TModel, bool> conditions, Func<TModel, string> warning,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, null!);
+        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1, T2, T3>(Func<TModel, bool> conditions, Func<TModel, string> warning,
+    public void WarningIf<T1, T2, T3>(Func<TModel, bool> conditions, Func<TModel, string> warning,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1>(Func<TModel, bool> conditions, string warningMessage,
+    public void WarningIf<T1>(Func<TModel, bool> conditions, string warningMessage,
                                     Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector.Body, null!, null!);
+        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector.Body, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1, T2>(Func<TModel, bool> conditions, string warningMessage,
+    public void WarningIf<T1, T2>(Func<TModel, bool> conditions, string warningMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, null!);
+        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1, T2, T3>(Func<TModel, bool> conditions, string warningMessage,
+    public void WarningIf<T1, T2, T3>(Func<TModel, bool> conditions, string warningMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
 
     #endregion // Synchronous WarningIf
 
     #region Asynchronous WarningIf
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                  Expression<Func<TModel, T1>> memberSelector)
-    => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    => rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-    => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    => rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public ref Rule WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector)
-        => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+        => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                                 Expression<Func<TModel, T1>> memberSelector1,
                                 Expression<Func<TModel, T2>> memberSelector2)
-        => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+        => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public ref Rule WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => ref rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+        => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
 
     #endregion // Asynchronous WarningIf
 
