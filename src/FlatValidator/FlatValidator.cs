@@ -15,7 +15,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     private RuleList<TModel> rules = new();
 
     /// <summary>
-    /// A collections with meta data.
+    /// A collection with meta data.
     /// </summary>
     public Dictionary<string, string?> MetaData { get; } = new();
 
