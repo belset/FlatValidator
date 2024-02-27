@@ -1,7 +1,10 @@
-﻿#
+﻿# 2.1.0 - 2024-02-27
 
-- Added EndpointFilter with validation in the example NativeAOT
-- Modified the example MinimalAPI+EndpoinFilter+Validation
+- Performance improved.
+- MetaData added. It allows to add custom info about validation process.
+- Tests for MetaData added.
+- Added EndpointFilter with validation in the example NativeAOT.
+- Modified the example MinimalAPI+EndpoinFilter+Validation.
 
 # 2.0.0 - 2024-02-01
 

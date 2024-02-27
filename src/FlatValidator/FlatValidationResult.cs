@@ -26,6 +26,11 @@ public class FlatValidationResult
     public IReadOnlyList<FlatValidationWarning> Warnings => warnings;
 
     /// <summary>
+    /// A collections with meta data.
+    /// </summary>
+    public IReadOnlyDictionary<string, string?> MetaData { get; internal set; }
+
+    /// <summary>
     /// Exception if it occured during validation.
     /// </summary>
     public Exception? Exception { get; internal set; } = null!;
@@ -42,16 +47,20 @@ public class FlatValidationResult
     /// <summary>
     /// Creates a new ValidationResult.
     /// </summary>
-    public FlatValidationResult()
+    /// <param name="metaData">Custom contaner that may be used to store imtermediate info about validation process.</param>
+    public FlatValidationResult(IReadOnlyDictionary<string, string?> metaData)
     {
+        MetaData = metaData;
     }
 
     /// <summary>
     /// Creates a new ValidationResult from a collection of errors.
     /// </summary>
+    /// <param name="metaData">Custom contaner that may be used to store imtermediate info about validation process.</param>
     /// <param name="exception">Instance of <see cref="Exception"/> which is later available through the <see cref="Exception"/> property.</param>
-    public FlatValidationResult(Exception exception)
+    public FlatValidationResult(IReadOnlyDictionary<string, string?> metaData, Exception exception)
     {
+        MetaData = metaData;
         Exception = exception;
     }
 
@@ -63,6 +72,7 @@ public class FlatValidationResult
     {
         errors.AddRange(result.errors);
         warnings.AddRange(result.warnings);
+        MetaData = result.MetaData;
         Exception = result.Exception;
     }
 

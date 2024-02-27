@@ -8,8 +8,8 @@
     <Copyright>© Ilya Rudenka (@belset) 2024</Copyright>
     <Product>FlatValidator</Product>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-    <Version>2.0.0</Version>
-    <PackageVersion>2.0.0</PackageVersion>
+    <Version>2.1.0</Version>
+    <PackageVersion>2.1.0</PackageVersion>
     <PackageId>FlatValidator.DependencyInjection</PackageId>
     <PackageTags>validation validator InputValidation DataAnnotation</PackageTags>
     <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md</PackageReleaseNotes>

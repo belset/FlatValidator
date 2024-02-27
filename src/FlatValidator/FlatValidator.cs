@@ -14,6 +14,11 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
     private RuleList<TModel> rules = new();
 
+    /// <summary>
+    /// A collections with meta data.
+    /// </summary>
+    public Dictionary<string, string?> MetaData { get; } = new();
+
     #endregion // Members
 
     #region If methods
@@ -446,13 +451,13 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
         var snapshot = rules.MakeSnapshot();
         try
         {
-            var validationResult = new FlatValidationResult();
+            var validationResult = new FlatValidationResult(MetaData);
             await ProcessRules(0, snapshot.Count, validationResult);
             return validationResult;
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            return new FlatValidationResult(ex);
+            return new FlatValidationResult(MetaData, ex);
         }
         finally
         {
