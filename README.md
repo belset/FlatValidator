@@ -101,7 +101,7 @@ Use Meta data to expand functionality of the `FlatValidator`:
 ```js
 var result = FlatValidator.Validate(model, v =>
 {
-    v.MetaData["ValidationTime"] = DateTime.Now.ToString();
+    v.MetaData["ValidationTime"] = DateTimeOffset.UtcNow.ToString();
 
     v.ErrorIf(m => m.Quantity <= 0, "", m => "Invalid Quantity.");
 });
