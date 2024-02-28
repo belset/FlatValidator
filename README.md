@@ -96,6 +96,17 @@ bool success = results.IsValid;
 List<ValidationFailure> failures = results.Errors;
 ```
 
+### Meta data
+Use Meta data to expand functionality of the `FlatValidator`:
+```js
+var result = FlatValidator.Validate(model, v =>
+{
+    v.MetaData["ValidationTime"] = DateTime.Now.ToString();
+
+    v.ErrorIf(m => m.Quantity <= 0, "", m => "Invalid Quantity.");
+});
+return result.MetaData["ValidationTime"];
+```
 
 ## Benchmarks
 
