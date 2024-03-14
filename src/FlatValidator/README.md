@@ -41,6 +41,12 @@ var result = await FlatValidator.ValidateAsync(model, v =>
               m => $"Email {m.Email} already registered", 
               m => m.Email);
 });
+
+// possibility to inspect occured validation failures
+bool success = result.IsValid;
+var errors = result.Errors;
+var warnings = result.Warnings;
+
 ```
 
 ### 2. Inheritance of the `FlatValidator` class
@@ -91,10 +97,6 @@ if (!result) // check, is there any errors?
     var errors = result.Errors; // result.Errors is a List<PropertyName, error, Tag>
     var dict = result.ToDictionary(); // dict is a Dictionary<PropertyName, ErrorMessage[]>
 }
-
-// Inspect any validation failures.
-bool success = results.IsValid;
-List<ValidationFailure> failures = results.Errors;
 ```
 
 > **TIP** -
