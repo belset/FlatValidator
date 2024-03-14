@@ -1,4 +1,10 @@
-﻿# 2.1.0 - 2024-02-27
+﻿# TODO
+- Exception on first error
+
+# 2.2.0 - 
+- Performance improvements.
+- 
+# 2.1.0 - 2024-02-27
 
 - Performance improved.
 - MetaData added. It allows to add custom info about validation process.
