@@ -46,6 +46,7 @@
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <IsAotCompatible>True</IsAotCompatible>
     <NoWarn>1701;1702;1574;1591;</NoWarn>
+    <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
@@ -62,6 +63,7 @@
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <IsAotCompatible>True</IsAotCompatible>
     <NoWarn>1701;1702;1574;1591;</NoWarn>
+    <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
 
 
