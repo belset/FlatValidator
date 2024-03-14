@@ -11,11 +11,13 @@ In general, there are two simple ways to validate custom data with the `FlatVali
 ```js
 var model = new Model(Email: "email", BirthDate: DateTime.Now, Rate: -100);
 
-// synchronous version
-var result =  FlatValidator.Validate(model, v =>
+// validate with _synchronous_ version here
+var result = FlatValidator.Validate(model, v =>
 {
     // IsEmail() is one of funcs for typical data formats like Phone, Url, CreditCard, etc.
-    v.ValidIf(m => m.Email.IsEmail(), "Invalid email", m => m.Email);
+    v.ValidIf(m => m.Email.IsEmail(), 
+              m => $"Invalid email: {m.Email}", 
+              m => m.Email);
 
     v.ErrorIf(m => m.Rate < 0, "Negative Rate", m => m.Rate);
 
@@ -28,7 +30,7 @@ if (!result)
     return TypedResults.ValidationProblem(result.ToDictionary()) 
 }
 
-// or asynchronous version
+// or validate with _asynchronous_ version
 var result = await FlatValidator.ValidateAsync(model, v => 
 {
     v.ErrorIf(async m => await userService.IsUserExistAsync(m.Email),
@@ -39,6 +41,12 @@ var result = await FlatValidator.ValidateAsync(model, v =>
               m => $"Email {m.Email} already registered", 
               m => m.Email);
 });
+
+// possibility to inspect occured validation failures
+bool success = result.IsValid;
+var errors = result.Errors;
+var warnings = result.Warnings;
+
 ```
 
 ### 2. Inheritance of the `FlatValidator` class
@@ -75,19 +83,20 @@ public class UserValidator: FlatValidator<UserModel>
 ```
 > Now lets validate some object with it
 ```js
-// now let's validate
+// create instance of the custom validator
 var validator = new UserValidator();
-var result = validator.Validate(new UserModel(...)); // synchronous call of your UserValidator
-var result = await validator.ValidateAsync(customer, cancellationToken); // the same asynchronously
-if (!result)
+
+// validate _asynchronously_ and get a result
+var result = await validator.ValidateAsync(customer, cancellationToken);
+
+// OR validate _synchronously_ and get a result
+var result = validator.Validate(new UserModel(...)); 
+
+if (!result) // check, is there any errors?
 {
     var errors = result.Errors; // result.Errors is a List<PropertyName, error, Tag>
     var dict = result.ToDictionary(); // dict is a Dictionary<PropertyName, ErrorMessage[]>
 }
-
-// Inspect any validation failures.
-bool success = results.IsValid;
-List<ValidationFailure> failures = results.Errors;
 ```
 
 > **TIP** -
