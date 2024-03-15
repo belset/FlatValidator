@@ -1,10 +1,16 @@
-﻿# TODO
+﻿### TODO
+- Specific funcs to validate
 - Exception on first error
+- Const Warnings like it was implemented for Const Errors
 
-# 2.2.0 - 
+
+### 2.2.0 - 
+
 - Performance improvements.
-- 
-# 2.1.0 - 2024-02-27
+- Tests for ValidationFuncs added
+
+ 
+### 2.1.0 - 2024-02-27
 
 - Performance improved.
 - MetaData added. It allows to add custom info about validation process.
@@ -12,7 +18,8 @@
 - Added EndpointFilter with validation in the example NativeAOT.
 - Modified the example MinimalAPI+EndpoinFilter+Validation.
 
-# 2.0.0 - 2024-02-01
+
+### 2.0.0 - 2024-02-01
 
 - Add WarningIf functionality
 - Tests for WarningIf added
@@ -20,16 +27,16 @@
 - Grouped() replaced to If()
 - Fix of documentations
 
-# 1.0.0 - 2024-01-27
+
+### 1.0.0 - 2024-01-27
 
 - Additional tests implemented 
 - Fix of IFlatValidator interface to provide default CancellationToken
 - Fix of warnings in part of method summaries
 - Fix of documentation
 
-# 1.0.0-rc - 2024-01-24
 
-### Features
+### 1.0.0-rc - 2024-01-24
 
 - Support asynchronous version of validator and rules.
 - Support validating for several (3) properties in one rule.
