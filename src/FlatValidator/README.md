@@ -92,10 +92,9 @@ var result = await validator.ValidateAsync(customer, cancellationToken);
 // OR validate _synchronously_ and get a result
 var result = validator.Validate(new UserModel(...)); 
 
-if (!result) // check, is there any errors?
+if (!result) // is there any errors?
 {
-    var errors = result.Errors; // result.Errors is a List<PropertyName, error, Tag>
-    var dict = result.ToDictionary(); // dict is a Dictionary<PropertyName, ErrorMessage[]>
+    return result.ToDictionary(); // Dictionary<PropertyName, ErrorMessage[]>
 }
 ```
 

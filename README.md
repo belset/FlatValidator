@@ -96,8 +96,11 @@ var result = validator.Validate(new UserModel(...));
 
 if (!result) // check, is there any errors?
 {
-    var errors = result.Errors; // result.Errors is a List<PropertyName, error, Tag>
-    var dict = result.ToDictionary(); // dict is a Dictionary<PropertyName, ErrorMessage[]>
+    // ToDictionary() => Dictionary<PropertyName, ErrorMessage[]>
+    var dict = result.ToDictionary();
+    
+    var errors = result.Errors;
+    var warnings = result.Warnings;
 }
 ```
 

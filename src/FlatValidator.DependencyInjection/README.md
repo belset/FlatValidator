@@ -37,6 +37,11 @@ public class UserValidator: FlatValidator<UserModel>
 // .... we want a synchronous version to validate here!
 var result = new UserValidator().Validate(new UserModel(...)); 
 
+// possibility to inspect occured validation failures
+bool success = result.IsValid;
+var errors = result.Errors;
+var warnings = result.Warnings;
+
 ```
 
 ### 2. Using `FlatValidator` in inline mode:
@@ -53,7 +58,12 @@ var result = await FlatValidator.ValidateAsync(model, v =>
     v.ErrorIf(async m => await userService.IsUserExistAsync(m.Email),
               m => $"Email {m.Email} already registered", m => m.Email);
 });
-if (!result) { ..... }
+
+if (!result) 
+{ 
+    // ToDictionary() => Dictionary<PropertyName, ErrorMessage[]>
+    var dict = result.ToDictionary(); 
+}
 ```
 >**Note** -
 > You don't need to install the `FlatValidator.DependencyInjection` package for inline mode usage.
