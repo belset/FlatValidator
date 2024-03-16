@@ -19,7 +19,6 @@ var app = builder.Build();
 app.UseSwagger().UseSwaggerUI();
 app.UseHttpsRedirection();
 
-
 app.MapPost("/emails", (RegisterRequest entity, CancellationToken cancellationToken) =>
 {
     return TypedResults.Ok(entity);

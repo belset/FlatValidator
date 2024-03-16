@@ -6,7 +6,7 @@ public record class RegisterRequest(string EmailOrUsername, string Password)
     // no necessity for that but it's also possible.
     public class RegisterRequestValidator : FlatValidator<RegisterRequest>
     {
-        public RegisterRequestValidator(EmailService emailService)
+        public RegisterRequestValidator(IEmailService emailService)
         {
             If(model => model.EmailOrUsername.IsEmail(), model =>
             {
