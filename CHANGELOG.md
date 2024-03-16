@@ -1,15 +1,17 @@
 ﻿### TODO
-- Specific funcs to validate
-- Exception on first error
-- Const Warnings like it was implemented for Const Errors
+- Specific ValidationFuncs.
+- Exception on first error.
+- Const Warnings like it was implemented for Const Errors.
+- Prop namem error message tuple.
 
 
-### 2.2.0 - 
+### 2.1.1 - 2024-03-16
 
 - Performance improvements.
-- Tests for ValidationFuncs added
+- Tests for some ValidationFuncs added.
+- Specs fixed.
 
- 
+
 ### 2.1.0 - 2024-02-27
 
 - Performance improved.
