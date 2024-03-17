@@ -674,7 +674,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     #endregion // Validation processing
 }
 
-public static class FlatValidator
+public static partial class FlatValidator
 {
     #region Static inline validation methods
     public static FlatValidationResult Validate<TModel>(in TModel model, Action<FlatValidator<TModel>> action)

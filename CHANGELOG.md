@@ -2,7 +2,19 @@
 - Specific ValidationFuncs.
 - Exception on first error.
 - Const Warnings like it was implemented for Const Errors.
-- Prop namem error message tuple.
+- Prop name and error message tuple.
+
+### 2.2.0 - 2024-03-17
+
+- Performance improvements.
+- Tests for some ValidationFuncs added.
+- IsPassword func modified.
+- PasswordHasDigit func removed.
+- PasswordHasUpperChar func removed.
+- PasswordHasLowerChar func removed.
+- PasswordHasSpecialCharacter func removed.
+- PasswordHasLengthAtLeast func removed.
+- Bug fixed.
 
 
 ### 2.1.1 - 2024-03-16

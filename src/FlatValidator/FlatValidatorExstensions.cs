@@ -3,7 +3,7 @@
 
 namespace System.Validation;
 
-public static class FlatValidatorExstensions
+public static partial class FlatValidatorExstensions
 {
     #region Grouping methods
 
