@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
@@ -8,8 +8,8 @@
     <Copyright>© Ilya Rudenka (@belset) 2024</Copyright>
     <Product>FlatValidator</Product>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-    <Version>2.1.1</Version>
-    <PackageVersion>2.1.1</PackageVersion>
+    <Version>2.2.0</Version>
+    <PackageVersion>2.2.0</PackageVersion>
     <PackageId>FlatValidator.DependencyInjection</PackageId>
     <PackageTags>validation validator InputValidation DataAnnotation</PackageTags>
     <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md</PackageReleaseNotes>
