@@ -4,10 +4,10 @@ using System.Text.RegularExpressions;
 
 namespace System.Validation;
 
-public static class ValidationFuncs
+public static partial class FlatValidatorMemberExtensions
 {
     #region String - Empty or NotEmpty
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsEmpty(this string? text) => string.IsNullOrWhiteSpace(text);
 
@@ -87,56 +87,47 @@ public static class ValidationFuncs
     #endregion
 
     #region Password
+    private const string c_SpecialPasswordSymbols = @"~`!@#$%^&?,.-+=()[]{}<>";
+
     /// <summary>
-    /// Must be at least 10 characters
-    /// Must contain at least one one lower case letter, one upper case letter, one digit and one special character
-    /// Valid special characters are -   @#$%^&amp;+=
+    /// Length of the password must be at least 'minLength' symbols (by default = 7).
+    /// Password must contain at least one lower case letter.
+    /// Password must contain at least one upper case letter.
+    /// Password must contain at least one digit.
+    /// Password must contain at least one special symbol, it it is provided.
     /// </summary>
-    private const string _passwordPattern = @"^.*(?=.{NNN,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
-    public static bool IsPassword(this string? password, byte minLength = 7) =>
-        password.IsEmpty() ? false : Regex.IsMatch(password!.Replace("NNN", minLength.ToString()), _passwordPattern, RegexOptions.Compiled);
-
-
-    // "Password must contain at least one digit.";
-    private const string _passwordHasDigitPattern = @"[0-9]+"; 
-    private static Regex? _passwordHasDigitRegex = null;
-    public static bool PasswordHasDigit(this string? password) => 
-        password.IsEmpty() ? false : (_passwordHasDigitRegex ??= new Regex(_passwordHasDigitPattern, RegexOptions.Compiled)).IsMatch(password!);
-
-    // "Password must contain at least one upper case letter."
-    private const string _passwordHasUpperCharPattern = @"[A-Z]+";
-    private static Regex? _passwordHasUpperCharRegex = null;
-    public static bool PasswordHasUpperChar(this string? password) => 
-        password.IsEmpty() ? false : (_passwordHasUpperCharRegex ??= new Regex(_passwordHasUpperCharPattern, RegexOptions.Compiled)).IsMatch(password!);
-
-    // "Password must contain at least one lower case letter."
-    private const string _passwordHasLowerCharPattern = @"[a-z]+";
-    private static Regex? _passwordHasLowerCharRegex = null;
-    public static bool PasswordHasLowerChar(this string? password) => 
-        password.IsEmpty() ? false : (_passwordHasLowerCharRegex ??= new Regex(_passwordHasLowerCharPattern, RegexOptions.Compiled)).IsMatch(password!);
-
-    // "Password must contain at least one special character - @#$%^&+="
-    private const string _passwordHasSpecialCharacterPattern = @"[@#$%^&+=]";
-    private static Regex? _passwordHasSpecialCharacterRegex = null;
-    public static bool PasswordHasSpecialCharacter(this string? password) => 
-        password.IsEmpty() ? false : (_passwordHasSpecialCharacterRegex ??= new Regex(_passwordHasSpecialCharacterPattern, RegexOptions.Compiled)).IsMatch(password!);
-
-    // "Password must be at least NNN characters."
-    private const string _passwordHasAtLeastNNNCharsPattern = @".{NNN,}";
-    private static Regex? _passwordHasAtLeastNNNCharsRegex = null;
-    public static bool PasswordHasLengthAtLeast(this string? password, int charsNumber) => 
-        password.IsEmpty() ? false : (_passwordHasAtLeastNNNCharsRegex ??= new Regex(_passwordHasAtLeastNNNCharsPattern.Replace("NNN", charsNumber.ToString()), RegexOptions.Compiled)).IsMatch(password!);
+    public static bool IsPassword(this string? text, byte minLength = 7, string specialPasswordSymbols = null!)
+    {
+        if (text is not null && text.Length >= minLength)
+        {
+            specialPasswordSymbols ??= c_SpecialPasswordSymbols;
+            int ret = specialPasswordSymbols.Length == 0 ? 0b1000 : 0b0000;
+            for (int i = 0; i < text.Length; i++)
+            {
+                ret |= text[i] switch
+                {
+                    >= 'a' and <= 'z' => 0b0001,
+                    >= 'A' and <= 'Z' => 0b0010,
+                    >= '0' and <= '9' => 0b0100,
+                    _ => specialPasswordSymbols.Contains(text[i]) ? 0b1000 : 0b0000
+                };
+                if (ret == 0b1111) 
+                    return true;
+            }
+        }
+        return false;
+    }
     #endregion
 
     #region Language recognizing utils - https://learn.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions#SupportedNamedBlocks
 
     /// <summary>
-    /// True, if there are only Cyrillic symbols
+    /// True, if there are only Cyrillic symbols.
     /// </summary>
     public static bool AllCyrillic(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\P{IsCyrillic}");
 
     /// <summary>
-    /// True, if there is at least one Cyrillic symbol
+    /// True, if there is at least one Cyrillic symbol.
     /// </summary>
     public static bool HasCyrillic(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\p{IsCyrillic}");
 
@@ -147,7 +138,14 @@ public static class ValidationFuncs
     public static bool AllCyrillicSupplement(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\P{IsCyrillicSupplement}");
     public static bool HasCyrillicSupplement(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\p{IsCyrillicSupplement}");
 
+    /// <summary>
+    /// True, if there are only Latin symbols.
+    /// </summary>
     public static bool AllBasicLatin(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\P{IsBasicLatin}");
+    
+    /// <summary>
+    /// True, if there is at least one Latin symbol.
+    /// </summary>
     public static bool HasBasicLatin(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\p{IsBasicLatin}");
 
     #endregion // Language recognizing utils
