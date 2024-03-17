@@ -1,8 +1,9 @@
-### TODO
+﻿### TODO
 - Specific ValidationFuncs.
 - Exception on first error.
 - Const Warnings like it was implemented for Const Errors.
 - Prop name and error message tuple.
+
 
 ### 2.2.0 - 2024-03-17
 
