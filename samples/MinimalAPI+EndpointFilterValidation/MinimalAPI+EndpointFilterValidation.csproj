@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FlatValidator" Version="2.1.0" />
-    <PackageReference Include="FlatValidator.DependencyInjection" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
+    <PackageReference Include="FlatValidator" Version="2.2.0" />
+    <PackageReference Include="FlatValidator.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
