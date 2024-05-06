@@ -146,7 +146,7 @@ return result.MetaData["ValidationTime"];
     - `ValidIf(str => str.HasCyrillic(), ...` - `true`, if there is at least one Cyrillic symbol.
     - `ValidIf(str => str.AllCyrillicSupplement(), ...` - `true`, if there are only Cyrillic symbols from Cyrillic Supplement that's a Unicode block containing Cyrillic letters for writing several minority languages, including Abkhaz, Kurdish, Komi, Mordvin, Aleut, Azerbaijani, and Jakovlev's Chuvash orthography.
     - `ValidIf(str => str.AllBasicLatin(), ...` - `true`, if there are only Latin symbols.
-    - `ValidIf(str => str.HasBasicLatin(), ...` - `true`, if there are only Latin symbols.
+    - `ValidIf(str => str.HasBasicLatin(), ...` - `true`, if there is at least one Latin symbols.
 
 ### 5. Error message format
 The error message for each validator can be formatted with checked data that may be filled in when the error message is constructed.
