@@ -109,10 +109,11 @@ Using MetaData can extend functionality and can help to return certain data beyo
 ```js
 var result = FlatValidator.Validate(model, v =>
 {
-    v.MetaData["ValidationTime"] = DateTimeOffset.UtcNow.ToString();
-
-    v.ErrorIf(m => m.Quantity <= 0, "", m => "Invalid Quantity.");
+    v.MetaData["ValidationTime"] = DateTime.UtcNow.ToString();
+    // ....
 });
+
+// access to the MetaData value outside of the validation
 return result.MetaData["ValidationTime"];
 ```
 
