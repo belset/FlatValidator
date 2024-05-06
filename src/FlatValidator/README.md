@@ -49,7 +49,7 @@ var warnings = result.Warnings;
 
 ```
 
-### 2. Inheritance of the `FlatValidator` class
+### 2. Inheritance
 
 > Another way is to inherit the `FlatValidator` to define custom rules in the constructor. 
 Also you can pass dependencies into constructor to get additional functionality inside of the validation rules.
@@ -100,6 +100,39 @@ if (!result) // is there any errors?
 
 > **TIP** -
 > The package **`FlatValidator.DependencyInjection`** helps you to register all inherited validators in the ServiceCollection automatically.
+
+
+### 3. Built-in validators
+`FlatValidator` provides simple built-in validators. The error message for each validator can contain special placeholders that will be filled in when the error message is constructed.
+
+1. Built-in validators for primitive data:
+    - `ErrorIf(str => str.IsEmpty(), ...` - ensure the string is empty.
+    - `ValidIf(str => str.NotEmpty(), ...` - ensure the string is not empty.
+    - `ErrorIf(guid => guid.IsEmpty(), ...` - ensure the GUID is empty.
+    - `ValidIf(guid => guid.NotEmpty(), ...` - ensure the GUID is not empty.
+    - `ErrorIf(guid => guid.IsEmpty(), ...` - ensure the GUID? is null or empty.
+    - `ValidIf(guid => guid.NotEmpty(), ...` - ensure the GUID? is not null and not empty.
+
+2. Check URI `ValidIf(uri => uri.IsAbsoluteUri(), ...` - returns `false` if URI value:
+    - is not correctly escaped as per URI spec excluding intl UNC name case.
+    - or is an absolute Uri that represents implicit file Uri `c:\dir\file`.
+    - or is an absolute Uri that misses a slash before path `file://c:/dir/file`.
+    - or contains unescaped backslashes even if they will be treated as forward slashes like `http:\\host/path\file` or `file:\\\c:\path`.
+
+3. Built-in validators for typical data:
+    - `ValidIf(str => str.IsEmail(), ...` - check the string contains an email.
+    - `ValidIf(str => str.IsPhoneNumber(), ...` - check the string contains a phone number.
+    - `ValidIf(str => str.IsCreditCardNumber(), ...` - check the string contains a credit card number.
+    - `ValidIf(str => str.IsCreditCardExpiryDate(), ...` - check the string contains an expiration date for credit card in format `MM/yy`. \
+    If credit card is expired, it will also return `false`.
+    - `ValidIf(str => str.IsCreditCardCVV(), ...` - check the string contains a CVV.
+
+4. Built-in validators for localization:
+    - `ValidIf(str => str.AllCyrillic(), ...` - `true`, if there are only Cyrillic symbols.
+    - `ValidIf(str => str.HasCyrillic(), ...` - `true`, if there is at least one Cyrillic symbol.
+    - `ValidIf(str => str.AllCyrillicSupplement(), ...` - `true`, if there are only Cyrillic symbols from Cyrillic Supplement that's a Unicode block containing Cyrillic letters for writing several minority languages, including Abkhaz, Kurdish, Komi, Mordvin, Aleut, Azerbaijani, and Jakovlev's Chuvash orthography.
+    - `ValidIf(str => str.AllBasicLatin(), ...` - `true`, if there are only Latin symbols.
+    - `ValidIf(str => str.HasBasicLatin(), ...` - `true`, if there are only Latin symbols.
 
 
 
