@@ -5,6 +5,16 @@
 - Prop name and error message tuple.
 
 
+### 2.3.0 - 2024-05-07
+
+- IsPassword func modified.
+- GetPasswordStrength func added.
+- GetShannonEntropy func added.
+- Tests for some IsPassword modified.
+- Tests for some GetPasswordStrength added.
+- Tests for some GetShannonEntropy added.
+
+
 ### 2.2.0 - 2024-03-17
 
 - Performance improvements.
