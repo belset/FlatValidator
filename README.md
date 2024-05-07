@@ -122,7 +122,6 @@ return result.MetaData["ValidationTime"];
 ```
 
 ### 4. Built-in validators
-`FlatValidator` provides simple built-in validators. 
 
 1. Built-in validators for primitive data:
     - `ErrorIf(str => str.IsEmpty(), ...` - ensure the string is empty.
@@ -132,8 +131,8 @@ return result.MetaData["ValidationTime"];
     - `ErrorIf(guid => guid.IsEmpty(), ...` - ensure the GUID? is null or empty.
     - `ValidIf(guid => guid.NotEmpty(), ...` - ensure the GUID? is not null and not empty.
 
-
-2. Built-in validators for typical data:
+---
+2. Built-in validators for typical custom data:
     - `ValidIf(eml => eml.IsEmail(), ...` - check the string contains an email.
     - `ValidIf(phnum => phnum.IsPhoneNumber(), ...` - check the string contains a phone number.
     - `ValidIf(cardnum => cardnum.IsCreditCardNumber(), ...` - check the string contains a credit card number.
@@ -146,7 +145,7 @@ return result.MetaData["ValidationTime"];
         - is an absolute Uri that misses a slash before path `file://c:/dir/file`.
         - contains unescaped backslashes even if they will be treated as forward slashes like `http:\\host/path\file` or `file:\\\c:\path`.
 
-
+---
 3. Build-in password helpers:
     - `ValidIf(str => str.IsPassword(), ...` - check password occupancy rate; \
     some additional parameters may be passed to adopt logic:
@@ -164,13 +163,15 @@ return result.MetaData["ValidationTime"];
     - `FlatValidatorFuncs.GetShannonEntropy(string password)` - this uses the Shannon entropy equation to estimate the average minimum number of bits needed to encode a string of symbols, based on the frequency of the symbols. \
     Returns a `double` value that's Shannon entropy.
 
-
+---
 4. Built-in validators for localization:
     - `ValidIf(str => str.AllCyrillic(), ...` - `true`, if there are only Cyrillic symbols.
     - `ValidIf(str => str.HasCyrillic(), ...` - `true`, if there is at least one Cyrillic symbol.
     - `ValidIf(str => str.AllCyrillicSupplement(), ...` - `true`, if there are only Cyrillic symbols from Cyrillic Supplement that's a Unicode block containing Cyrillic letters for writing several minority languages, including Abkhaz, Kurdish, Komi, Mordvin, Aleut, Azerbaijani, and Jakovlev's Chuvash orthography.
     - `ValidIf(str => str.AllBasicLatin(), ...` - `true`, if there are only Latin symbols.
     - `ValidIf(str => str.HasBasicLatin(), ...` - `true`, if there is at least one Latin symbols.
+---
+
 
 ### 5. Error message format
 The error message for each validator can be formatted with checked data that may be filled in when the error message is constructed.
