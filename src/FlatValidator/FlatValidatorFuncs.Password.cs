@@ -72,7 +72,7 @@ public static partial class FlatValidatorFuncs
     /// </summary>
     /// <param name="password">The password to evaluate.</param>
     /// <returns>Strength of the password.</returns>
-    public static PasswordStrength GetPasswordStrength(string password) => 
+    public static PasswordStrength GetPasswordStrength(string? password) => 
         GetPasswordStrength(password, out _, out _);
 
     /// <summary>
@@ -82,7 +82,7 @@ public static partial class FlatValidatorFuncs
     /// <param name="score">Calculated score for the password.</param>
     /// <param name="maxScore">Max score that is possible for the password.</param>
     /// <returns>Strength of the password.</returns>
-    public static PasswordStrength GetPasswordStrength(string password, out int score, out int maxScore)
+    public static PasswordStrength GetPasswordStrength(string? password, out int score, out int maxScore)
     {
         score = 0; maxScore = 0;
         if (string.IsNullOrEmpty(password))
