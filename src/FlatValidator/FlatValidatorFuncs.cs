@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace System.Validation;
 
-public static partial class FlatValidatorMemberExtensions
+public static partial class FlatValidatorFuncs
 {
     #region String - Empty or NotEmpty
 
@@ -84,39 +84,6 @@ public static partial class FlatValidatorMemberExtensions
     private static Regex? _creditCardCVVRegex = null;
     public static bool IsCreditCardCVV(this string? creditCardCVV) =>
         creditCardCVV.IsEmpty() ? false : (_creditCardCVVRegex ??= new Regex(_creditCardCVVPattern, RegexOptions.Compiled)).IsMatch(creditCardCVV!);
-    #endregion
-
-    #region Password
-    private const string c_SpecialPasswordSymbols = @"~`!@#$%^&?,.-+=()[]{}<>";
-
-    /// <summary>
-    /// Length of the password must be at least 'minLength' symbols (by default = 7).
-    /// Password must contain at least one lower case letter.
-    /// Password must contain at least one upper case letter.
-    /// Password must contain at least one digit.
-    /// Password must contain at least one special symbol, it it is provided.
-    /// </summary>
-    public static bool IsPassword(this string? text, byte minLength = 7, string specialPasswordSymbols = null!)
-    {
-        if (text is not null && text.Length >= minLength)
-        {
-            specialPasswordSymbols ??= c_SpecialPasswordSymbols;
-            int ret = specialPasswordSymbols.Length == 0 ? 0b1000 : 0b0000;
-            for (int i = 0; i < text.Length; i++)
-            {
-                ret |= text[i] switch
-                {
-                    >= 'a' and <= 'z' => 0b0001,
-                    >= 'A' and <= 'Z' => 0b0010,
-                    >= '0' and <= '9' => 0b0100,
-                    _ => specialPasswordSymbols.Contains(text[i]) ? 0b1000 : 0b0000
-                };
-                if (ret == 0b1111) 
-                    return true;
-            }
-        }
-        return false;
-    }
     #endregion
 
     #region Language recognizing utils - https://learn.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions#SupportedNamedBlocks
