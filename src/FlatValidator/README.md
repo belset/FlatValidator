@@ -9,12 +9,13 @@ In general, there are two simple ways to validate custom data with the `FlatVali
 > You can define validation rules in your code to validate object locally.
 
 ```js
-var model = new Model(Email: "email", BirthDate: DateTime.Now, Rate: -100);
+var model = new SomeModel(Email: "email@email.com", BirthDate: DateTime.Now, Rate: -100);
 
-// validate with _synchronous_ version here
+// synchronous version
 var result = FlatValidator.Validate(model, v =>
 {
-    // IsEmail() is one of funcs for typical data formats like Phone, Url, CreditCard, etc.
+    // IsEmail() is built-in func for typical data formats 
+    // like Email, Phone, Url, CreditCard, Password, etc.
     v.ValidIf(m => m.Email.IsEmail(), 
               m => $"Invalid email: {m.Email}", 
               m => m.Email);
@@ -24,23 +25,25 @@ var result = FlatValidator.Validate(model, v =>
     v.WarningIf(m => m.BirthDate.AddYears(10) >= DateTime.Now, 
                 "Age looks like incorrect", m => m.BirthDate);
 });
+
+// or asynchronous version
+var result = await FlatValidator.ValidateAsync(model, v => 
+{
+    v.ErrorIf(async m => await remoteApi.IsEmailBlockedAsync(m.Email),
+              "Email is in black list.", m => m.Email);
+
+    // the same without `async/await`
+    v.ErrorIf(m => remoteApi.IsEmailBlockedAsync(m.Email),
+              m => $"Email {m.Email} is in black list.", 
+              m => m.Email);
+});
+
+// to check the validation result
 if (!result) 
 {
     // ToDictionary() => Dictionary<PropertyName, ErrorMessage[]>
     return TypedResults.ValidationProblem(result.ToDictionary()) 
 }
-
-// or validate with _asynchronous_ version
-var result = await FlatValidator.ValidateAsync(model, v => 
-{
-    v.ErrorIf(async m => await userService.IsUserExistAsync(m.Email),
-              "User already registered", m => m.Email);
-
-    // the same without `async/await`
-    v.ErrorIf(m => userService.IsUserExistAsync(m.Email),
-              m => $"Email {m.Email} already registered", 
-              m => m.Email);
-});
 
 // possibility to inspect occured validation failures
 bool success = result.IsValid;
@@ -63,10 +66,11 @@ public class UserValidator: FlatValidator<UserModel>
     {
         logger.LogInfo("Validating...");
 
-        ErrorIf(m => m.Forename.IsEmpty(), "Forename can not be empty.", m => m.Forename);
-        ErrorIf(m => m.Surname.IsEmpty(), "Surname can not be empty.", m => m.Surname);
+        ErrorIf(m => m.Forename.IsEmpty() || m.Surname.IsEmpty(),
+                "Forename and Surname can not be empty.", 
+                m => m.Forename, m => m.Surname);
         
-        // you can define one or more groups of preconditions
+        // use 'If(...)' to control a validation flow
         If(m => m.ShipmentAddress.NotEmpty(), @then: m =>
         {
             ValidIf(async m => await postalService.AddressExistsAsync(m.Address),
@@ -74,9 +78,9 @@ public class UserValidator: FlatValidator<UserModel>
 
             WarningIf(m => !m.Phone.IsPhone(), "No contact phone.");
         },
-        @else: m => // optionally
+        @else: m => // @else section is optional
         {
-            ValidIf(m => m.Phone.IsPhone(), "invalid phone number.", m => m.Phone);
+            ValidIf(m => m.Phone.IsPhone(), "Invalid phone number.", m => m.Phone);
         });
     }
 }
@@ -92,9 +96,13 @@ var result = await validator.ValidateAsync(customer, cancellationToken);
 // OR validate _synchronously_ and get a result
 var result = validator.Validate(new UserModel(...)); 
 
-if (!result) // is there any errors?
+if (!result) // check, is there any errors?
 {
-    return result.ToDictionary(); // Dictionary<PropertyName, ErrorMessage[]>
+    // ToDictionary() => Dictionary<PropertyName, ErrorMessage[]>
+    var dict = result.ToDictionary();
+    
+    var errors = result.Errors;
+    var warnings = result.Warnings;
 }
 ```
 
@@ -102,8 +110,21 @@ if (!result) // is there any errors?
 > The package **`FlatValidator.DependencyInjection`** helps you to register all inherited validators in the ServiceCollection automatically.
 
 
-### 3. Built-in validators
-`FlatValidator` provides simple built-in validators. The error message for each validator can contain special placeholders that will be filled in when the error message is constructed.
+### 3. Meta data
+Using MetaData can extend functionality and can help to return certain data beyond the validator:
+```js
+var result = FlatValidator.Validate(model, v =>
+{
+    v.MetaData["ValidationTime"] = DateTime.UtcNow.ToString();
+    // ....
+});
+
+// access to the MetaData value outside of the validation
+return result.MetaData["ValidationTime"];
+```
+
+### 4. Built-in validators
+`FlatValidator` provides simple built-in validators. 
 
 1. Built-in validators for primitive data:
     - `ErrorIf(str => str.IsEmpty(), ...` - ensure the string is empty.
@@ -113,27 +134,52 @@ if (!result) // is there any errors?
     - `ErrorIf(guid => guid.IsEmpty(), ...` - ensure the GUID? is null or empty.
     - `ValidIf(guid => guid.NotEmpty(), ...` - ensure the GUID? is not null and not empty.
 
-2. Check URI `ValidIf(uri => uri.IsAbsoluteUri(), ...` - returns `false` if URI value:
-    - is not correctly escaped as per URI spec excluding intl UNC name case.
-    - or is an absolute Uri that represents implicit file Uri `c:\dir\file`.
-    - or is an absolute Uri that misses a slash before path `file://c:/dir/file`.
-    - or contains unescaped backslashes even if they will be treated as forward slashes like `http:\\host/path\file` or `file:\\\c:\path`.
-
-3. Built-in validators for typical data:
-    - `ValidIf(str => str.IsEmail(), ...` - check the string contains an email.
-    - `ValidIf(str => str.IsPhoneNumber(), ...` - check the string contains a phone number.
-    - `ValidIf(str => str.IsCreditCardNumber(), ...` - check the string contains a credit card number.
-    - `ValidIf(str => str.IsCreditCardExpiryDate(), ...` - check the string contains an expiration date for credit card in format `MM/yy`. \
+2. Built-in validators for typical data:
+    - `ValidIf(eml => eml.IsEmail(), ...` - check the string contains an email.
+    - `ValidIf(phnum => phnum.IsPhoneNumber(), ...` - check the string contains a phone number.
+    - `ValidIf(cardnum => cardnum.IsCreditCardNumber(), ...` - check the string contains a credit card number.
+    - `ValidIf(carddt => carddt.IsCreditCardExpiryDate(), ...` - check the string contains an expiration date for credit card in format `MM/yy`. \
     If credit card is expired, it will also return `false`.
-    - `ValidIf(str => str.IsCreditCardCVV(), ...` - check the string contains a CVV.
+    - `ValidIf(cvv => cvv.IsCreditCardCVV(), ...` - check the string contains a CVV.
+    - `ValidIf(uri => uri.IsAbsoluteUri(), ...` - returns `false` if URI value:
+        - is not correctly escaped as per URI spec excluding intl UNC name case.
+        - is an absolute Uri that represents implicit file Uri `c:\dir\file`.
+        - is an absolute Uri that misses a slash before path `file://c:/dir/file`.
+        - contains unescaped backslashes even if they will be treated as forward slashes like `http:\\host/path\file` or `file:\\\c:\path`.
 
-4. Built-in validators for localization:
+4. Build-in password helpers:
+    - `ValidIf(str => str.IsPassword(), ...` - check password occupancy rate; \
+    some additional parameters may be passed to adopt logic:
+        - Length of the password must be at least 'minLength' symbols (by default = 8).
+        - Password must contain at least the 'minLower' number of the lower case symbols (by default = 1).
+        - Password must contain at least the 'minUpper' number of the upper case symbols (by default = 1).
+        - Password must contain at least the 'minDigits' number of the digits (by default = 1).
+        - Password must contain at least the 'minSpecial' number of the special symbols which may also be provided additionally (none by default).
+
+    - `FlatValidatorFuncs.GetPasswordStrength(string? password)` - calculates the cardinality of the minimal character sets necessary to brute force the password (roughly).\
+    Returns `PasswordStrength` as one value of the `VeryWeak, Weak, Medium, Strong, VeryStrong` enum.
+
+    - `FlatValidatorFuncs.GetPasswordStrength(string? password, out int score, out int maxScore)` \
+    out param `score` - score for the password, it is always less than maxScore;\
+    out param `maxScore` - calculated max score that is possible for this password. \
+    Returns `PasswordStrength` as one value of the `VeryWeak, Weak, Medium, Strong, VeryStrong` enum.
+
+    - `FlatValidatorFuncs.GetShannonEntropy(string password)` - this uses the Shannon entropy equation to estimate the average minimum number of bits needed to encode a string of symbols, based on the frequency of the symbols. \
+    Returns a `double` value that's Shannon entropy.
+
+5. Built-in validators for localization:
     - `ValidIf(str => str.AllCyrillic(), ...` - `true`, if there are only Cyrillic symbols.
     - `ValidIf(str => str.HasCyrillic(), ...` - `true`, if there is at least one Cyrillic symbol.
     - `ValidIf(str => str.AllCyrillicSupplement(), ...` - `true`, if there are only Cyrillic symbols from Cyrillic Supplement that's a Unicode block containing Cyrillic letters for writing several minority languages, including Abkhaz, Kurdish, Komi, Mordvin, Aleut, Azerbaijani, and Jakovlev's Chuvash orthography.
     - `ValidIf(str => str.AllBasicLatin(), ...` - `true`, if there are only Latin symbols.
     - `ValidIf(str => str.HasBasicLatin(), ...` - `true`, if there is at least one Latin symbols.
 
+### 5. Error message format
+The error message for each validator can be formatted with checked data that may be filled in when the error message is constructed.
+
+The `ErrorId()` and `ValidIf()` have two possibilities to return some error message:
+   - as a simple string - `ErrorIf(eml => eml.IsEmail(), "Invalid email.")`
+   - as a formatted string - `ErrorIf(eml => eml.IsEmail(), eml => "Email {eml} is invalid.")`
 
 
 ## Release Notes and Change Log
