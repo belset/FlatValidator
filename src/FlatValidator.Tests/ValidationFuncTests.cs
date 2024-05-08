@@ -267,4 +267,98 @@ public class ValidationFuncTests
         Assert.Contains(result.Errors, e => e.PropertyName == "url" && e.ErrorMessage == "Url is null");
     }
     #endregion // _12_IsAbsoluteUri_Spaced
+
+    #region _20_IsPassword
+    [Fact]
+    public void _20_IsPassword()
+    {
+        // password can not be null
+        var result = FlatValidator.Validate((string?)null, v => 
+        {
+            v.ValidIf(m => m.IsPassword(), "Password is null", m => "password");
+        });
+        Assert.True(!result.IsValid);
+        Assert.True(result.Errors.Count == 1);
+        Assert.Contains(result.Errors, e => e.PropertyName == "password" && e.ErrorMessage == "Password is null");
+
+        // password can not be empty string
+        result = FlatValidator.Validate(string.Empty, v =>
+        {
+            v.ValidIf(m => m.IsPassword(), "Password is null", m => "password");
+        });
+        Assert.True(!result.IsValid);
+        Assert.True(result.Errors.Count == 1);
+        Assert.Contains(result.Errors, e => e.PropertyName == "password" && e.ErrorMessage == "Password is null");
+
+        // min length = 0
+        result = FlatValidator.Validate(string.Empty, v =>
+        {
+            v.ValidIf(m => m.IsPassword(0), "Invalid password", m => "password");
+        });
+        Assert.True(!result.IsValid);
+
+        Assert.False(FlatValidator.Validate("1", v => v.ValidIf(m => m.IsPassword(1), "err", m => "p")));
+        Assert.False(FlatValidator.Validate("1a", v => v.ValidIf(m => m.IsPassword(2), "err", m => "p")));
+        Assert.False(FlatValidator.Validate("1aA", v => v.ValidIf(m => m.IsPassword(3), "err", m => "p")));
+
+        Assert.True(FlatValidator.Validate("1aA`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(FlatValidator.Validate("1aA`", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
+
+        Assert.False(FlatValidator.Validate("1¸¨", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(FlatValidator.Validate("1¸¨~", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
+
+        Assert.False(FlatValidator.Validate("12345", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(FlatValidator.Validate("abcde", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(FlatValidator.Validate("ABCDE", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(FlatValidator.Validate(@"~`!@#$%^&-+=", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+
+        Assert.False(FlatValidator.Validate(@"~`!@#$%^&-+=", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+
+        Assert.True(FlatValidator.Validate("a1A`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("aA1`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("aA`1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("Aa`1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("A`a1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("A`1a", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("`A1a", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("`1Aa", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("`1aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+
+        Assert.True(FlatValidator.Validate("``1aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("`1`aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("`1a`A", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("`1a1A", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
+    }
+    #endregion // _20_IsPassword
+
+    #region _21_IsPassword
+    [Fact]
+    public void _21_IsPassword()
+    {
+        Assert.True(FlatValidator.Validate("`1az0AZ?",  v => v.ValidIf(m => 
+            m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 1, minSpecial: 1, ""), "err", m => "p")));
+
+        Assert.True(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+            m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 1, minSpecial: 1, "`?"), "err", m => "p")));
+
+        Assert.True(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+            m.IsPassword(minLength: 5, minLower: 2, minUpper: 2, minDigits: 2, minSpecial: 2, ""), "err", m => "p")));
+
+        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+            m.IsPassword(minLength: 5, minLower: 3, minUpper: 1, minDigits: 0, minSpecial: 1, ""), "err", m => "p")));
+
+        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+            m.IsPassword(minLength: 5, minLower: 1, minUpper: 3, minDigits: 0, minSpecial: 1, ""), "err", m => "p")));
+
+        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+            m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 3, minSpecial: 1, ""), "err", m => "p")));
+
+        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+            m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 1, minSpecial: 3, ""), "err", m => "p")));
+
+        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+            m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 1, minSpecial: 1, "@@"), "err", m => "p")));
+    }
+    #endregion // _21_IsPassword
 }

@@ -388,7 +388,7 @@ public class InlineAsyncTests
                     (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Assert.True(false, "This line must never be reached.");
+                        Assert.Fail("This line must never be reached.");
 
                         return ValueTask.FromResult(true);
                     },
@@ -429,7 +429,7 @@ public class InlineAsyncTests
                     (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Assert.True(false, "This line must never be reached.");
+                        Assert.Fail("This line must never be reached.");
 
                         validator.ErrorIf(model => true, "Something wrong.", model => model.Id);
                     }
@@ -465,12 +465,12 @@ public class InlineAsyncTests
                     },
                     (model, cancellationToken) =>
                     {
-                        Assert.True(false, "This line must never be reached.");
+                        Assert.Fail("This line must never be reached.");
                     },
                     @else: (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Assert.True(false, "This line must never be reached.");
+                        Assert.Fail("This line must never be reached.");
 
                         validator.ErrorIf(model => true, "Something wrong.", model => model.Id);
                     }

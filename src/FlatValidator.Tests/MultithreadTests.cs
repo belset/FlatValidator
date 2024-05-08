@@ -65,7 +65,7 @@ public class MultithreadTests
                     (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Assert.True(false, "This line must never be reached.");
+                        Assert.Fail("This line must never be reached.");
 
                         return ValueTask.FromResult(true);
                     },
@@ -104,7 +104,7 @@ public class MultithreadTests
                     @then: (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Assert.True(false, "This line must never be reached.");
+                        Assert.Fail("This line must never be reached.");
 
                         validator.ErrorIf(model => true, "Something wrong.", model => model.Id);
                     }
@@ -138,12 +138,12 @@ public class MultithreadTests
                     },
                     @then: (model, cancellationToken) =>
                     {
-                        Assert.True(false, "This line must never be reached.");
+                        Assert.Fail("This line must never be reached.");
                     },
                     @else: (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        Assert.True(false, "This line must never be reached.");
+                        Assert.Fail("This line must never be reached.");
 
                         validator.ErrorIf(model => true, "Something wrong.", model => model.Id);
                     }
@@ -202,7 +202,7 @@ public class MultithreadTests
             }
             catch (Exception ex)
             {
-                Assert.True(false, ex.Message);
+                Assert.Fail(ex.Message);
             }
         });
     }
@@ -224,7 +224,7 @@ public class MultithreadTests
             }
             catch (Exception ex)
             {
-                Assert.True(false, ex.Message);
+                Assert.Fail(ex.Message);
             }
         });
     }
