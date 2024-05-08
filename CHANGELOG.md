@@ -13,7 +13,7 @@
 - Tests for some IsPassword modified.
 - Tests for some GetPasswordStrength added.
 - Tests for some GetShannonEntropy added.
-
+- Sample with password funcs usage added.
 
 ### 2.2.0 - 2024-03-17
 
