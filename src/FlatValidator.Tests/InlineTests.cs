@@ -326,7 +326,7 @@ public class InlineTests
 
             v.If(m => false, @then: m =>
             {
-                Assert.True(false, "This line must never be reached.");
+                Assert.Fail("This line must never be reached.");
             },
             @else: m => // test 'else' block
             {
@@ -429,7 +429,7 @@ public class InlineTests
             // synchronous condition
             v.If(m => false, m =>
             {
-                Assert.True(false, "This line must never be reached (1).");
+                Assert.Fail("This line must never be reached (1).");
             });
             v.If(m => true, m => 
             {
@@ -437,13 +437,13 @@ public class InlineTests
             },
             @else: m =>
             {
-                Assert.True(false, "This line must never be reached (2).");
+                Assert.Fail("This line must never be reached (2).");
             });
 
             // asynchronous condition
             v.If(async m => await ValueTask.FromResult(false), m =>
             {
-                Assert.True(false, "This line must never be reached (3).");
+                Assert.Fail("This line must never be reached (3).");
             });
             v.If(async m => await ValueTask.FromResult(true), m =>
             {
@@ -451,7 +451,7 @@ public class InlineTests
             },
             @else: m =>
             {
-                Assert.True(false, "This line must never be reached (4).");
+                Assert.Fail("This line must never be reached (4).");
             });
 
             // complete asynchronous
