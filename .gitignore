@@ -400,3 +400,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/samples/NativeAOT+Validation/_publish2.cmd
