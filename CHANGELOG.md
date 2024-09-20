@@ -1,10 +1,20 @@
 ﻿### TODO
-- Specific ValidationFuncs.
-- Exception on first error.
+- Ability to transform model before validation.
 - Const Warnings like it was implemented for Const Errors.
-- Prop name and error message tuple.
+- Exception on first error.
+- Prop name and error message tuple (?).
+- Specific ValidationFuncs (?).
 
 
+### expecting in 2.4.0
+
+- Overloaded built-in GetShannonEntropy added to return ShannonEntropy in bits.
+- PasswordStrengthClaculator+ShannonEntropy sample updated.
+- Usage 'When' instead of 'If'. 'If' marked as 'obsolete' due to possibile conflict with Basic's reserved word.
+- Some tests updated.
+- An example added.
+- Spec updated.
+ 
 ### 2.3.0 - 2024-05-07
 
 - IsPassword func modified.
@@ -14,6 +24,7 @@
 - Tests for some GetPasswordStrength added.
 - Tests for some GetShannonEntropy added.
 - Sample with password funcs usage added.
+- Spec updated.
 
 ### 2.2.0 - 2024-03-17
 
