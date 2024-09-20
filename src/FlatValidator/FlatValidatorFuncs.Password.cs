@@ -234,29 +234,49 @@ public static partial class FlatValidatorFuncs
     #endregion
 
     #region Entropy
+
     /// <summary>
     /// This uses the Shannon entropy equation to estimate the
     /// average minimum number of bits needed to encode a
     /// string of symbols, based on the frequency of the symbols.
     /// </summary>
     /// <param name="password">Password to evaluate.</param>
-    /// <returns>An entropy.</returns>
+    /// <param name="shannonEntropyInBits">Password entropy in bits.</param>
+    /// <returns>Shannon entropy for the password.</returns>
+    public static double GetShannonEntropy(string password, out int shannonEntropyInBits)
+    {
+        var shannonEntropy = GetShannonEntropy(password);
+        shannonEntropyInBits = (int)Math.Round(password.Length * shannonEntropy);
+        return shannonEntropy;
+    }
+
+    /// <summary>
+    /// This uses the Shannon entropy equation to estimate the
+    /// average minimum number of bits needed to encode a
+    /// string of symbols, based on the frequency of the symbols.
+    /// </summary>
+    /// <param name="password">Password to evaluate.</param>
+    /// <returns>Shannon entropy for the password.</returns>
     public static double GetShannonEntropy(string password)
     {
-        double entropy = 0d;
+        ArgumentNullException.ThrowIfNull(password);
+        
+        int passwordLength = password.Length;
+        
         char[]? buffer = null;
-        Span<char> chars = password.Length <= 128
-                ? stackalloc char[password.Length]
-                : (buffer = ArrayPool<char>.Shared.Rent(password.Length)).AsSpan(0, password.Length);
+        Span<char> chars = passwordLength <= 128
+                ? stackalloc char[passwordLength]
+                : (buffer = ArrayPool<char>.Shared.Rent(passwordLength)).AsSpan(0, passwordLength);
         password.CopyTo(chars);
 
-        for (int i = 0; i < chars.Length; i++)
+        double entropy = 0d;
+        for (int i = 0; i < passwordLength; i++)
         {
             char ch = chars[i];
             if (ch != '\0')
             {
                 int count = 1;
-                for (int j = i + 1; j < chars.Length; j++)
+                for (int j = i + 1; j < passwordLength; j++)
                 {
                     if (ch == chars[j])
                     {
@@ -264,7 +284,7 @@ public static partial class FlatValidatorFuncs
                         chars[j] = '\0';
                     }
                 }
-                double frequency = (double)count / password.Length;
+                double frequency = (double)count / passwordLength;
                 entropy += - frequency * Math.Log2(frequency);
             }
         }
