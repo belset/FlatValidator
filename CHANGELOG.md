@@ -6,7 +6,7 @@
 - Specific ValidationFuncs (?).
 
 
-### expecting in 2.4.0
+### 2.4.0 - 2024-09-20
 
 - Overloaded built-in GetShannonEntropy added to return ShannonEntropy in bits.
 - PasswordStrengthClaculator+ShannonEntropy sample updated.
