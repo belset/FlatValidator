@@ -9,13 +9,17 @@ In general, there are two simple ways to validate custom data with the `FlatVali
 > You can define validation rules in your code to validate object locally.
 
 ```js
-var model = new SomeModel(Email: "email@email.com", BirthDate: DateTime.Now, Rate: -100);
+var someModel = new SomeModel(
+      Email: "email@email.com", 
+      BirthDate: DateTime.Now, 
+      Rate: -100
+);
 
-// synchronous version
-var result = FlatValidator.Validate(model, v =>
+// validate synchronously
+var result =  FlatValidator.Validate(someModel, v =>
 {
-    // IsEmail() is built-in func for typical data formats 
-    // like Email, Phone, Url, CreditCard, Password, etc.
+    // IsEmail() is one of built-in funcs for typical data 
+    // formats like Phone, Url, CreditCard, Password, etc.
     v.ValidIf(m => m.Email.IsEmail(), 
               m => $"Invalid email: {m.Email}", 
               m => m.Email);
@@ -25,8 +29,13 @@ var result = FlatValidator.Validate(model, v =>
     v.WarningIf(m => m.BirthDate.AddYears(10) >= DateTime.Now, 
                 "Age looks like incorrect", m => m.BirthDate);
 });
+if (!result) 
+{
+    // ToDictionary() => Dictionary<PropertyName, ErrorMessage[]>
+    return TypedResults.ValidationProblem(result.ToDictionary()) 
+}
 
-// or asynchronous version
+// or validate asynchronously
 var result = await FlatValidator.ValidateAsync(model, v => 
 {
     v.ErrorIf(async m => await remoteApi.IsEmailBlockedAsync(m.Email),
@@ -38,14 +47,8 @@ var result = await FlatValidator.ValidateAsync(model, v =>
               m => m.Email);
 });
 
-// to check the validation result
-if (!result) 
-{
-    // ToDictionary() => Dictionary<PropertyName, ErrorMessage[]>
-    return TypedResults.ValidationProblem(result.ToDictionary()) 
-}
 
-// possibility to inspect occured validation failures
+// possibility to inspect occured validation failures:
 bool success = result.IsValid;
 var errors = result.Errors;
 var warnings = result.Warnings;
@@ -126,12 +129,12 @@ return result.MetaData["ValidationTime"];
 ### 4. Built-in validators
 
 1. Built-in validators for primitive data:
-    - `ErrorIf(str => str.IsEmpty(), ...` - ensure the string is empty.
-    - `ValidIf(str => str.NotEmpty(), ...` - ensure the string is not empty.
-    - `ErrorIf(guid => guid.IsEmpty(), ...` - ensure the GUID is empty.
-    - `ValidIf(guid => guid.NotEmpty(), ...` - ensure the GUID is not empty.
-    - `ErrorIf(guid => guid.IsEmpty(), ...` - ensure the GUID? is null or empty.
-    - `ValidIf(guid => guid.NotEmpty(), ...` - ensure the GUID? is not null and not empty.
+    - `IsEmpty(string)` ensure the string is Null or WhiteSpace: `ErrorIf(str => str.IsEmpty(), ...)`.
+    - `NotEmpty(string)` ensure the string is not Null and not WhiteSpace: `ValidIf(str => str.NotEmpty(), ...)`.
+    - `IsEmpty(GUID)` ensure the GUID is empty: `ErrorIf(guid => guid.IsEmpty(), ...)`.
+    - `NotEmpty(GUID)` ensure the GUID is not empty: `ValidIf(guid => guid.NotEmpty(), ...)`.
+    - `IsEmpty(GUID?)` ensure the GUID? is Null or Guid.Empty: `ErrorIf(guid => guid.IsEmpty(), ...)`.
+    - `NotEmpty(GUID?)` ensure the GUID? is not Null and not Guid.Empty: `ValidIf(guid => guid.NotEmpty(), ...)`.
 
 ---
 2. Built-in validators for typical custom data:
@@ -164,6 +167,8 @@ return result.MetaData["ValidationTime"];
     Returns `PasswordStrength` as one value of the `VeryWeak, Weak, Medium, Strong, VeryStrong` enum.
     - `FlatValidatorFuncs.GetShannonEntropy(string password)` - this uses the Shannon entropy equation to estimate the average minimum number of bits needed to encode a string of symbols, based on the frequency of the symbols. \
     Returns a `double` value that's Shannon entropy.
+    - `FlatValidatorFuncs.GetShannonEntropy(string password, out int shannonEntropyInBits)` - this uses the Shannon entropy equation to estimate the average minimum number of bits needed to encode a string of symbols, based on the frequency of the symbols. \
+    Out parameter `shannonEntropyInBits` returns a value of the Shannon entropy in bits.
 
 ---
 4. Built-in validators for localization:
@@ -182,6 +187,10 @@ The `ErrorId()` and `ValidIf()` have two possibilities to return some error mess
    - as a simple string - `ErrorIf(eml => eml.IsEmail(), "Invalid email.")`
    - as a formatted string - `ErrorIf(eml => eml.IsEmail(), eml => "Email {eml} is invalid.")`
 
+
+### 6. Native AOT
+Yes, it is ready for Native AOT. \
+Repository contains an example with the usage of `Minimal API` + `FlatValidator` in Native AOT approach.
 
 ## Release Notes and Change Log
 
