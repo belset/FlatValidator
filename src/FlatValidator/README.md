@@ -18,33 +18,30 @@ var someModel = new SomeModel(
 // validate synchronously
 var result =  FlatValidator.Validate(someModel, v =>
 {
-    // IsEmail() is one of built-in funcs for typical data 
-    // formats like Phone, Url, CreditCard, Password, etc.
-    v.ValidIf(m => m.Email.IsEmail(), 
-              m => $"Invalid email: {m.Email}", 
-              m => m.Email);
+    // IsEmail() is one of built-in funcs for typical data formats 
+    // like Phone, Url, CreditCard, Password, etc.
+    v.ValidIf(m => m.Email.IsEmail(), m => $"Invalid email: {m.Email}", m => m.Email);
 
-    v.ErrorIf(m => m.Rate < 0, "Negative Rate", m => m.Rate);
+    v.ErrorIf(m => m.Type == "Adult" && m.Age < 18, "Forbidden", m => m.Type, m => m.Age);
 
-    v.WarningIf(m => m.BirthDate.AddYears(10) >= DateTime.Now, 
-                "Age looks like incorrect", m => m.BirthDate);
+    v.WarningIf(m => m.BirthDate >= DateTime.Now, "Looks like incorrect", m => m.BirthDate);
 });
 if (!result) 
 {
-    // ToDictionary() => Dictionary<PropertyName, ErrorMessage[]>
-    return TypedResults.ValidationProblem(result.ToDictionary()) 
+    var ret = result.ToDictionary(); // Dictionary<PropertyName, ErrorMessage[]>
+    return TypedResults.ValidationProblem(ret); // for Minimal API
 }
 
 // or validate asynchronously
 var result = await FlatValidator.ValidateAsync(model, v => 
 {
-    v.ErrorIf(async m => await remoteApi.IsEmailBlockedAsync(m.Email),
-              "Email is in black list.", m => m.Email);
-
-    // the same without `async/await`
     v.ErrorIf(m => remoteApi.IsEmailBlockedAsync(m.Email),
               m => $"Email {m.Email} is in black list.", 
               m => m.Email);
+
+    // the same with `async/await`
+    v.ErrorIf(async m => await remoteApi.IsEmailBlockedAsync(m.Email),
+              "Email is in black list.", m => m.Email);
 });
 
 
