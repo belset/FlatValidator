@@ -10,10 +10,9 @@ while (!abortProcess)
     if (string.IsNullOrEmpty(password)) 
         break;
 
-    var passwordStrength = FlatValidatorFuncs.GetPasswordStrength(password!, out var score, out var maxScore);
-
+    var passwordStrength = FlatValidatorFuncs.GetPasswordStrength(password, out var score, out var maxScore);
+    var entropy = FlatValidatorFuncs.GetShannonEntropy(password, out var entropyInBits);
     Console.WriteLine($"   strength: {passwordStrength}, " +
                       $"score/maxScore: {score}/{maxScore} = {Math.Round((double)score / maxScore, 2)}, " +
-                      $"entropy: {Math.Round(password.Length * FlatValidatorFuncs.GetShannonEntropy(password!))} bits " +
-                      $"({FlatValidatorFuncs.GetShannonEntropy(password!)})");
+                      $"entropy: {entropyInBits} bits ({entropy})");
 }
