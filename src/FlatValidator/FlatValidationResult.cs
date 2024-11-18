@@ -80,7 +80,7 @@ public class FlatValidationResult
 
     #region Operators
 
-    /// <summary>Extracts actual result for <see cref="TypedResults.ValidationProblem()"/>.</summary>
+    /// <summary>Extracts actual result.</summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator bool(in FlatValidationResult result) => result.IsValid;
 
@@ -93,14 +93,21 @@ public class FlatValidationResult
     /// </summary>
     /// <returns>A dictionary that's grouped by PropertyName.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Dictionary<string, string[]> ToDictionary() => this.errors.GroupedByPropertyName();
+    public IDictionary<string, string[]> ToDictionary() => this.errors.GroupedByPropertyName();
+
+    /// <summary>
+    /// Converts the ValidationResult's warning collection into a simple dictionary representation  grouped by PropertyName.
+    /// </summary>
+    /// <returns>A dictionary after grouping by PropertyName.</returns>
+    [Obsolete]
+    public IDictionary<string, string[]> WarningToDictionary() => this.warnings.GroupedByPropertyName();
 
     /// <summary>
     /// Converts the ValidationResult's warning collection into a simple dictionary representation  grouped by PropertyName.
     /// </summary>
     /// <returns>A dictionary after grouping by PropertyName.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Dictionary<string, string[]> WarningToDictionary() => this.warnings.GroupedByPropertyName();
+    public IDictionary<string, string[]> WarningsToDictionary() => this.warnings.GroupedByPropertyName();
 
     /// <summary>
     /// Adds an validation error object to the end of the <see cref="FlatValidationResult.Errors"/> list.
