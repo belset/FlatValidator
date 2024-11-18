@@ -51,7 +51,7 @@ public static partial class FlatValidatorFuncs
     #endregion
 
     #region PhoneNumber 
-    private const string _phoneNumberPattern = @"^([\+]?[0-9]?[0-9][0-9][-]?|[0])?[1-9][0-9]{8}$";
+    private const string _phoneNumberPattern = @"^\+?[0-9]{1,3}[-\s]?(\(?[0-9]{2,3}\)|[0-9]{2,3})\s?([0-9]{1,3}\-?[0-9]{2,3}\-?[0-9]{2,3}|[0-9]{1,3}\s?[0-9]{2,3}\s?[0-9]{2,3})$"; // @"^([\+]?[0-9]?[0-9][0-9][-]?|[0])?[1-9][0-9]{8}$";
     private static Regex? _phoneNumberRegex = null;
     public static bool IsPhoneNumber(this string? phoneNumber) =>
         IsEmpty(phoneNumber) ? false : (_phoneNumberRegex ??= new Regex(_phoneNumberPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture)).IsMatch(phoneNumber!);
