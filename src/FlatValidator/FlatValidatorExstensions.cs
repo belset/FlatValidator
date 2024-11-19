@@ -16,7 +16,7 @@ public static partial class FlatValidatorExstensions
     /// <summary>
     /// Converts the <see cref="FlatValidationResult.Errors"/> collection into a simple dictionary grouped by PropertyName.
     /// </summary>
-    public static Dictionary<string, string[]> GroupedByPropertyName(this IEnumerable<FlatValidationError> errors) =>
+    public static IDictionary<string, string[]> GroupedByPropertyName(this IEnumerable<FlatValidationError> errors) =>
         errors.GroupBy(x => x.PropertyName).ToDictionary(
             g => g.Key,
             g => g.Select(x => x.ErrorMessage).Distinct().ToArray()
@@ -25,7 +25,7 @@ public static partial class FlatValidatorExstensions
     /// <summary>
     /// Converts the <see cref="FlatValidationResult.Errors"/> collection into a simple dictionary grouped by ErrorMessage.
     /// </summary>
-    public static Dictionary<string, string[]> GroupedByErrorMessage(this IEnumerable<FlatValidationError> errors) =>
+    public static IDictionary<string, string[]> GroupedByErrorMessage(this IEnumerable<FlatValidationError> errors) =>
         errors.GroupBy(x => x.ErrorMessage).ToDictionary(
             g => g.Key,
             g => g.Select(x => x.PropertyName).Distinct().ToArray()
@@ -34,7 +34,7 @@ public static partial class FlatValidatorExstensions
     /// <summary>
     /// Converts the <see cref="FlatValidationResult.Warnings"/> collection into a simple dictionary grouped by PropertyName.
     /// </summary>
-    public static Dictionary<string, string[]> GroupedByPropertyName(this IEnumerable<FlatValidationWarning> warnings) =>
+    public static IDictionary<string, string[]> GroupedByPropertyName(this IEnumerable<FlatValidationWarning> warnings) =>
         warnings.GroupBy(x => x.PropertyName).ToDictionary(
             g => g.Key,
             g => g.Select(x => x.WarningMessage).Distinct().ToArray()
@@ -43,7 +43,7 @@ public static partial class FlatValidatorExstensions
     /// <summary>
     /// Converts the <see cref="FlatValidationResult.Warnings"/> collection into a simple dictionary grouped by ErrorMessage.
     /// </summary>
-    public static Dictionary<string, string[]> GroupedByErrorMessage(this IEnumerable<FlatValidationWarning> warnings) =>
+    public static IDictionary<string, string[]> GroupedByErrorMessage(this IEnumerable<FlatValidationWarning> warnings) =>
         warnings.GroupBy(x => x.WarningMessage).ToDictionary(
             g => g.Key,
             g => g.Select(x => x.PropertyName).Distinct().ToArray()
@@ -54,7 +54,7 @@ public static partial class FlatValidatorExstensions
     /// </summary>
     /// <param name="validationResults">Collection of the <see cref="FlatValidationResult"/></param>
     /// <returns>A dictionary that's grouped by PropertyName.</returns>
-    public static Dictionary<string, string[]> ToDictionary(this IEnumerable<FlatValidationResult> validationResults)
+    public static IDictionary<string, string[]> ToDictionary(this IEnumerable<FlatValidationResult> validationResults)
     {
         ArgumentNullException.ThrowIfNull(validationResults);
 
