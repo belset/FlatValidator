@@ -4,6 +4,9 @@ using System.Runtime.CompilerServices;
 
 namespace System.Validation;
 
+/// <summary>
+/// FlatValidator base class.
+/// </summary>
 public class FlatValidator<TModel> : IFlatValidator<TModel>
 {
     #region Members

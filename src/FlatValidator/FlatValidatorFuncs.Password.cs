@@ -57,6 +57,9 @@ public static partial class FlatValidatorFuncs
 
     #region GetPasswordStrength
 
+    /// <summary>
+    /// Defines the password security level
+    /// </summary>
     public enum PasswordStrength
     {
         None,

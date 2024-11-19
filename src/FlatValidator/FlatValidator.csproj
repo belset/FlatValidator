@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
     <Title>A validation library for .NET that provides high performance and memory efficiency with the usage of strongly-typed and lambda-based rules.</Title>
     <Description>A validation library for .NET that delivers an high-performance and memory prudence by using lambda-based and strongly-typed rules.</Description>
     <Authors>Ilya Rudenka (@belset)</Authors>
     <Copyright>© Ilya Rudenka (@belset) 2024</Copyright>
     <Product>FlatValidator</Product>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-    <Version>2.4.0</Version>
-    <PackageVersion>2.4.0</PackageVersion>
+    <Version>2.5.0</Version>
+    <PackageVersion>2.5.0</PackageVersion>
     <PackageId>FlatValidator</PackageId>
     <PackageTags>validation validator InputValidation DataAnnotation</PackageTags>
     <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md</PackageReleaseNotes>
@@ -34,36 +34,46 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-    <NoWarn>1701;1702;1574;1591;</NoWarn>
+    <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-    <NoWarn>1701;1702;1574;1591;</NoWarn>
+    <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <IsAotCompatible>True</IsAotCompatible>
-    <NoWarn>1701;1702;1574;1591;</NoWarn>
+    <NoWarn>1701;1702;1591;</NoWarn>
     <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-    <NoWarn>1701;1702;1574;1591;</NoWarn>
+    <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-    <NoWarn>1701;1702;1574;1591;</NoWarn>
+    <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <IsAotCompatible>True</IsAotCompatible>
-    <NoWarn>1701;1702;1574;1591;</NoWarn>
+    <NoWarn>1701;1702;1591;</NoWarn>
     <WarningLevel>9999</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0|AnyCPU'">
+    <WarningLevel>9999</WarningLevel>
+    <NoWarn>1701;1702;1591;</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
+    <WarningLevel>9999</WarningLevel>
+    <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
 
