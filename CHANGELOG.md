@@ -2,9 +2,11 @@
 - Ability to transform model before validation.
 - Const Warnings like it was implemented for Const Errors.
 - Exception on first error.
-- Prop name and error message tuple (?).
 - Specific ValidationFuncs (?).
 
+### 2.5.0 - 2024-11-18
+
+- Fix IsPhoneNumber func.
 
 ### 2.4.0 - 2024-09-20
 
