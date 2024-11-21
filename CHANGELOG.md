@@ -6,6 +6,7 @@
 
 ### 2.5.0 - 2024-11-18
 
+- Support .NET 9.0
 - Fix IsPhoneNumber func.
 
 ### 2.4.0 - 2024-09-20
