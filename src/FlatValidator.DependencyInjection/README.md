@@ -25,7 +25,7 @@ public class UserValidator: FlatValidator<UserModel>
         ErrorIf(m => m.Phone.IsPhoneNumber(), "Invalid phone number.", m => m.Phone);
         
         // define one or more groups for preconditions
-        If(m => m.ShipmentAddress.NotEmpty(), @then: m =>
+        When(m => m.ShipmentAddress.NotEmpty(), @then: m =>
         {
             ValidIf(m => postalService.AddressExistsAsync(m.ShipmentAddress, m.PostalCode), 
                     "Invalid postal address and/or postal code.", 
