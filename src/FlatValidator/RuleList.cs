@@ -21,9 +21,9 @@ internal enum RuleType : int
     WarningSynch,
     WarningAsync,
 
-    IfSynch,
-    IfAsync,
-    IfCancelledAsync,
+    WhenSynch,
+    WhenAsync,
+    WhenCancelledAsync,
 }
 
 [StructLayout(LayoutKind.Auto)]

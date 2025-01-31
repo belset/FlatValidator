@@ -26,20 +26,40 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
     #region If methods
 
+    [Obsolete]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void If(Func<TModel, bool> conditions, Action<TModel> @then, Action<TModel> @else = null!)
-        => rules.Add(RuleType.IfSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
+        => rules.Add(RuleType.WhenSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
 
+    [Obsolete]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void If(Func<TModel, ValueTask<bool>> conditions, Action<TModel> @then, Action<TModel> @else = null!)
-        => rules.Add(RuleType.IfAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+        => rules.Add(RuleType.WhenAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
 
+    [Obsolete]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void If(Func<TModel, CancellationToken, ValueTask<bool>> conditions, 
                             Action<TModel, CancellationToken> @then, Action<TModel, CancellationToken> @else = null!)
-        => rules.Add(RuleType.IfCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+        => rules.Add(RuleType.WhenCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
 
     #endregion // If methods
+
+    #region When methods
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void When(Func<TModel, bool> conditions, Action<TModel> @then, Action<TModel> @else = null!)
+        => rules.Add(RuleType.WhenSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void When(Func<TModel, ValueTask<bool>> conditions, Action<TModel> @then, Action<TModel> @else = null!)
+        => rules.Add(RuleType.WhenAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void When(Func<TModel, CancellationToken, ValueTask<bool>> conditions,
+                            Action<TModel, CancellationToken> @then, Action<TModel, CancellationToken> @else = null!)
+        => rules.Add(RuleType.WhenCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+
+    #endregion // When methods
 
     #region Constant Error
 
@@ -535,7 +555,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         }
                         break;
 
-                    case RuleType.IfSynch:
+                    case RuleType.WhenSynch:
                         var syncConditionsResult = ((Func<TModel, bool>)rule.Conditions)(model);
                         if (syncConditionsResult && rule.IfThen is not null)
                         {
@@ -551,7 +571,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         }
                         break;
 
-                    case RuleType.IfAsync:
+                    case RuleType.WhenAsync:
                         var asyncConditionsResult = await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model);
                         if (asyncConditionsResult && rule.IfThen is not null)
                         {
@@ -567,7 +587,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         }
                         break;
 
-                    case RuleType.IfCancelledAsync:
+                    case RuleType.WhenCancelledAsync:
                         var isCancelledAsyncResult = await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation);
                         if (isCancelledAsyncResult && rule.IfThen is not null)
                         {
@@ -683,13 +703,13 @@ public static partial class FlatValidator
     public static FlatValidationResult Validate<TModel>(in TModel model, Action<FlatValidator<TModel>> action)
     {
         var validator = new FlatValidator<TModel>();
-        validator.If((_) => true, m => action(validator));
+        validator.When((_) => true, m => action(validator));
         return validator.Validate(model);
     }
     public static ValueTask<FlatValidationResult> ValidateAsync<TModel>(in TModel model, Action<FlatValidator<TModel>> action, CancellationToken cancellationToken = default)
     {
         var validator = new FlatValidator<TModel>();
-        validator.If((_) => true, m => action(validator));
+        validator.When((_) => true, m => action(validator));
         return validator.ValidateAsync(model, cancellationToken);
     }
     #endregion // Static inline validation methods
