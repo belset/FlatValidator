@@ -4,6 +4,13 @@
 - Exception on first error.
 - Specific ValidationFuncs (?).
 
+### 2.6.0 - 2025-02-01
+
+- Versions .NET 6.x and .NET 7.x do not supported now to avoid possible conflicts. \
+This is because the package Microsoft.Extensions.DependencyInjection.Abstractions for the .NET 9 pushes warnings that it have already not supported them compeltely.
+- `If(...)` operators have been replaced to `When(...)` to avoid any confusion for some program languages. All `If(...)` operators have been marked as _obsolete_.
+- Tests prepared to get rid of any warnings.
+
 ### 2.5.0 - 2024-11-18
 
 - Support .NET 9.0

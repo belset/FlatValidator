@@ -70,8 +70,8 @@ public class UserValidator: FlatValidator<UserModel>
                 "Forename and Surname can not be empty.", 
                 m => m.Forename, m => m.Surname);
         
-        // use 'If(...)' to control a validation flow
-        If(m => m.ShipmentAddress.NotEmpty(), @then: m =>
+        // use 'When(...)' to control a validation flow
+        When(m => m.ShipmentAddress.NotEmpty(), @then: m =>
         {
             ValidIf(async m => await postalService.AddressExistsAsync(m.Address),
                      "Postal address not found.", m => m.Address);
