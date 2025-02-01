@@ -13,7 +13,7 @@ public class InlineAsyncTests
 
     #region _01_Cancalletion_in_ErrorIf_1_Member()
     [Fact]
-    public async void _01_Cancalletion_in_ErrorIf_1_Member()
+    public async Task _01_Cancalletion_in_ErrorIf_1_Member()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -73,7 +73,7 @@ public class InlineAsyncTests
 
     #region _01_Cancalletion_in_ErrorIf_2_Member()
     [Fact]
-    public async void _01_Cancalletion_in_ErrorIf_2_Member()
+    public async Task _01_Cancalletion_in_ErrorIf_2_Member()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -133,7 +133,7 @@ public class InlineAsyncTests
 
     #region _01_Cancalletion_in_ErrorIf_3_Member()
     [Fact]
-    public async void _01_Cancalletion_in_ErrorIf_3_Member()
+    public async Task _01_Cancalletion_in_ErrorIf_3_Member()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -193,7 +193,7 @@ public class InlineAsyncTests
 
     #region _01_Cancalletion_in_ValidIf_1_Member()
     [Fact]
-    public async void _01_Cancalletion_in_ValidIf_1_Member()
+    public async Task _01_Cancalletion_in_ValidIf_1_Member()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -253,7 +253,7 @@ public class InlineAsyncTests
 
     #region _01_Cancalletion_in_ValidIf_2_Member()
     [Fact]
-    public async void _01_Cancalletion_in_ValidIf_2_Member()
+    public async Task _01_Cancalletion_in_ValidIf_2_Member()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -313,7 +313,7 @@ public class InlineAsyncTests
 
     #region _01_Cancalletion_in_ValidIf_3_Member()
     [Fact]
-    public async void _01_Cancalletion_in_ValidIf_3_Member()
+    public async Task _01_Cancalletion_in_ValidIf_3_Member()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -373,7 +373,7 @@ public class InlineAsyncTests
 
     #region _02_Cancalletion_in_GroupConditions()
     [Fact]
-    public async void _02_Cancalletion_in_GroupConditions()
+    public async Task _02_Cancalletion_in_GroupConditions()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -384,7 +384,7 @@ public class InlineAsyncTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.If(
+                validator.When(
                     (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -410,7 +410,7 @@ public class InlineAsyncTests
 
     #region _02_Cancalletion_in_GroupAction()
     [Fact]
-    public async void _02_Cancalletion_in_GroupAction()
+    public async Task _02_Cancalletion_in_GroupAction()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -421,7 +421,7 @@ public class InlineAsyncTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.If(
+                validator.When(
                     (model, cancellationToken) =>
                     {
                         return ValueTask.FromResult(true);
@@ -447,7 +447,7 @@ public class InlineAsyncTests
 
     #region _02_Cancalletion_in_GroupElseAction()
     [Fact]
-    public async void _02_Cancalletion_in_GroupElseAction()
+    public async Task _02_Cancalletion_in_GroupElseAction()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -458,7 +458,7 @@ public class InlineAsyncTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.If(
+                validator.When(
                     (model, cancellationToken) =>
                     {
                         return ValueTask.FromResult(false);

@@ -19,7 +19,7 @@ public class MultithreadTests
     };
 
     [Fact]
-    public async void _01_Cancalletion_in_ValidIf()
+    public async Task _01_Cancalletion_in_ValidIf()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -50,7 +50,7 @@ public class MultithreadTests
     }
 
     [Fact]
-    public async void _02_Cancalletion_in_GroupConditions()
+    public async Task _02_Cancalletion_in_GroupConditions()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -61,7 +61,7 @@ public class MultithreadTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.If(
+                validator.When(
                     (model, cancellationToken) =>
                     {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -85,7 +85,7 @@ public class MultithreadTests
     }
 
     [Fact]
-    public async void _02_Cancalletion_in_GroupAction()
+    public async Task _02_Cancalletion_in_GroupAction()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -96,7 +96,7 @@ public class MultithreadTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.If(
+                validator.When(
                     (model, cancellationToken) =>
                     {
                         return ValueTask.FromResult(true);
@@ -120,7 +120,7 @@ public class MultithreadTests
     }
 
     [Fact]
-    public async void _02_Cancalletion_in_GroupElseAction()
+    public async Task _02_Cancalletion_in_GroupElseAction()
     {
         var model = new TestModel(-1, "", DateOnly.FromDayNumber(365), -100, "", null!);
 
@@ -131,7 +131,7 @@ public class MultithreadTests
             _ = await FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
-                validator.If(
+                validator.When(
                     (model, cancellationToken) =>
                     {
                         return ValueTask.FromResult(false);
