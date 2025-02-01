@@ -313,9 +313,9 @@ public class InlineTests
             v.ErrorIf(m => m.Level1.Level2.Id == 3, "ErrorIf for Level1.Level2.Id", m => m.Level1.Level2.Id);
             v.ValidIf(m => m.Level1.Level2.Id != 3, "ValidIf for Level1.Level2.Id", m => m.Level1.Level2.Id);
 
-            v.If(m => m.Name0.NotEmpty(), @then: m =>
+            v.When(m => m.Name0.NotEmpty(), @then: m =>
             {
-                v.If(m => m.Level1.Name1.NotEmpty(), @then: m =>
+                v.When(m => m.Level1.Name1.NotEmpty(), @then: m =>
                 {
                     v.ErrorIf(m => m.Level1.Level2.Id == 3, "Grouped ErrorIf for Level1.Level2.Id", m => m.Level1.Level2.Id);
                     v.ValidIf(m => m.Level1.Level2.Id != 3, "Grouped ValidIf for Level1.Level2.Id", m => m.Level1.Level2.Id);
@@ -324,7 +324,7 @@ public class InlineTests
                 v.ValidIf(m => m.Level1.Id != 2, "Grouped ValidIf for Level1.Id", m => m.Level1.Id);
             });
 
-            v.If(m => false, @then: m =>
+            v.When(m => false, @then: m =>
             {
                 Assert.Fail("This line must never be reached.");
             },
@@ -427,11 +427,11 @@ public class InlineTests
         var r = FlatValidator.Validate(model, v =>
         {
             // synchronous condition
-            v.If(m => false, m =>
+            v.When(m => false, m =>
             {
                 Assert.Fail("This line must never be reached (1).");
             });
-            v.If(m => true, m => 
+            v.When(m => true, m => 
             {
                 // it's OK
             },
@@ -441,11 +441,11 @@ public class InlineTests
             });
 
             // asynchronous condition
-            v.If(async m => await ValueTask.FromResult(false), m =>
+            v.When(async m => await ValueTask.FromResult(false), m =>
             {
                 Assert.Fail("This line must never be reached (3).");
             });
-            v.If(async m => await ValueTask.FromResult(true), m =>
+            v.When(async m => await ValueTask.FromResult(true), m =>
             {
                 // it's OK
             },
@@ -455,11 +455,11 @@ public class InlineTests
             });
 
             // complete asynchronous
-            v.If(async m => await ValueTask.FromResult(false), async m =>
+            v.When(async m => await ValueTask.FromResult(false), async m =>
             {
                 Assert.True(await ValueTask.FromResult(false), "This line must never be reached (5).");
             });
-            v.If(async m => await ValueTask.FromResult(true), m =>
+            v.When(async m => await ValueTask.FromResult(true), m =>
             {
                 // it's OK
             },
