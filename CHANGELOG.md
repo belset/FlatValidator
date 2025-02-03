@@ -4,7 +4,7 @@
 - Exception on first error.
 - Specific ValidationFuncs (?).
 
-### 2.6.0 - 2025-02-01
+### 2.6.0 - 2025-02-03
 
 - Versions .NET 6.x and .NET 7.x do not supported now to avoid possible conflicts. \
 This is because the package Microsoft.Extensions.DependencyInjection.Abstractions for the .NET 9 pushes warnings that it have already not supported them compeltely.
