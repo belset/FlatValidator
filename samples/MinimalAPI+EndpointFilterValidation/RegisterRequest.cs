@@ -8,7 +8,7 @@ public record class RegisterRequest(string EmailOrUsername, string Password)
     {
         public RegisterRequestValidator(IEmailService emailService)
         {
-            If(model => model.EmailOrUsername.IsEmail(), model =>
+            When(model => model.EmailOrUsername.IsEmail(), model =>
             {
                 ErrorIf(model => emailService.EmailExists(model),
                         model => $"Email {model.EmailOrUsername} has already been registered.",
