@@ -30,7 +30,7 @@ app.MapGet("/demo", () =>
         v.ErrorIf(m => m.Id <= 0, $"Invalid Id", m => m.Id);
         v.ErrorIf(m => m.DueBy is null, "DueBy can not be null.", m => m.DueBy);
 
-        v.If(m => m.Title.NotEmpty(), m =>
+        v.When(m => m.Title.NotEmpty(), m =>
         {
             v.ValidIf(m => m.Title!.Contains('r'),
                       m => $"Title '{m.Title}' does not contain 'r'.",
@@ -46,7 +46,7 @@ app.MapGet("/todos", () => sampleTodos);
 app.MapPost("/todos", (Todo todo) => sampleTodos.Add(todo))
    .AddEndpointFilter<ValidationFilter<Todo>>();
 
-app.Run();
+app.Run("http://localhost:5400");
 
 
 // Model to test validation functionality
@@ -61,7 +61,7 @@ public class TodoValidator : FlatValidator<Todo>
         ErrorIf(m => m.Id <= 0, $"Invalid Id", m => m.Id);
         ErrorIf(m => m.DueBy is null, "DueBy can not be null.", m => m.DueBy);
 
-        If(m => m.Title.NotEmpty(), @then: m =>
+        When(m => m.Title.NotEmpty(), @then: m =>
         {
             ValidIf(m => m.Title!.Contains('r'),
                       m => $"Title '{m.Title}' does not contain 'r'.",
