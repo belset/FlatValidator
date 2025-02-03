@@ -12,7 +12,7 @@ internal class UpdateProductValidator : FlatValidator<UpdateProductCommand>
         ErrorIf(m => m.Id.IsEmpty(), "Invalid Product ID.", m => m.Id);
         ErrorIf(m => m.ProductName.IsEmpty(), "Product name cannot be empty.", m => m.ProductName);
 
-        If(async m => await productRepository.ProductExists(m.Id), @then: m =>
+        When(async m => await productRepository.ProductExists(m.Id), @then: m =>
         {
             ErrorIf(m => m.BrandName.IsEmpty(), "Brand name cannot be empty.", m => m.BrandName);
             ValidIf(m => brandRepository.BrandExists(m.BrandName),
