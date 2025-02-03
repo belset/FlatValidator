@@ -79,7 +79,7 @@ public static class StartupExtensions
 
         services.Scan(selector =>
         {
-            selector.FromCallingAssembly()
+            selector.FromAssemblyOf<QueryDispatcher>()
                     .AddClasses(filter =>
                     {
                         filter.AssignableTo(typeof(IQueryHandler<,>));
@@ -89,7 +89,7 @@ public static class StartupExtensions
         });
         services.Scan(selector =>
         {
-            selector.FromCallingAssembly()
+            selector.FromAssemblyOf<QueryDispatcher>()
                     .AddClasses(filter =>
                     {
                         filter.AssignableTo(typeof(ICommandHandler<,>));

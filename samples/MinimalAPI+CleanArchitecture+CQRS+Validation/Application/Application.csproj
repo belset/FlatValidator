@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FlatValidator" Version="2.5.0" />
-    <PackageReference Include="FlatValidator.DependencyInjection" Version="2.5.0" />
-    <PackageReference Include="Scrutor" Version="5.0.2" />
+    <PackageReference Include="FlatValidator" Version="2.6.0" />
+    <PackageReference Include="FlatValidator.DependencyInjection" Version="2.6.0" />
+    <PackageReference Include="Scrutor" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
