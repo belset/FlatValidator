@@ -99,13 +99,6 @@ public class FlatValidationResult
     /// Converts the ValidationResult's warning collection into a simple dictionary representation  grouped by PropertyName.
     /// </summary>
     /// <returns>A dictionary after grouping by PropertyName.</returns>
-    [Obsolete]
-    public IDictionary<string, string[]> WarningToDictionary() => this.warnings.GroupedByPropertyName();
-
-    /// <summary>
-    /// Converts the ValidationResult's warning collection into a simple dictionary representation  grouped by PropertyName.
-    /// </summary>
-    /// <returns>A dictionary after grouping by PropertyName.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IDictionary<string, string[]> WarningsToDictionary() => this.warnings.GroupedByPropertyName();
 
