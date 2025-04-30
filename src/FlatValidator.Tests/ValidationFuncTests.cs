@@ -178,53 +178,47 @@ public class ValidationFuncTests
     }
     #endregion // _10_ANullableGuid_NotEmpty
 
-    #region _11_IsWellFormedUri_Null
+    #region _11_IsAbsoluteUri_Null
     [Fact]
-    public void _11_IsWellFormedUri_Null()
+    public void _11_IsAbsoluteUri_Null()
     {
         var result = FlatValidator.Validate((string?)null, v =>
         {
-#pragma warning disable CS0618 //supress usage of obsolet method
-            v.ValidIf(m => m.IsWellFormedUri(), "Url is null", m => "url");
-#pragma warning restore CS0618
+            v.ValidIf(m => m.IsAbsoluteUri(), "Url is null", m => "url");
         });
         Assert.True(!result.IsValid);
         Assert.True(result.Errors.Count == 1);
         Assert.Contains(result.Errors, e => e.PropertyName == "url" && e.ErrorMessage == "Url is null");
     }
-    #endregion // _11_IsWellFormedUri_Null
+    #endregion // _11_IsAbsoluteUri_Null
 
-    #region _11_IsWellFormedUri_Empty
+    #region _11_IsAbsoluteUri_Empty
     [Fact]
-    public void _11_IsWellFormedUri_Empty()
+    public void _11_IsAbsoluteUri_Empty()
     {
         var result = FlatValidator.Validate(string.Empty, v =>
         {
-#pragma warning disable CS0618 //supress usage of obsolet method
-            v.ValidIf(m => m.IsWellFormedUri(), "Url is null", m => "url");
-#pragma warning restore CS0618
+            v.ValidIf(m => m.IsAbsoluteUri(), "Url is null", m => "url");
         });
         Assert.True(!result.IsValid);
         Assert.True(result.Errors.Count == 1);
         Assert.Contains(result.Errors, e => e.PropertyName == "url" && e.ErrorMessage == "Url is null");
     }
-    #endregion // _11_IsWellFormedUri_Empty
+    #endregion // _11_IsAbsoluteUri_Empty
 
-    #region _11_IsWellFormedUri_Spaced
+    #region _11_IsAbsoluteUri_Spaced
     [Fact]
-    public void _11_IsWellFormedUri_Spaced()
+    public void _11_IsAbsoluteUri_Spaced()
     {
         var result = FlatValidator.Validate(" ", v =>
         {
-#pragma warning disable CS0618 //supress usage of obsolet method
-            v.ValidIf(m => m.IsWellFormedUri(), "Url is null", m => "url");
-#pragma warning restore CS0618
+            v.ValidIf(m => m.IsAbsoluteUri(), "Url is null", m => "url");
         });
         Assert.True(!result.IsValid);
         Assert.True(result.Errors.Count == 1);
         Assert.Contains(result.Errors, e => e.PropertyName == "url" && e.ErrorMessage == "Url is null");
     }
-    #endregion // _11_IsWellFormedUri_Spaced
+    #endregion // _11_IsAbsoluteUri_Spaced
 
     #region _12_IsAbsoluteUri_Null
     [Fact]
