@@ -38,16 +38,16 @@ public class MetaDataTests
     [Fact]
     public void _01_Add_MetaData_AfterRules()
     {
-        var now = DateTimeOffset.UtcNow.ToString();
+        var stringNow = DateTimeOffset.UtcNow.ToString();
         var result = FlatValidator.Validate(DateTime.Now, v =>
         {
             v.ErrorIf(m => m.AddDays(1) > DateTime.Now, "", m => "Any text as PropName1");
 
-            v.MetaData["ValidationTime"] = now;
+            v.MetaData["ValidationTime"] = stringNow;
         });
 
         Assert.True(result.MetaData.Count == 1);
-        Assert.Contains(result.MetaData, pair => pair.Key == "ValidationTime" && pair.Value == now);
+        Assert.Contains(result.MetaData, pair => pair.Key == "ValidationTime" && pair.Value == stringNow);
     }
     #endregion // _01_Add_MetaData_AfterRules
 
@@ -55,18 +55,18 @@ public class MetaDataTests
     [Fact]
     public void _02_Add_MetaData_InsideOfRule()
     {
-        var now = DateTimeOffset.UtcNow.ToString();
+        var stringNow = DateTimeOffset.UtcNow.ToString();
         var result = FlatValidator.Validate(DateTime.Now, v =>
         {
             v.ErrorIf(m => m.AddDays(1) > DateTime.Now, m => 
             {
-                v.MetaData["ValidationTime"] = now;
+                v.MetaData["ValidationTime"] = stringNow;
                 return "Some error";
             }, m => "Any text as PropName1");
         });
 
         Assert.True(result.MetaData.Count == 1);
-        Assert.Contains(result.MetaData, pair => pair.Key == "ValidationTime" && pair.Value == now);
+        Assert.Contains(result.MetaData, pair => pair.Key == "ValidationTime" && pair.Value == stringNow);
     }
     #endregion // _02_Add_MetaData_InsideOfRule
 }
