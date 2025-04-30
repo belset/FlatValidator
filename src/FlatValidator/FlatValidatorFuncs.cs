@@ -35,12 +35,8 @@ public static partial class FlatValidatorFuncs
     #endregion Guid? (Nullable) - Empty or NotEmpty
 
     #region Uri
-    [Obsolete("This is obsolete. Use the IsAbsoluteUri() instead.")]
-    public static bool IsWellFormedUri(this string? url) =>
-        Uri.IsWellFormedUriString(url, UriKind.Absolute);
-
     public static bool IsAbsoluteUri(this string? url) =>
-        Uri.IsWellFormedUriString(url, UriKind.Absolute);
+        Uri.TryCreate(url, UriKind.Absolute, out var _uri) && _uri.Scheme.NotEmpty() && _uri.Host.NotEmpty();
     #endregion
 
     #region Email 
