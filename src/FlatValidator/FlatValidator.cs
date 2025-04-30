@@ -15,7 +15,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     private int semaphoreState = 0; // 0 means unset, 1 means set.
     private SemaphoreSlim? semaphore = null;
 
-    private RuleList<TModel> rules = new();
+    private FlatValidatorRules<TModel> rules = new();
 
     /// <summary>
     /// A collection with meta data.
@@ -557,48 +557,48 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
                     case RuleType.WhenSynch:
                         var syncConditionsResult = ((Func<TModel, bool>)rule.Conditions)(model);
-                        if (syncConditionsResult && rule.IfThen is not null)
+                        if (syncConditionsResult && rule.WhenThen is not null)
                         {
                             var startIndex = rules.Count;
-                            ((Action<TModel>)rule.IfThen)(model);
+                            ((Action<TModel>)rule.WhenThen)(model);
                             await ProcessRules(startIndex, rules.Count, validationResult);
                         }
-                        else if (!syncConditionsResult && rule.IfElse is not null)
+                        else if (!syncConditionsResult && rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
-                            ((Action<TModel>)rule.IfElse)(model);
+                            ((Action<TModel>)rule.WhenElse)(model);
                             await ProcessRules(startIndex, rules.Count, validationResult);
                         }
                         break;
 
                     case RuleType.WhenAsync:
                         var asyncConditionsResult = await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model);
-                        if (asyncConditionsResult && rule.IfThen is not null)
+                        if (asyncConditionsResult && rule.WhenThen is not null)
                         {
                             var startIndex = rules.Count;
-                            ((Action<TModel>)rule.IfThen)(model);
+                            ((Action<TModel>)rule.WhenThen)(model);
                             await ProcessRules(startIndex, rules.Count, validationResult);
                         }
-                        else if (!asyncConditionsResult && rule.IfElse is not null)
+                        else if (!asyncConditionsResult && rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
-                            ((Action<TModel>)rule.IfElse)(model);
+                            ((Action<TModel>)rule.WhenElse)(model);
                             await ProcessRules(startIndex, rules.Count, validationResult);
                         }
                         break;
 
                     case RuleType.WhenCancelledAsync:
                         var isCancelledAsyncResult = await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation);
-                        if (isCancelledAsyncResult && rule.IfThen is not null)
+                        if (isCancelledAsyncResult && rule.WhenThen is not null)
                         {
                             var startIndex = rules.Count;
-                            ((Action<TModel, CancellationToken>)rule.IfThen)(model, cancellation);
+                            ((Action<TModel, CancellationToken>)rule.WhenThen)(model, cancellation);
                             await ProcessRules(startIndex, rules.Count, validationResult);
                         }
-                        else if (!isCancelledAsyncResult && rule.IfElse is not null)
+                        else if (!isCancelledAsyncResult && rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
-                            ((Action<TModel, CancellationToken>)rule.IfElse)(model, cancellation);
+                            ((Action<TModel, CancellationToken>)rule.WhenElse)(model, cancellation);
                             await ProcessRules(startIndex, rules.Count, validationResult);
                         }
                         break;

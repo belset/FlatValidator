@@ -27,12 +27,12 @@ internal enum RuleType : int
 }
 
 [StructLayout(LayoutKind.Auto)]
-public struct Rule
+internal struct Rule
 {
     internal RuleType RuleType;
     internal Delegate Conditions;
-    internal Delegate IfThen;
-    internal Delegate IfElse;
+    internal Delegate WhenThen;
+    internal Delegate WhenElse;
     internal Delegate FuncMessage;
     internal string ConstMessage;
     internal Expression MemberSelector1;
@@ -40,7 +40,7 @@ public struct Rule
     internal Expression MemberSelector3;
 }
 
-internal struct RuleList<TModel>
+internal struct FlatValidatorRules<TModel>
 {
     #region Nested classes
     internal struct Snapshot(int count) 
@@ -60,7 +60,7 @@ internal struct RuleList<TModel>
     #endregion // Members
 
     #region Constructors
-    public RuleList()
+    public FlatValidatorRules()
     { }
     #endregion // Constructors
 
@@ -73,8 +73,8 @@ internal struct RuleList<TModel>
     internal void Add(
         RuleType ruleType,
         Delegate conditions,
-        Delegate groupThen,
-        Delegate groupElse,
+        Delegate whenThen,
+        Delegate whenElse,
         Delegate error,
         string errorMessage,
         Expression memberSelector1,
@@ -88,8 +88,8 @@ internal struct RuleList<TModel>
 
         rule.RuleType = ruleType;
         rule.Conditions = conditions;
-        rule.IfThen = groupThen;
-        rule.IfElse = groupElse;
+        rule.WhenThen = whenThen;
+        rule.WhenElse = whenElse;
         rule.FuncMessage = error;
         rule.ConstMessage = errorMessage;
         rule.MemberSelector1 = memberSelector1;
