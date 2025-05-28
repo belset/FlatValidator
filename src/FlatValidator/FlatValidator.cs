@@ -11,10 +11,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 {
     #region Members
 
-    private int semaphoreCount = 0;
-    private int semaphoreState = 0; // 0 means unset, 1 means set.
-    private SemaphoreSlim? semaphore = null;
-
+    private int semaphoreState = 0; // Allowed==0, Raised==1
     private FlatValidatorRules<TModel> rules = new();
 
     /// <summary>
@@ -470,7 +467,12 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     /// <returns>A ValidationResult instance may contain some validation failures.</returns>
     public async ValueTask<FlatValidationResult> ValidateAsync(TModel model, TimeSpan timeout, CancellationToken cancellation = default)
     {
-        bool needToRelease = await InitializeValidation(timeout, cancellation);
+        if (!SpinWait.SpinUntil(() => Interlocked.CompareExchange(ref semaphoreState, 1, 0) == 1, timeout))
+        {
+            throw new TimeoutException();
+        }
+        cancellation.ThrowIfCancellationRequested();
+
         var snapshot = rules.MakeSnapshot();
         try
         {
@@ -485,7 +487,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
         finally
         {
             rules.RestoreSnapshot(snapshot);
-            FinalizeValidation(needToRelease);
+            Interlocked.Exchange(ref semaphoreState, 0);
         }
 
         async ValueTask ProcessRules(int fromIndex, int toIndex, FlatValidationResult validationResult)
@@ -556,14 +558,16 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         break;
 
                     case RuleType.WhenSynch:
-                        var syncConditionsResult = ((Func<TModel, bool>)rule.Conditions)(model);
-                        if (syncConditionsResult && rule.WhenThen is not null)
+                        if (((Func<TModel, bool>)rule.Conditions)(model))
                         {
-                            var startIndex = rules.Count;
-                            ((Action<TModel>)rule.WhenThen)(model);
-                            await ProcessRules(startIndex, rules.Count, validationResult);
+                            if (rule.WhenThen is not null)
+                            {
+                                var startIndex = rules.Count;
+                                ((Action<TModel>)rule.WhenThen)(model);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
+                            }
                         }
-                        else if (!syncConditionsResult && rule.WhenElse is not null)
+                        else if (rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
                             ((Action<TModel>)rule.WhenElse)(model);
@@ -572,14 +576,16 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         break;
 
                     case RuleType.WhenAsync:
-                        var asyncConditionsResult = await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model);
-                        if (asyncConditionsResult && rule.WhenThen is not null)
+                        if (await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model))
                         {
-                            var startIndex = rules.Count;
-                            ((Action<TModel>)rule.WhenThen)(model);
-                            await ProcessRules(startIndex, rules.Count, validationResult);
+                            if (rule.WhenThen is not null)
+                            {
+                                var startIndex = rules.Count;
+                                ((Action<TModel>)rule.WhenThen)(model);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
+                            }
                         }
-                        else if (!asyncConditionsResult && rule.WhenElse is not null)
+                        else if (rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
                             ((Action<TModel>)rule.WhenElse)(model);
@@ -588,14 +594,16 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                         break;
 
                     case RuleType.WhenCancelledAsync:
-                        var isCancelledAsyncResult = await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation);
-                        if (isCancelledAsyncResult && rule.WhenThen is not null)
+                        if (await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation))
                         {
-                            var startIndex = rules.Count;
-                            ((Action<TModel, CancellationToken>)rule.WhenThen)(model, cancellation);
-                            await ProcessRules(startIndex, rules.Count, validationResult);
+                            if (rule.WhenThen is not null)
+                            {
+                                var startIndex = rules.Count;
+                                ((Action<TModel, CancellationToken>)rule.WhenThen)(model, cancellation);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
+                            }
                         }
-                        else if (!isCancelledAsyncResult && rule.WhenElse is not null)
+                        else if (rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
                             ((Action<TModel, CancellationToken>)rule.WhenElse)(model, cancellation);
@@ -649,52 +657,6 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
         }
     }
     #endregion // Validate methods
-
-    #region Validation processing
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    async ValueTask<bool> InitializeValidation(TimeSpan timeout, CancellationToken cancellation)
-    {
-        if (Interlocked.Increment(ref semaphoreCount) > 1)
-        {
-            SpinWait spinner = default;
-            while (Interlocked.CompareExchange(ref semaphoreCount, 0, 0) > 1)
-            {
-                spinner.SpinOnce();
-
-                if (spinner.NextSpinWillYield)
-                {
-                    SpinWait.SpinUntil(() => Interlocked.CompareExchange(ref semaphoreState, 1, 0) == 1);
-                    semaphore ??= new SemaphoreSlim(1, 1);
-                    Interlocked.Exchange(ref semaphoreState, 0);
-                    if (!await semaphore.WaitAsync(timeout, cancellation))
-                    {
-                        FinalizeValidation(false);
-                        cancellation.ThrowIfCancellationRequested();
-                        throw new TimeoutException();
-                    }
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    void FinalizeValidation(bool needToRelease)
-    {
-        if (needToRelease) 
-            semaphore!.Release();
-
-        if (Interlocked.Decrement(ref semaphoreCount) == 0)
-        {
-            SpinWait.SpinUntil(() => Interlocked.CompareExchange(ref semaphoreState, 1, 0) == 1);
-            semaphore?.Dispose();
-            semaphore = null;
-            Interlocked.Exchange(ref semaphoreState, 0);
-        }
-    }
-    #endregion // Validation processing
 }
 
 public static partial class FlatValidator

@@ -193,12 +193,12 @@ public class MultithreadTests
         var syncConditionsValidator = new Sync_Conditions_Validator();
         var asyncConditionsValidator = new Async_Conditions_Validator();
         var options = new ParallelOptions() { MaxDegreeOfParallelism = 10 };
-        Parallel.ForEach(Enumerable.Range(1, 100), options, _ =>
+        Parallel.ForEach(Enumerable.Range(1, 10000), options, _ =>
         {
             try
             {
-                var synchResult = syncConditionsValidator.Validate(model, TimeSpan.FromSeconds(10000));
-                var asyncResult = asyncConditionsValidator.Validate(model, TimeSpan.FromSeconds(10000));
+                var synchResult = syncConditionsValidator.Validate(model, TimeSpan.FromSeconds(1));
+                var asyncResult = asyncConditionsValidator.Validate(model, TimeSpan.FromSeconds(1));
             }
             catch (Exception ex)
             {
@@ -215,12 +215,12 @@ public class MultithreadTests
         var syncConditionsValidator = new Sync_Conditions_Validator();
         var asyncConditionsValidator = new Async_Conditions_Validator();
         var options = new ParallelOptions() { MaxDegreeOfParallelism = 10 };
-        Parallel.ForEach(Enumerable.Range(1, 100), options, async _ =>
+        Parallel.ForEach(Enumerable.Range(1, 10000), options, async _ =>
         {
             try
             {
-                var synchResult = await syncConditionsValidator.ValidateAsync(model, TimeSpan.FromSeconds(10000));
-                var asyncResult = await asyncConditionsValidator.ValidateAsync(model, TimeSpan.FromSeconds(10000));
+                var synchResult = await syncConditionsValidator.ValidateAsync(model, TimeSpan.FromSeconds(1));
+                var asyncResult = await asyncConditionsValidator.ValidateAsync(model, TimeSpan.FromSeconds(1));
             }
             catch (Exception ex)
             {

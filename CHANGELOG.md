@@ -4,6 +4,12 @@
 - Exception on first error.
 - Specific ValidationFuncs (?).
 
+### 2.6.2 - 2025-05-28
+- Minor bug of the func IsAbsoluteUri() fixed.
+- Minor performance improvements (suggested by DoctorKrolic).
+- Simplified parallel execution.
+- Test has improved.
+
 ### 2.6.1 - 2025-03-08
 - _Obsolete_ methods removed.
 
