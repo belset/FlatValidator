@@ -14,13 +14,13 @@ public record class RateRequest(Guid RateId, string Metadata)
             if (method == HttpMethods.Post)
             {
                 ValidIf(m => m.RateId == Guid.Empty,
-                        m => $"Bad RateID ({m.RateId}) for POST method.",
+                        m => $"Bad RateID ({m.RateId}) for POST method (try rateId: 00000000-0000-0000-0000-000000000000).",
                         m => m.RateId);
             }
             else if (method == HttpMethods.Put)
             {
                 ErrorIf(m => m.RateId == Guid.Empty,
-                        m => $"Bad RateID ({m.RateId}) for PUT method.",
+                        m => $"Bad RateID ({m.RateId}) for PUT method (cannot be 00000000-0000-0000-0000-000000000000).",
                         m => m.RateId);
             }
         }

@@ -31,6 +31,7 @@ app.MapPost("/rates", (RateRequest entity, CancellationToken cancellationToken) 
 {
     return TypedResults.Ok(entity);
 })
+.WithDescription("Must be equal to Guid.Empty")
 .AddEndpointFilter<ValidationFilter<RateRequest>>()
 .WithOpenApi();
 
@@ -39,6 +40,7 @@ app.MapPut("/rates", (RateRequest entity, CancellationToken cancellationToken) =
 {
     return TypedResults.Ok(entity);
 })
+.WithDescription("Must NOT be equal to Guid.Empty")
 .AddEndpointFilter<ValidationFilter<RateRequest>>()
 .WithOpenApi();
 
