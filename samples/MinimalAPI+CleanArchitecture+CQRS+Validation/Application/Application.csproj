@@ -13,8 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FlatValidator" Version="2.6.0" />
-    <PackageReference Include="FlatValidator.DependencyInjection" Version="2.6.0" />
+    <PackageReference Include="FlatValidator" Version="2.6.2" />
+    <PackageReference Include="FlatValidator.DependencyInjection" Version="2.6.2" />
     <PackageReference Include="Scrutor" Version="6.0.1" />
   </ItemGroup>
 
