@@ -200,20 +200,13 @@ public static partial class FlatValidatorFuncs
         var longDatePatternScore = 0;
         // DDMMYYYY, MMDDYYYY, YYYYMMDD - long date-related patterns in the password
         const string longDatePattern = @"(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[0-2])(19\d{2}|202\d{1})|(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(19\d{2}|202\d{1})|(19\d{2}|202\d{1})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])";
-#if (NET7_0_OR_GREATER)
         score -= longDatePatternScore = 5 * Regex.Count(password, longDatePattern, RegexOptions.Compiled);
-#else
-        score -= longDatePatternScore = 5 * Regex.Matches(password, longDatePattern, RegexOptions.Compiled).Count();
-#endif
+
         if (longDatePatternScore == 0)
         {
             // DDMMYY, MMDDYY, YYMMDD - short date-related patterns in the password
             const string shortDatePattern = @"(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[0-2])\d{2}|(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])\d{2}|\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])";
-#if (NET7_0_OR_GREATER)
             score -= 5 * Regex.Count(password, shortDatePattern);
-#else
-            score -= 5 * Regex.Matches(password, shortDatePattern).Count();
-#endif
         }
 
         // Keyboard-related patterns
