@@ -78,6 +78,12 @@ public static partial class FlatValidatorFuncs
     public static PasswordStrength GetPasswordStrength(string? password) => 
         GetPasswordStrength(password, out _, out _);
 
+    [GeneratedRegex(@"(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[0-2])(19\d{2}|202\d{1})|(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(19\d{2}|202\d{1})|(19\d{2}|202\d{1})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])")]
+    private static partial Regex LongDateRegex();
+
+    [GeneratedRegex(@"(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[0-2])\d{2}|(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])\d{2}|\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])")]
+    private static partial Regex ShortDateRegex();
+
     /// <summary>
     /// Calculate the cardinality of the minimal character sets necessary to brute force the password (roughly).
     /// </summary>
@@ -198,13 +204,11 @@ public static partial class FlatValidatorFuncs
         score -= repeatableCount;
 
         // DDMMYYYY, MMDDYYYY, YYYYMMDD - long date-related patterns in the password
-        const string longDatePattern = @"(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[0-2])(19\d{2}|202\d{1})|(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(19\d{2}|202\d{1})|(19\d{2}|202\d{1})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])";
-        var longDatePatternScore = 5 * Regex.Count(password, longDatePattern, RegexOptions.Compiled);
+        var longDatePatternScore = 5 * LongDateRegex().Count(password);
         if (longDatePatternScore == 0)
         {
             // DDMMYY, MMDDYY, YYMMDD - short date-related patterns in the password
-            const string shortDatePattern = @"(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[0-2])\d{2}|(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])\d{2}|\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])";
-            longDatePatternScore = 5 * Regex.Count(password, shortDatePattern, RegexOptions.Compiled);
+            longDatePatternScore = 5 * ShortDateRegex().Count(password);
         }
         score -= longDatePatternScore;
 
