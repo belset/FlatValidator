@@ -2,6 +2,12 @@
 
 The `FlatValidator` is a validation library for .NET that delivers an high performance and memory prudence by using lambda-based and strongly-typed rules.
 
+## Benchmarks
+
+![With no errors](doc/images/Benchmark_with_NoErrors.png)
+
+![With many errors](doc/images/Benchmark_with_ManyErrors.png)
+
 ## Quick examples
 
 In general, there are two simple ways to validate custom data with the `FlatValidator`.
@@ -108,6 +114,42 @@ if (!result) // check, is there any errors?
 }
 ```
 
+### 2.1 Blazor example
+```html
+<EditForm Model="@model" OnSubmit="@HandleSubmit">
+    <InputText @bind-Value="model.Forename" />
+    <InputText @bind-Value="model.Surname" />
+    <button type="submit">Submit</button>
+
+    @if (validationResult?.IsValid)
+    {
+        <ul>
+        @foreach (var error in validationResult.Errors)
+        {
+            <li>@error.Message</li>
+        }
+        </ul>
+    }
+</EditForm>
+```
+```cs
+@code {
+    private UserModel model = new();
+    private ValidationResult? validationResult;
+
+    private async Task HandleSubmit()
+    {
+        var validator = new UserValidator();
+        validationResult = await validator.ValidateAsync(model);
+
+        if (!validationResult.IsValid)
+        {
+            // Proceed with saving or API call
+        }
+    }
+}
+```
+
 ### 3. Meta data
 Using MetaData can extend functionality and can help to return certain data beyond the validator:
 ```js
@@ -186,13 +228,6 @@ The `ErrorId()` and `ValidIf()` have two possibilities to return some error mess
 ### 6. Native AOT
 Yes, it is ready for Native AOT. \
 Repository contains an example with the usage of `Minimal API` + `FlatValidator` in Native AOT approach.
-
-
-## Benchmarks
-
-![With no errors](doc/images/Benchmark_with_NoErrors.png)
-
-![With many errors](doc/images/Benchmark_with_ManyErrors.png)
 
 
 
