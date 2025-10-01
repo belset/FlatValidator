@@ -109,6 +109,41 @@ if (!result) // check, is there any errors?
 > **TIP** -
 > The package **`FlatValidator.DependencyInjection`** helps you to register all inherited validators in the ServiceCollection automatically.
 
+### 2.1 Blazor example
+```html
+<EditForm Model="@model" OnSubmit="@HandleSubmit">
+    <InputText @bind-Value="model.Forename" />
+    <InputText @bind-Value="model.Surname" />
+    <button type="submit">Submit</button>
+
+    @if (validationResult?.IsValid)
+    {
+        <ul>
+        @foreach (var error in validationResult.Errors)
+        {
+            <li>@error.Message</li>
+        }
+        </ul>
+    }
+</EditForm>
+```
+```cs
+@code {
+    private UserModel model = new();
+    private ValidationResult? validationResult;
+
+    private async Task HandleSubmit()
+    {
+        var validator = new UserValidator();
+        validationResult = await validator.ValidateAsync(model);
+
+        if (!validationResult.IsValid)
+        {
+            // Proceed with saving or API call
+        }
+    }
+}
+```
 
 ### 3. Meta data
 Using MetaData can extend functionality and can help to return certain data beyond the validator:

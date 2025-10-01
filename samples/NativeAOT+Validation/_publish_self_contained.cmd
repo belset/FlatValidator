@@ -1,0 +1,1 @@
+start dotnet publish --self-contained
