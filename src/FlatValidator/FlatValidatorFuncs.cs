@@ -40,27 +40,42 @@ public static partial class FlatValidatorFuncs
     #endregion
 
     #region Email 
-    private const string _emailPattern = @"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-||_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+([a-z]+|\d|-|\.{0,1}|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])?([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$";
-    private static Regex? _IsEmailRegex = null;
-    public static bool IsEmail(this string? email) =>
-        IsEmpty(email) ? false : (_IsEmailRegex ??= new Regex(_emailPattern, RegexOptions.Compiled)).IsMatch(email!);
+
+    //[GeneratedRegex(@"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+([a-z]+|\d|-|\.{0,1}|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])?([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$")]
+    //private static partial Regex s_IsEmailRegex();
+    
+    /// <summary>
+    /// Check, the argument is valid email address
+    /// </summary>
+    public static bool IsEmail(this string? email) => System.Net.Mail.MailAddress.TryCreate(email, out _);
     #endregion
 
     #region PhoneNumber 
-    private const string _phoneNumberPattern = @"^\+?[0-9]{1,3}[-\s]?(\(?[0-9]{2,3}\)|[0-9]{2,3})\s?([0-9]{1,3}\-?[0-9]{2,3}\-?[0-9]{2,3}|[0-9]{1,3}\s?[0-9]{2,3}\s?[0-9]{2,3})$"; // @"^([\+]?[0-9]?[0-9][0-9][-]?|[0])?[1-9][0-9]{8}$";
-    private static Regex? _phoneNumberRegex = null;
+    [GeneratedRegex(@"^(?!\+?(?:990|997|999)\b)\+?\d{1,3}[-\s]?(?:\(\d{2,3}\)|\d{2,3})\s?(?:\d{1,3}[-\s]?\d{2,3}[-\s]?\d{2,4})(\s+\p{L}+\.?\d+)?$")]
+    private static partial Regex s_IsPhoneNumberRegex();
+
+    /// <summary>
+    /// Check, the argument is valid phone number
+    /// </summary>
     public static bool IsPhoneNumber(this string? phoneNumber) =>
-        IsEmpty(phoneNumber) ? false : (_phoneNumberRegex ??= new Regex(_phoneNumberPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture)).IsMatch(phoneNumber!);
+        IsEmpty(phoneNumber) ? false : s_IsPhoneNumberRegex().IsMatch(phoneNumber!);
     #endregion
 
     #region CreditCardNumber
-    private const string _creditCardNumberPattern = @"^(1298|1267|4512|4567|8901|8933)([\-\s]?[0-9]{4}){3}$";
-    private static Regex? _creditCardNumberRegex = null;
+    [GeneratedRegex(@"^\+?[0-9]{1,3}[-\s]?(\(?[0-9]{2,3}\)|[0-9]{2,3})\s?([0-9]{1,3}\-?[0-9]{2,3}\-?[0-9]{2,3}|[0-9]{1,3}\s?[0-9]{2,3}\s?[0-9]{2,3})$")]
+    private static partial Regex s_IsCreditCardNumberRegex();
+
+    /// <summary>
+    /// Check, the argument is valid credit card number
+    /// </summary>
     public static bool IsCreditCardNumber(this string? creditCardNumber) =>
-        string.IsNullOrWhiteSpace(creditCardNumber) ? false : (_creditCardNumberRegex ??= new Regex(_creditCardNumberPattern, RegexOptions.Compiled)).IsMatch(creditCardNumber);
+        string.IsNullOrWhiteSpace(creditCardNumber) ? false : s_IsCreditCardNumberRegex().IsMatch(creditCardNumber);
     #endregion
 
     #region CreditCardExpiryDate
+    /// <summary>
+    /// Check, the argument is not expired credit card date
+    /// </summary>
     public static bool IsCreditCardExpiryDate(this string? creditCardExpiryDate)
     {
         CultureInfo ci = new CultureInfo(CultureInfo.CurrentCulture.LCID);
@@ -76,40 +91,55 @@ public static partial class FlatValidatorFuncs
     #endregion
 
     #region CreditCardCVV
-    private const string _creditCardCVVPattern = @"^\d{3}$";
-    private static Regex? _creditCardCVVRegex = null;
+    [GeneratedRegex(@"^\d{3}$", RegexOptions.CultureInvariant)]
+    private static partial Regex s_IsCreditCardCVVRegex();
+
+    /// <summary>
+    /// Check, the argument is valid CVV
+    /// </summary>
     public static bool IsCreditCardCVV(this string? creditCardCVV) =>
-        creditCardCVV.IsEmpty() ? false : (_creditCardCVVRegex ??= new Regex(_creditCardCVVPattern, RegexOptions.Compiled)).IsMatch(creditCardCVV!);
+        creditCardCVV.IsEmpty() ? false : s_IsCreditCardCVVRegex().IsMatch(creditCardCVV!);
     #endregion
 
     #region Language recognizing utils - https://learn.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions#SupportedNamedBlocks
 
+    [GeneratedRegex(@"\P{IsCyrillic}")] private static partial Regex s_AllCyrillicRegex();
     /// <summary>
     /// True, if there are only Cyrillic symbols.
     /// </summary>
-    public static bool AllCyrillic(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\P{IsCyrillic}");
+    public static bool AllCyrillic(string stringToCheck) => !s_AllCyrillicRegex().IsMatch(stringToCheck);
 
+    [GeneratedRegex(@"\p{IsCyrillic}")] private static partial Regex s_HasCyrillicRegex();
     /// <summary>
     /// True, if there is at least one Cyrillic symbol.
     /// </summary>
-    public static bool HasCyrillic(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\p{IsCyrillic}");
+    public static bool HasCyrillic(string stringToCheck) => !s_HasCyrillicRegex().IsMatch(stringToCheck);
 
+    [GeneratedRegex(@"\P{IsCyrillicSupplement}")] private static partial Regex s_AllCyrillicSupplementRegex();
     /// <summary>
     /// Cyrillic Supplement is a Unicode block containing Cyrillic letters for writing several minority languages, 
     /// including Abkhaz, Kurdish, Komi, Mordvin, Aleut, Azerbaijani, and Jakovlev's Chuvash orthography.
     /// </summary>
-    public static bool AllCyrillicSupplement(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\P{IsCyrillicSupplement}");
-    public static bool HasCyrillicSupplement(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\p{IsCyrillicSupplement}");
+    public static bool AllCyrillicSupplement(string stringToCheck) => !s_AllCyrillicSupplementRegex().IsMatch(stringToCheck);
 
+    [GeneratedRegex(@"\p{IsCyrillicSupplement}")] private static partial Regex s_HasCyrillicSupplementRegex();
+    /// <summary>
+    /// Cyrillic Supplement is a Unicode block containing Cyrillic letters for writing several minority languages, 
+    /// including Abkhaz, Kurdish, Komi, Mordvin, Aleut, Azerbaijani, and Jakovlev's Chuvash orthography.
+    /// </summary>
+    public static bool HasCyrillicSupplement(string stringToCheck) => !s_HasCyrillicSupplementRegex().IsMatch(stringToCheck);
+
+    [GeneratedRegex(@"\P{IsBasicLatin}")] private static partial Regex s_AllBasicLatinRegex();
     /// <summary>
     /// True, if there are only Latin symbols.
     /// </summary>
-    public static bool AllBasicLatin(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\P{IsBasicLatin}");
-    
+    public static bool AllBasicLatin(string stringToCheck) => !s_AllBasicLatinRegex().IsMatch(stringToCheck);
+
+    [GeneratedRegex(@"\p{IsBasicLatin}")] private static partial Regex s_HasBasicLatinRegex();
     /// <summary>
     /// True, if there is at least one Latin symbol.
     /// </summary>
-    public static bool HasBasicLatin(string stringToCheck) => !Regex.IsMatch(stringToCheck, @"\p{IsBasicLatin}");
+    public static bool HasBasicLatin(string stringToCheck) => !s_HasBasicLatinRegex().IsMatch(stringToCheck);
 
     #endregion // Language recognizing utils
 }
