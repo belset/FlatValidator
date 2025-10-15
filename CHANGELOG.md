@@ -4,8 +4,10 @@
 - Exception on first error.
 - Specific ValidationFuncs (?).
 
-### 
-
+### 2.6.3 - 2025-10-15
+- The source generated Regex applied to speed up.
+- The func IsEmail() improved.
+- The func IsPhoneNumber() improved.
 
 ### 2.6.2 - 2025-05-28
 - Minor bug of the func IsAbsoluteUri() fixed.
