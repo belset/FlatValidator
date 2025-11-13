@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <Title>Extention of the FlatValidator package to register custom inherited validators in the IServiceCollection (Microsoft.Extensions.Dependencyinjection.Abstractions) automatically.</Title>
     <Description>The FlatValidator.DependencyInjection package extends the FlatValidator package to register all custom inherited validators in the IServiceCollection (Microsoft.Extensions.Dependencyinjection.Abstractions) automatically. A validation library for .NET that provides high performance and memory efficiency with the usage of strongly-typed and lambda-based rules.</Description>
     <Authors>Ilya Rudenka (@belset)</Authors>
     <Copyright>© Ilya Rudenka (@belset) 2024</Copyright>
     <Product>FlatValidator</Product>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-    <Version>2.6.3</Version>
-    <PackageVersion>2.6.3</PackageVersion>
+    <Version>3.0.0</Version>
+    <PackageVersion>3.0.0</PackageVersion>
     <PackageId>FlatValidator.DependencyInjection</PackageId>
     <PackageTags>validation validator InputValidation DataAnnotation</PackageTags>
     <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md</PackageReleaseNotes>

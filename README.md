@@ -4,9 +4,9 @@ The `FlatValidator` is a validation library for .NET that delivers an high perfo
 
 ## Benchmarks
 
-![With no errors](doc/images/Benchmark_with_NoErrors.png)
+![With no errors](doc/images/benchmark1.png)
 
-![With many errors](doc/images/Benchmark_with_ManyErrors.png)
+![With many errors](doc/images/benchmark2.png)
 
 ## Quick examples
 

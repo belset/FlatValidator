@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <Title>A validation library for .NET that provides high performance and memory efficiency with the usage of strongly-typed and lambda-based rules.</Title>
     <Description>A validation library for .NET that delivers an high-performance and memory prudence by using lambda-based and strongly-typed rules.</Description>
     <Authors>Ilya Rudenka (@belset)</Authors>
     <Copyright>© Ilya Rudenka (@belset) 2024</Copyright>
     <Product>FlatValidator</Product>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-    <Version>2.6.3</Version>
-    <PackageVersion>2.6.3</PackageVersion>
+    <Version>3.0.0</Version>
+    <PackageVersion>3.0.0</PackageVersion>
     <PackageId>FlatValidator</PackageId>
     <PackageTags>validation validator InputValidation DataAnnotation</PackageTags>
     <PackageReleaseNotes>Please read the guide at https://github.com/belset/FlatValidator/blob/main/CHANGELOG.md</PackageReleaseNotes>
