@@ -35,10 +35,12 @@ public static class WebApplicationExtensions
 
         #region Swagger
 
+        _ = app.MapOpenApi("/openapi/v1.json");
+
         _ = app.UseSwagger();
         _ = app.UseSwaggerUI(c =>
             c.SwaggerEndpoint(
-                "/swagger/v1/swagger.json",
+                "/openapi/v1.json",
                 $"MinimalAPI - {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(app.Environment.EnvironmentName)} - V1"));
 
         #endregion Swagger

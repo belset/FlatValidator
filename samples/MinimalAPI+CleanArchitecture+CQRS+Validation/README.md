@@ -4,7 +4,7 @@ It is a sample template that's using an MinimalAPI with the well-known [Clean Ar
 
 ## Prerequisites
 
-The solution prepared to be built on the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), you need to install that before it will start working for you. 
+The solution prepared to be built on the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0), you need to install that before it will start working for you. 
 
 ## Features 
 
@@ -103,6 +103,4 @@ The solution divided into 3 functional projects. All serve their own purpose and
 
 ## Support
 
-If you like this, or want to checkout my other work, please touch me on [LinkedIn](https://www.linkedin.com/in/ilya-rudenka-398877203/) or [GitHub](https://github.com/belset), and consider supporting me by sponsoring the project.
-
-[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png 'Buy me a coffee')](https://www.buymeacoffee.com/belset)
+If you like this, or want to checkout my other work, please touch me on [LinkedIn](https://www.linkedin.com/in/ilya-rudenka/) or [GitHub](https://github.com/belset), and consider supporting me by sponsoring the project.
