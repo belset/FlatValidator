@@ -103,6 +103,4 @@ The solution divided into 3 functional projects. All serve their own purpose and
 
 ## Support
 
-If you like this, or want to checkout my other work, please touch me on [LinkedIn](https://www.linkedin.com/in/ilya-rudenka-398877203/) or [GitHub](https://github.com/belset), and consider supporting me by sponsoring the project.
-
-[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png 'Buy me a coffee')](https://www.buymeacoffee.com/belset)
+If you like this, or want to checkout my other work, please touch me on [LinkedIn](https://www.linkedin.com/in/ilya-rudenka/) or [GitHub](https://github.com/belset), and consider supporting me by sponsoring the project.
