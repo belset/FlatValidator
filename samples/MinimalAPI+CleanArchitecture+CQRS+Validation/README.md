@@ -4,7 +4,7 @@ It is a sample template that's using an MinimalAPI with the well-known [Clean Ar
 
 ## Prerequisites
 
-The solution prepared to be built on the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), you need to install that before it will start working for you. 
+The solution prepared to be built on the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0), you need to install that before it will start working for you. 
 
 ## Features 
 

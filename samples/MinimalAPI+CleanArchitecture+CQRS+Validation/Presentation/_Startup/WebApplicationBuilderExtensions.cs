@@ -9,7 +9,7 @@ using Application._Startup;
 using Infrastructure._Startup;
 
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 using Serilog;
 
@@ -53,7 +53,8 @@ public static class WebApplicationBuilderExtensions
 
         #region Swagger
 
-        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddOpenApi("v1");
+
         builder.Services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1",

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>Ilya Rudenka</Authors>
     <Copyright>(c) 2024 Ilya Rudenka</Copyright>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -13,9 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FlatValidator" Version="2.6.3" />
-    <PackageReference Include="FlatValidator.DependencyInjection" Version="2.6.3" />
-    <PackageReference Include="Scrutor" Version="6.0.1" />
+    <PackageReference Include="FlatValidator" Version="3.0.0" />
+    <PackageReference Include="FlatValidator.DependencyInjection" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="10.0.0" />
+    <PackageReference Include="Scrutor" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>

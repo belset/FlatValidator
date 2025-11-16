@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>Ilya Rudenka</Authors>
     <Copyright>(c) 2024 Ilya Rudenka</Copyright>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -13,10 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Bogus" Version="35.6.1" />
-    <PackageReference Include="FlatValidator" Version="2.6.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.1" />
+    <PackageReference Include="AutoMapper" Version="15.1.0" />
+    <PackageReference Include="Bogus" Version="35.6.5" />
+    <PackageReference Include="FlatValidator" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
