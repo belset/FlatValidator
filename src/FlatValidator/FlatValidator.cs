@@ -21,26 +21,6 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
     #endregion // Members
 
-    #region If methods
-
-    [Obsolete]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void If(Func<TModel, bool> conditions, Action<TModel> @then, Action<TModel> @else = null!)
-        => rules.Add(RuleType.WhenSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
-
-    [Obsolete]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void If(Func<TModel, ValueTask<bool>> conditions, Action<TModel> @then, Action<TModel> @else = null!)
-        => rules.Add(RuleType.WhenAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
-
-    [Obsolete]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void If(Func<TModel, CancellationToken, ValueTask<bool>> conditions, 
-                            Action<TModel, CancellationToken> @then, Action<TModel, CancellationToken> @else = null!)
-        => rules.Add(RuleType.WhenCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
-
-    #endregion // If methods
-
     #region When methods
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
