@@ -4,8 +4,6 @@ using System.Validation;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpContextAccessor();
@@ -23,8 +21,7 @@ app.MapPost("/emails", (RegisterRequest entity, CancellationToken cancellationTo
 {
     return TypedResults.Ok(entity);
 })
-.AddEndpointFilter<ValidationFilter<RegisterRequest>>()
-.WithOpenApi();
+.AddEndpointFilter<ValidationFilter<RegisterRequest>>();
 
 // The entity will be valid if entity.RateId is empty (look into RateRequest.cs)
 app.MapPost("/rates", (RateRequest entity, CancellationToken cancellationToken) =>
@@ -32,8 +29,7 @@ app.MapPost("/rates", (RateRequest entity, CancellationToken cancellationToken) 
     return TypedResults.Ok(entity);
 })
 .WithDescription("Must be equal to Guid.Empty")
-.AddEndpointFilter<ValidationFilter<RateRequest>>()
-.WithOpenApi();
+.AddEndpointFilter<ValidationFilter<RateRequest>>();
 
 // The entity will be valid if entity.RateId is NOT empty  (look into RateRequest.cs)
 app.MapPut("/rates", (RateRequest entity, CancellationToken cancellationToken) =>
@@ -41,8 +37,7 @@ app.MapPut("/rates", (RateRequest entity, CancellationToken cancellationToken) =
     return TypedResults.Ok(entity);
 })
 .WithDescription("Must NOT be equal to Guid.Empty")
-.AddEndpointFilter<ValidationFilter<RateRequest>>()
-.WithOpenApi();
+.AddEndpointFilter<ValidationFilter<RateRequest>>();
 
 
 app.Run();
