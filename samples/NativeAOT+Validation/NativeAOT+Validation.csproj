@@ -2,12 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <Authors>Ilya Rudenka</Authors>
     <Copyright>(c) 2024 Ilya Rudenka</Copyright>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
       <PublishAot>true</PublishAot>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;NETSDK1233;</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;NETSDK1233;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
