@@ -5,7 +5,7 @@
 /// </summary>
 public interface IEmailService
 {
-    ValueTask<bool> EmailExists(RegisterRequest entity);
+    ValueTask<bool> IsGmailComEmail(RegisterRequest entity);
 }
 
 /// <summary>
@@ -14,6 +14,6 @@ public interface IEmailService
 /// </summary>
 public class EmailService : IEmailService
 {
-    public ValueTask<bool> EmailExists(RegisterRequest entity)
-        => ValueTask.FromResult(entity.EmailOrUsername.Length % 2 == 0);
+    public ValueTask<bool> IsGmailComEmail(RegisterRequest entity)
+        => ValueTask.FromResult(entity.Email.EndsWith("gmail.com"));
 }
