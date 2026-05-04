@@ -17,6 +17,7 @@ try
             .WithOption(ConfigOptions.DisableLogFile, false)
             .WithOption(ConfigOptions.KeepBenchmarkFiles, false)
             .WithOption(ConfigOptions.JoinSummary, true)
+            .HideColumns("Gen0", "Gen1", "Gen2", "RatioSD")
     );
 
     Console.WriteLine();
@@ -28,6 +29,7 @@ try
             .WithOption(ConfigOptions.DisableLogFile, false)
             .WithOption(ConfigOptions.KeepBenchmarkFiles, false)
             .WithOption(ConfigOptions.JoinSummary, true)
+            .HideColumns("Gen0", "Gen1", "Gen2", "RatioSD")
     );
 }
 catch (Exception ex)
