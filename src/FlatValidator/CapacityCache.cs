@@ -3,7 +3,7 @@
 internal class CapacityCache
 {
     internal const int DefaultCapacity = 8;
-    static int[] capacities = new int[256];
+    static int[] capacities = new int[128];
 
     static CapacityCache()
     {
@@ -12,13 +12,13 @@ internal class CapacityCache
 
     internal static int Get<TModel>()
     {
-        return Volatile.Read(ref capacities[typeof(TModel).GetHashCode() & 0xFF]);
+        return Volatile.Read(ref capacities[typeof(TModel).GetHashCode() & 0x7F]);
     }
     internal static void Set<TModel>(int value)
     {
-        var index = typeof(TModel).GetHashCode() & 0xFF;
+        var index = typeof(TModel).GetHashCode() & 0x7F;
         var capacity = Volatile.Read(ref capacities[index]);
-        capacity = ((capacity + capacity + capacity + value) >> 2) + 1;
+        capacity = ((capacity + value) >> 1) + 8;
         Volatile.Write(ref capacities[index], capacity);
     }
 }

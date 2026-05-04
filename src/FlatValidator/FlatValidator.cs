@@ -544,14 +544,14 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                             {
                                 var startIndex = rules.Count;
                                 ((Action<TModel>)rule.WhenThen)(model);
-                                await ProcessRules(startIndex, rules.Count, validationResult);
+                                await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
                             }
                         }
                         else if (rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
                             ((Action<TModel>)rule.WhenElse)(model);
-                            await ProcessRules(startIndex, rules.Count, validationResult);
+                            await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
                         }
                         break;
 
@@ -562,14 +562,14 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                             {
                                 var startIndex = rules.Count;
                                 ((Action<TModel>)rule.WhenThen)(model);
-                                await ProcessRules(startIndex, rules.Count, validationResult);
+                                await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
                             }
                         }
                         else if (rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
                             ((Action<TModel>)rule.WhenElse)(model);
-                            await ProcessRules(startIndex, rules.Count, validationResult);
+                            await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
                         }
                         break;
 
@@ -580,14 +580,14 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
                             {
                                 var startIndex = rules.Count;
                                 ((Action<TModel, CancellationToken>)rule.WhenThen)(model, cancellation);
-                                await ProcessRules(startIndex, rules.Count, validationResult);
+                                await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
                             }
                         }
                         else if (rule.WhenElse is not null)
                         {
                             var startIndex = rules.Count;
                             ((Action<TModel, CancellationToken>)rule.WhenElse)(model, cancellation);
-                            await ProcessRules(startIndex, rules.Count, validationResult);
+                            await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
                         }
                         break;
                 }

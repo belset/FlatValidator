@@ -22,7 +22,7 @@ public class MetaDataTests
     public void _01_Add_MetaData_BeforeRules()
     {
         var now = DateTimeOffset.UtcNow.ToString();
-        var result = FlatValidator.Validate(DateTime.Now, v =>
+        var result = System.Validation.FlatValidator.Validate(DateTime.Now, v =>
         {
             v.MetaData["ValidationTime"] = now;
 
@@ -39,7 +39,7 @@ public class MetaDataTests
     public void _01_Add_MetaData_AfterRules()
     {
         var stringNow = DateTimeOffset.UtcNow.ToString();
-        var result = FlatValidator.Validate(DateTime.Now, v =>
+        var result = System.Validation.FlatValidator.Validate(DateTime.Now, v =>
         {
             v.ErrorIf(m => m.AddDays(1) > DateTime.Now, "", m => "Any text as PropName1");
 
@@ -56,7 +56,7 @@ public class MetaDataTests
     public void _02_Add_MetaData_InsideOfRule()
     {
         var stringNow = DateTimeOffset.UtcNow.ToString();
-        var result = FlatValidator.Validate(DateTime.Now, v =>
+        var result = System.Validation.FlatValidator.Validate(DateTime.Now, v =>
         {
             v.ErrorIf(m => m.AddDays(1) > DateTime.Now, m => 
             {

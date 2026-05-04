@@ -27,7 +27,7 @@ public class MultithreadTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ValidIf((model, cancellationToken) =>
@@ -58,7 +58,7 @@ public class MultithreadTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.When(
@@ -93,7 +93,7 @@ public class MultithreadTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.When(
@@ -128,7 +128,7 @@ public class MultithreadTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.When(
