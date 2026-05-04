@@ -121,7 +121,7 @@ if (!result) // check, is there any errors?
     <InputText @bind-Value="model.Surname" />
     <button type="submit">Submit</button>
 
-    @if (validationResult?.IsValid)
+    @if (validationResult is not null && !validationResult.IsValid)
     {
         <ul>
         @foreach (var error in validationResult.Errors)
@@ -139,12 +139,19 @@ if (!result) // check, is there any errors?
 
     private async Task HandleSubmit()
     {
+        validationResult = await FlatValidator.ValidateAsync(model, v => 
+        {
+            v.ValidIf(m => m.IsEmail(), m => $"Email {m.Email} is invalid.", m => m.Email);
+        });
+
+        // or approach with inheritance
         var validator = new UserValidator();
         validationResult = await validator.ValidateAsync(model);
 
-        if (!validationResult.IsValid)
+        //
+        if (validationResult.IsValid)
         {
-            // Proceed with saving or API call
+            // Proceed with saving valid data
         }
     }
 }
