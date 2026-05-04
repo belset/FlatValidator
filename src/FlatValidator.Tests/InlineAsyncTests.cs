@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Validation;
 
 namespace FlatValidatorTests;
 
@@ -22,7 +21,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ErrorIf((model, cancellationToken) =>
@@ -48,7 +47,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ErrorIf((model, cancellationToken) =>
@@ -82,7 +81,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ErrorIf((model, cancellationToken) =>
@@ -108,7 +107,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ErrorIf((model, cancellationToken) =>
@@ -142,7 +141,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ErrorIf((model, cancellationToken) =>
@@ -168,7 +167,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ErrorIf((model, cancellationToken) =>
@@ -202,7 +201,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ValidIf((model, cancellationToken) =>
@@ -228,7 +227,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ValidIf((model, cancellationToken) =>
@@ -262,7 +261,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ValidIf((model, cancellationToken) =>
@@ -288,7 +287,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ValidIf((model, cancellationToken) =>
@@ -322,7 +321,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ValidIf((model, cancellationToken) =>
@@ -348,7 +347,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.ValidIf((model, cancellationToken) =>
@@ -381,7 +380,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.When(
@@ -418,7 +417,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.When(
@@ -455,7 +454,7 @@ public class InlineAsyncTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await FlatValidator.ValidateAsync(model, validator =>
+            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.When(
@@ -492,14 +491,14 @@ public class InlineAsyncTests
     {
         var model = new TestModel(-1, "", new DateOnly(2000, 1, 1), -100, "", null!);
 
-        var result1 = FlatValidator.Validate(model, v =>
+        var result1 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(async m => await ValueTask.FromResult(m.Id < 0), "Id is incorrect", m => m.Id);
         });
         Assert.True(result1.Errors.Count == 1);
         Assert.True(result1.Errors[0].PropertyName == "Id" && result1.Errors[0].ErrorMessage == "Id is incorrect");
 
-        var result2 = FlatValidator.Validate(model, v =>
+        var result2 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(async m => await ValueTask.FromResult(m.Id < 0), m => $"Id is incorrect ({m.Id})", m => m.Id);
         });
@@ -514,14 +513,14 @@ public class InlineAsyncTests
     {
         var model = new TestModel(-1, "", new DateOnly(2000, 1, 1), -100, "", null!);
 
-        var result1 = FlatValidator.Validate(model, v =>
+        var result1 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(async m => await ValueTask.FromResult(m.Id > 0), "Id is incorrect", m => m.Id);
         });
         Assert.True(result1.Errors.Count == 1);
         Assert.True(result1.Errors[0].PropertyName == "Id" && result1.Errors[0].ErrorMessage == "Id is incorrect");
 
-        var result2 = FlatValidator.Validate(model, v =>
+        var result2 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(async m => await ValueTask.FromResult(m.Id > 0), m => $"Id is incorrect ({m.Id})", m => m.Id);
         });
@@ -536,7 +535,7 @@ public class InlineAsyncTests
     {
         var model = new TestModel(-1, "", new DateOnly(2000, 1, 1), -100, "", null!);
 
-        var result1 = FlatValidator.Validate(model, v =>
+        var result1 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(async m => await ValueTask.FromResult(true), "Id,BirthDate are incorrect", m => m.Id, m => m.BirthDate);
         });
@@ -544,7 +543,7 @@ public class InlineAsyncTests
         Assert.True(result1.Errors[0].PropertyName == "Id" && result1.Errors[0].ErrorMessage == "Id,BirthDate are incorrect");
         Assert.True(result1.Errors[1].PropertyName == "BirthDate" && result1.Errors[1].ErrorMessage == "Id,BirthDate are incorrect");
 
-        var result2 = FlatValidator.Validate(model, v =>
+        var result2 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(async m => await ValueTask.FromResult(true), m => $"Id,BirthDate are incorrect ({m.Id},{m.BirthDate.ToString("yyyy-MM-dd")})", m => m.Id, m => m.BirthDate);
         });
@@ -560,7 +559,7 @@ public class InlineAsyncTests
     {
         var model = new TestModel(-1, "", new DateOnly(2000, 1, 1), -100, "", null!);
 
-        var result1 = FlatValidator.Validate(model, v =>
+        var result1 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(async m => await ValueTask.FromResult(false), "Id,BirthDate are incorrect", m => m.Id, m => m.BirthDate);
         });
@@ -568,7 +567,7 @@ public class InlineAsyncTests
         Assert.True(result1.Errors[0].PropertyName == "Id" && result1.Errors[0].ErrorMessage == "Id,BirthDate are incorrect");
         Assert.True(result1.Errors[1].PropertyName == "BirthDate" && result1.Errors[1].ErrorMessage == "Id,BirthDate are incorrect");
 
-        var result2 = FlatValidator.Validate(model, v =>
+        var result2 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(async m => await ValueTask.FromResult(false), m => $"Id,BirthDate are incorrect ({m.Id},{m.BirthDate.ToString("yyyy-MM-dd")})", m => m.Id, m => m.BirthDate);
         });
@@ -584,7 +583,7 @@ public class InlineAsyncTests
     {
         var model = new TestModel(-1, "", new DateOnly(2000, 1, 1), -100, "", null!);
 
-        var result1 = FlatValidator.Validate(model, v =>
+        var result1 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(async m => await ValueTask.FromResult(true), 
                 "Id,BirthDate,Rate are incorrect", 
@@ -595,7 +594,7 @@ public class InlineAsyncTests
         Assert.True(result1.Errors[1].PropertyName == "BirthDate" && result1.Errors[1].ErrorMessage == "Id,BirthDate,Rate are incorrect");
         Assert.True(result1.Errors[2].PropertyName == "Rate" && result1.Errors[2].ErrorMessage == "Id,BirthDate,Rate are incorrect");
 
-        var result2 = FlatValidator.Validate(model, v =>
+        var result2 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(async m => await ValueTask.FromResult(true), 
                 m => $"Id,BirthDate,Rate are incorrect ({m.Id},{m.BirthDate.ToString("yyyy-MM-dd")})", 
@@ -614,7 +613,7 @@ public class InlineAsyncTests
     {
         var model = new TestModel(-1, "", new DateOnly(2000, 1, 1), -100, "", null!);
 
-        var result1 = FlatValidator.Validate(model, v =>
+        var result1 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(async m => await ValueTask.FromResult(false), 
                 "Id,BirthDate,Rate are incorrect", 
@@ -625,7 +624,7 @@ public class InlineAsyncTests
         Assert.True(result1.Errors[1].PropertyName == "BirthDate" && result1.Errors[1].ErrorMessage == "Id,BirthDate,Rate are incorrect");
         Assert.True(result1.Errors[2].PropertyName == "Rate" && result1.Errors[2].ErrorMessage == "Id,BirthDate,Rate are incorrect");
 
-        var result2 = FlatValidator.Validate(model, v =>
+        var result2 = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(async m => await ValueTask.FromResult(false), 
                 m => $"Id,BirthDate,Rate are incorrect ({m.Id},{m.BirthDate.ToString("yyyy-MM-dd")},{m.Rate})", 

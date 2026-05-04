@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace System.Validation;
 
-internal enum RuleType : int
+internal enum RuleType : byte
 {
     ErrorSynch,
     ValidSynch,
@@ -26,10 +26,9 @@ internal enum RuleType : int
     WhenCancelledAsync,
 }
 
-[StructLayout(LayoutKind.Auto)]
+[StructLayout(LayoutKind.Sequential, Pack = 0)]
 internal struct Rule
 {
-    internal RuleType RuleType;
     internal Delegate Conditions;
     internal Delegate WhenThen;
     internal Delegate WhenElse;
@@ -38,6 +37,7 @@ internal struct Rule
     internal Expression MemberSelector1;
     internal Expression MemberSelector2;
     internal Expression MemberSelector3;
+    internal RuleType RuleType;
 }
 
 internal struct FlatValidatorRules<TModel>
@@ -51,8 +51,8 @@ internal struct FlatValidatorRules<TModel>
 
     #region Members
 
-    private const int DefaultGrowth = 8;
-    private Rule[] rules = new Rule[CapacityCache.Get<TModel>()];
+    private const int DefaultGrowth = 16;
+    private Rule[] rules = new Rule[DefaultGrowth];
     private int count = 0;
 
     internal int Count => count;
@@ -82,7 +82,7 @@ internal struct FlatValidatorRules<TModel>
         Expression memberSelector3)
     {
         if (count == rules.Length)
-            Array.Resize(ref rules, rules.Length + DefaultGrowth);
+            Array.Resize(ref rules, rules.Length + (rules.Length >> 2) + DefaultGrowth);
 
         ref var rule = ref rules[count++];
 
@@ -100,7 +100,7 @@ internal struct FlatValidatorRules<TModel>
     internal Snapshot MakeSnapshot() => new Snapshot(count);
     internal void RestoreSnapshot(in Snapshot snapshot)
     {
-        CapacityCache.Set<TModel>(count);
+        //CapacityCache.Set<TModel>(count);
 
         count = snapshot.Count;
     }

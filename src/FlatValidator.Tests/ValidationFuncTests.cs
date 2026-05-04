@@ -20,7 +20,7 @@ public class ValidationFuncTests
     [Fact]
     public void _01_String_Empty_For_Null()
     {
-        var result = FlatValidator.Validate(TestModel.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(TestModel.Empty, v =>
         {
             v.ErrorIf(m => m.AString.IsEmpty(), "AString is null", m => m.AString);
         });
@@ -34,7 +34,7 @@ public class ValidationFuncTests
     [Fact]
     public void _02_String_Empty_For_Empty()
     {
-        var result = FlatValidator.Validate(TestModel.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(TestModel.Empty, v =>
         {
             v.ErrorIf(m => m.AString.IsEmpty(), "AString is empty", m => m.AString);
         });
@@ -49,7 +49,7 @@ public class ValidationFuncTests
     public void _03_String_Empty_For_Spaced()
     {
         var model = new TestModel(" ", Guid.Empty, null!);
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.AString.IsEmpty(), "AString is empty", m => m.AString);
         });
@@ -58,7 +58,7 @@ public class ValidationFuncTests
         Assert.Contains(result.Errors, e => e.PropertyName == "AString" && e.ErrorMessage == "AString is empty");
 
         model = new TestModel("  ", Guid.Empty, null!);
-        result = FlatValidator.Validate(model, v =>
+        result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.AString.IsEmpty(), "AString is empty", m => m.AString);
         });
@@ -67,7 +67,7 @@ public class ValidationFuncTests
         Assert.Contains(result.Errors, e => e.PropertyName == "AString" && e.ErrorMessage == "AString is empty");
 
         model = new TestModel("   ", Guid.Empty, null!);
-        result = FlatValidator.Validate(model, v =>
+        result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.AString.IsEmpty(), "AString is empty", m => m.AString);
         });
@@ -82,7 +82,7 @@ public class ValidationFuncTests
     public void _04_String_NotEmpty_For_Null()
     {
         var model = new TestModel(null!, Guid.Empty, null!);
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(m => m.AString.NotEmpty(), "AString is null", m => m.AString);
         });
@@ -97,7 +97,7 @@ public class ValidationFuncTests
     public void _05_String_NotEmpty_For_Empty()
     {
         var model = new TestModel(string.Empty, Guid.Empty, null!);
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(m => m.AString.NotEmpty(), "AString is empty", m => m.AString);
         });
@@ -112,7 +112,7 @@ public class ValidationFuncTests
     public void _06_String_NotEmpty_For_Spaced()
     {
         var model = new TestModel(" ", Guid.Empty, null!);
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(m => m.AString.NotEmpty(), "AString is empty", m => m.AString);
         });
@@ -126,7 +126,7 @@ public class ValidationFuncTests
     [Fact]
     public void _07_AGuid_IsEmpty()
     {
-        var result = FlatValidator.Validate(TestModel.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(TestModel.Empty, v =>
         {
             v.ErrorIf(m => m.AGuid.IsEmpty(), "AGuid is null", m => m.AGuid);
         });
@@ -140,7 +140,7 @@ public class ValidationFuncTests
     [Fact]
     public void _08_AGuid_NotEmpty()
     {
-        var result = FlatValidator.Validate(TestModel.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(TestModel.Empty, v =>
         {
             v.ValidIf(m => m.AGuid.NotEmpty(), "AGuid is null", m => m.AGuid);
         });
@@ -154,7 +154,7 @@ public class ValidationFuncTests
     [Fact]
     public void _09_ANullableGuid_IsEmpty()
     {
-        var result = FlatValidator.Validate(TestModel.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(TestModel.Empty, v =>
         {
             v.ErrorIf(m => m.ANullableGuid.IsEmpty(), "ANullableGuid is null", m => m.ANullableGuid);
         });
@@ -168,7 +168,7 @@ public class ValidationFuncTests
     [Fact]
     public void _10_ANullableGuid_NotEmpty()
     {
-        var result = FlatValidator.Validate(TestModel.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(TestModel.Empty, v =>
         {
             v.ValidIf(m => m.ANullableGuid.NotEmpty(), "ANullableGuid is null", m => m.ANullableGuid);
         });
@@ -182,7 +182,7 @@ public class ValidationFuncTests
     [Fact]
     public void _11_IsAbsoluteUri_Null()
     {
-        var result = FlatValidator.Validate((string?)null, v =>
+        var result = System.Validation.FlatValidator.Validate((string?)null, v =>
         {
             v.ValidIf(m => m.IsAbsoluteUri(), "Url is null", m => "url");
         });
@@ -196,7 +196,7 @@ public class ValidationFuncTests
     [Fact]
     public void _11_IsAbsoluteUri_Empty()
     {
-        var result = FlatValidator.Validate(string.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(string.Empty, v =>
         {
             v.ValidIf(m => m.IsAbsoluteUri(), "Url is null", m => "url");
         });
@@ -210,7 +210,7 @@ public class ValidationFuncTests
     [Fact]
     public void _11_IsAbsoluteUri_Spaced()
     {
-        var result = FlatValidator.Validate(" ", v =>
+        var result = System.Validation.FlatValidator.Validate(" ", v =>
         {
             v.ValidIf(m => m.IsAbsoluteUri(), "Url is null", m => "url");
         });
@@ -224,7 +224,7 @@ public class ValidationFuncTests
     [Fact]
     public void _12_IsEmail_Null()
     {
-        var result = FlatValidator.Validate((string?)null, v =>
+        var result = System.Validation.FlatValidator.Validate((string?)null, v =>
         {
             v.ValidIf(m => m.IsEmail(), "Email is null", m => "email");
         });
@@ -238,7 +238,7 @@ public class ValidationFuncTests
     [Fact]
     public void _12_IsEmail_Empty()
     {
-        var result = FlatValidator.Validate(string.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(string.Empty, v =>
         {
             v.ValidIf(m => m.IsEmail(), "Email is empty", m => "email");
         });
@@ -252,7 +252,7 @@ public class ValidationFuncTests
     [Fact]
     public void _12_IsEmail_Spaced()
     {
-        var result = FlatValidator.Validate(" ", v =>
+        var result = System.Validation.FlatValidator.Validate(" ", v =>
         {
             v.ValidIf(m => m.IsEmail(), "Email is spaced", m => "email");
         });
@@ -357,7 +357,7 @@ public class ValidationFuncTests
 		];
         foreach (var email in validEmails)
         {
-            var result = FlatValidator.Validate(email, v =>
+            var result = System.Validation.FlatValidator.Validate(email, v =>
             {
                 v.ValidIf(m => m.IsEmail(), "Email is invalid", m => "email");
             });
@@ -392,7 +392,7 @@ public class ValidationFuncTests
         };
         foreach (var email in invalidEmails)
         {
-            var result = FlatValidator.Validate(email, v =>
+            var result = System.Validation.FlatValidator.Validate(email, v =>
             {
                 v.ValidIf(m => m.IsEmail(), "Email is invalid", m => "email");
             });
@@ -407,7 +407,7 @@ public class ValidationFuncTests
     [Fact]
     public void _12_IsPhoneNumber_Null()
     {
-        var result = FlatValidator.Validate((string?)null, v =>
+        var result = System.Validation.FlatValidator.Validate((string?)null, v =>
         {
             v.ValidIf(m => m.IsPhoneNumber(), "Phone is null", m => "phone");
         });
@@ -421,7 +421,7 @@ public class ValidationFuncTests
     [Fact]
     public void _12_IsPhoneNumber_Empty()
     {
-        var result = FlatValidator.Validate(string.Empty, v =>
+        var result = System.Validation.FlatValidator.Validate(string.Empty, v =>
         {
             v.ValidIf(m => m.IsPhoneNumber(), "Phone is empty", m => "phone");
         });
@@ -435,7 +435,7 @@ public class ValidationFuncTests
     [Fact]
     public void _12_IsPhoneNumber_Spaced()
     {
-        var result = FlatValidator.Validate(" ", v =>
+        var result = System.Validation.FlatValidator.Validate(" ", v =>
         {
             v.ValidIf(m => m.IsPhoneNumber(), "Phone is spaced", m => "phone");
         });
@@ -466,7 +466,7 @@ public class ValidationFuncTests
         ];
         foreach (var phone in validPhoneNumbers)
         {
-            var result = FlatValidator.Validate(phone, v =>
+            var result = System.Validation.FlatValidator.Validate(phone, v =>
             {
                 v.ValidIf(m => m.IsPhoneNumber(), "Phone is invalid", m => "phone");
             });
@@ -498,7 +498,7 @@ public class ValidationFuncTests
         ];
         foreach (var phone in invalidPhoneNumbers)
         {
-            var result = FlatValidator.Validate(phone, v =>
+            var result = System.Validation.FlatValidator.Validate(phone, v =>
             {
                 v.ValidIf(m => m.IsPhoneNumber(), "Phone is invalid", m => "phone");
             });
@@ -514,7 +514,7 @@ public class ValidationFuncTests
     public void _20_IsPassword()
     {
         // password can not be null
-        var result = FlatValidator.Validate((string?)null, v => 
+        var result = System.Validation.FlatValidator.Validate((string?)null, v => 
         {
             v.ValidIf(m => m.IsPassword(), "Password is null", m => "password");
         });
@@ -523,7 +523,7 @@ public class ValidationFuncTests
         Assert.Contains(result.Errors, e => e.PropertyName == "password" && e.ErrorMessage == "Password is null");
 
         // password can not be empty string
-        result = FlatValidator.Validate(string.Empty, v =>
+        result = System.Validation.FlatValidator.Validate(string.Empty, v =>
         {
             v.ValidIf(m => m.IsPassword(), "Password is null", m => "password");
         });
@@ -532,44 +532,44 @@ public class ValidationFuncTests
         Assert.Contains(result.Errors, e => e.PropertyName == "password" && e.ErrorMessage == "Password is null");
 
         // min length = 0
-        result = FlatValidator.Validate(string.Empty, v =>
+        result = System.Validation.FlatValidator.Validate(string.Empty, v =>
         {
             v.ValidIf(m => m.IsPassword(0), "Invalid password", m => "password");
         });
         Assert.True(!result.IsValid);
 
-        Assert.False(FlatValidator.Validate("1", v => v.ValidIf(m => m.IsPassword(1), "err", m => "p")));
-        Assert.False(FlatValidator.Validate("1a", v => v.ValidIf(m => m.IsPassword(2), "err", m => "p")));
-        Assert.False(FlatValidator.Validate("1aA", v => v.ValidIf(m => m.IsPassword(3), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("1", v => v.ValidIf(m => m.IsPassword(1), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("1a", v => v.ValidIf(m => m.IsPassword(2), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("1aA", v => v.ValidIf(m => m.IsPassword(3), "err", m => "p")));
 
-        Assert.True(FlatValidator.Validate("1aA`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.False(FlatValidator.Validate("1aA`", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("1aA`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("1aA`", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
 
-        Assert.False(FlatValidator.Validate("1ёЁ", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.False(FlatValidator.Validate("1ёЁ~", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("1ёЁ", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("1ёЁ~", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
 
-        Assert.False(FlatValidator.Validate("12345", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.False(FlatValidator.Validate("abcde", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.False(FlatValidator.Validate("ABCDE", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.False(FlatValidator.Validate(@"~`!@#$%^&-+=", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("12345", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("abcde", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate("ABCDE", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate(@"~`!@#$%^&-+=", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
 
-        Assert.False(FlatValidator.Validate(@"~`!@#$%^&-+=", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.False(System.Validation.FlatValidator.Validate(@"~`!@#$%^&-+=", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
 
-        Assert.True(FlatValidator.Validate("a1A`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("aA1`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("aA`1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("Aa`1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("A`a1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("A`1a", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("`A1a", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("`1Aa", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("`1aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("a1A`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("aA1`", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("aA`1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("Aa`1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("A`a1", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("A`1a", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("`A1a", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("`1Aa", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("`1aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
 
-        Assert.True(FlatValidator.Validate("``1aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("`1`aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("`1a`A", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("`1a1A", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
-        Assert.True(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("``1aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("`1`aA", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("`1a`A", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("`1a1A", v => v.ValidIf(m => m.IsPassword(4), "err", m => "p")));
+        Assert.True(System.Validation.FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m => m.IsPassword(5), "err", m => "p")));
     }
     #endregion // _20_IsPassword
 
@@ -577,28 +577,28 @@ public class ValidationFuncTests
     [Fact]
     public void _21_IsPassword()
     {
-        Assert.True(FlatValidator.Validate("`1az0AZ?",  v => v.ValidIf(m => 
+        Assert.True(System.Validation.FlatValidator.Validate("`1az0AZ?",  v => v.ValidIf(m => 
             m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 1, minSpecial: 1, ""), "err", m => "p")));
 
-        Assert.True(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+        Assert.True(System.Validation.FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
             m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 1, minSpecial: 1, "`?"), "err", m => "p")));
 
-        Assert.True(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+        Assert.True(System.Validation.FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
             m.IsPassword(minLength: 5, minLower: 2, minUpper: 2, minDigits: 2, minSpecial: 2, ""), "err", m => "p")));
 
-        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+        Assert.False(System.Validation.FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
             m.IsPassword(minLength: 5, minLower: 3, minUpper: 1, minDigits: 0, minSpecial: 1, ""), "err", m => "p")));
 
-        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+        Assert.False(System.Validation.FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
             m.IsPassword(minLength: 5, minLower: 1, minUpper: 3, minDigits: 0, minSpecial: 1, ""), "err", m => "p")));
 
-        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+        Assert.False(System.Validation.FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
             m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 3, minSpecial: 1, ""), "err", m => "p")));
 
-        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+        Assert.False(System.Validation.FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
             m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 1, minSpecial: 3, ""), "err", m => "p")));
 
-        Assert.False(FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
+        Assert.False(System.Validation.FlatValidator.Validate("`1az0AZ?", v => v.ValidIf(m =>
             m.IsPassword(minLength: 5, minLower: 1, minUpper: 1, minDigits: 1, minSpecial: 1, "@@"), "err", m => "p")));
     }
     #endregion // _21_IsPassword

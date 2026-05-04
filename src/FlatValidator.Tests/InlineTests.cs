@@ -21,7 +21,7 @@ public class InlineTests
     [Fact]
     public void _01_Any_text_as_PropName()
     {
-        var result = FlatValidator.Validate(DateTime.Now, v =>
+        var result = System.Validation.FlatValidator.Validate(DateTime.Now, v =>
         {
             v.ErrorIf(m => m.AddDays(1) > DateTime.Now, "", m => "Any text as PropName1");
             v.ValidIf(m => m.AddDays(1) < DateTime.Now, "", m => "Any text as PropName2");
@@ -39,7 +39,7 @@ public class InlineTests
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.Id <= 0, "Id is incorrect", m => m.Id);
         });
@@ -55,7 +55,7 @@ public class InlineTests
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.Id <= 0, m => $"Id '{m.Id}' is incorrect", m => m.Id);
         });
@@ -71,7 +71,7 @@ public class InlineTests
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(m => m.Id > 0, "Id is incorrect", m => m.Id);
         });
@@ -87,7 +87,7 @@ public class InlineTests
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(m => m.Id > 0, m => $"Id '{m.Id}' is incorrect", m => m.Id);
         });
@@ -105,7 +105,7 @@ public class InlineTests
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.Id <= 0, "Id is incorrect", m => m.Id);
             v.ErrorIf(m => m.FullName.IsEmpty(), "FullName cannot be empty", m => m.FullName);
@@ -129,7 +129,7 @@ public class InlineTests
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(m => m.Id > 0, "Id is incorrect", m => m.Id);
             v.ValidIf(m => m.FullName.NotEmpty(), "FullName cannot be empty", m => m.FullName);
@@ -156,7 +156,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             const string errorMessage = "Only personal info or company info may be represented at the same time";
             v.ErrorIf(m => m.Id <= 0 || m.CompanyName.IsEmpty(), errorMessage, m => m.Id, m => m.CompanyName);
@@ -174,7 +174,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.Id <= 0 || m.CompanyName.IsEmpty(), m => $"Id={m.Id}, CompanyName={m.CompanyName}", m => m.Id, m => m.CompanyName);
         });
@@ -191,7 +191,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             const string errorMessage = "Only personal info or company info may be represented at the same time";
             v.ValidIf(m => m.Id > 0 && m.CompanyName.NotEmpty(), errorMessage, m => m.Id, m => m.CompanyName);
@@ -209,7 +209,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(m => m.Id > 0 && m.CompanyName.NotEmpty(), m => $"Id={m.Id}, CompanyName={m.CompanyName}", m => m.Id, m => m.CompanyName);
         });
@@ -228,7 +228,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             const string errorMessage = "Only personal info or company info may be represented at the same time";
             v.ErrorIf(m => m.FullName.NotEmpty() && m.CompanyName.NotEmpty(), 
@@ -246,7 +246,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             const string errorMessage = "Some fields are incorrect: [Id, CompanyName, PostalAddress]";
             v.ValidIf(m => m.Id > 0 && m.CompanyName.NotEmpty() && m.PostalAddress.NotEmpty(), 
@@ -264,7 +264,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.FullName.NotEmpty() && m.CompanyName.NotEmpty(),
                 m => $"FullName={m.FullName}, CompanyName={m.CompanyName}, PostalAddress={m.PostalAddress}", 
@@ -283,7 +283,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ValidIf(m => m.Id > 0 && m.CompanyName.NotEmpty() && m.PostalAddress.NotEmpty(),
                 m => $"FullName={m.FullName}, CompanyName={m.CompanyName}, PostalAddress={m.PostalAddress}", 
@@ -304,7 +304,7 @@ public class InlineTests
     {
         ModelLevel0 model = new(1, "L0", new(2, "L1", new(3, "L3")));
 
-        var r = FlatValidator.Validate(model, v =>
+        var r = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.Id == 1, "ErrorIf for Level0.Id", m => m.Id);
             v.ValidIf(m => m.Id != 1, "ValidIf for Level0.Id", m => m.Id);
@@ -373,12 +373,12 @@ public class InlineTests
             var dict = results.ToDictionary();
 
             var resultsOf1 = new FlatValidationResult[1];
-            resultsOf1[0] = FlatValidator.Validate(model, v => { });
+            resultsOf1[0] = System.Validation.FlatValidator.Validate(model, v => { });
             dict = resultsOf1.ToDictionary();
 
             var resultsOf2 = new FlatValidationResult[2];
-            resultsOf2[0] = FlatValidator.Validate(model, v => { });
-            resultsOf2[1] = FlatValidator.Validate(model, v => { });
+            resultsOf2[0] = System.Validation.FlatValidator.Validate(model, v => { });
+            resultsOf2[1] = System.Validation.FlatValidator.Validate(model, v => { });
             dict = resultsOf2.ToDictionary();
         }
         catch
@@ -395,11 +395,11 @@ public class InlineTests
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
 
         var results = new FlatValidationResult[2];
-        results[0] = FlatValidator.Validate(model, v =>
+        results[0] = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.Id <= 0, "Error0", m => m.Id);
         });
-        results[1] = FlatValidator.Validate(model, v =>
+        results[1] = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.ErrorIf(m => m.Id <= 0, "Error1", m => m.Id);
         });
@@ -424,7 +424,7 @@ public class InlineTests
     public void _08_Group_Simple_execution()
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
-        var r = FlatValidator.Validate(model, v =>
+        var r = System.Validation.FlatValidator.Validate(model, v =>
         {
             // synchronous condition
             v.When(m => false, m =>
@@ -476,7 +476,7 @@ public class InlineTests
     public void _09_Simple_Error()
     {
         var model = new TestModel(-1, "", DateTime.Now, -100, "", null!);
-        var ret = FlatValidator.Validate(model, v =>
+        var ret = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.Error(m => "Error(1.func)", m => m.Id);
             v.Error("Error(1.str)", m => m.Id);
@@ -515,7 +515,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.WarningIf(m => m.Id <= 0, "Id looks like incorrect.", m => m.Id);
         });
@@ -533,7 +533,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.WarningIf(m => m.Id <= 0, m => $"Id ({m.Id}) looks like incorrect.", m => m.Id);
         });
@@ -551,7 +551,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.WarningIf(m => m.Id <= 0, "Id looks like incorrect.", m => m.Id, m => m.CompanyName);
         });
@@ -569,7 +569,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.WarningIf(m => m.Id <= 0, m => $"Id ({m.Id}: {m.CompanyName}) looks like incorrect.", m => m.Id, m => m.CompanyName);
         });
@@ -587,7 +587,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", null!);
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.WarningIf(m => m.Id <= 0, "Id looks like incorrect.", m => m.Id, m => m.CompanyName, m => m.PostalAddress);
         });
@@ -606,7 +606,7 @@ public class InlineTests
     {
         var model = new TestModel(0, "John Doe", DateTime.Now, 0, "Company Ltd", "Some address");
 
-        var result = FlatValidator.Validate(model, v =>
+        var result = System.Validation.FlatValidator.Validate(model, v =>
         {
             v.WarningIf(m => m.Id <= 0, m => $"Id ({m.Id}: {m.CompanyName}, {m.PostalAddress}) looks like incorrect.", 
                             m => m.Id, m => m.CompanyName, m => m.PostalAddress);
