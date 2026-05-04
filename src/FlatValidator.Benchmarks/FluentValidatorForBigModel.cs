@@ -52,6 +52,19 @@ public class FluentValidatorForBigModel : AbstractValidator<BigModel>
         RuleFor(x => x.DecimalCollection).NotNull();
         RuleFor(x => x.DecimalCollection).Must(coll => coll.All(BigModel.IsValidDecimalInCollection))
             .WithMessage("Decimal collection").When(m => m.DecimalCollection != null);
+
+        //
+        RuleFor(m => m.NestedModel1.NestedText1).NotNull().WithMessage("NestedText1 cannot be null");
+        RuleFor(m => m.NestedModel1.NestedText1)
+            .Must(text => text.StartsWith("NestedText1:"))
+            .WithMessage("NestedText1 is not valid")
+            .When(m => m.NestedModel1.NestedText1 != null);
+
+        RuleFor(m => m.NestedModel1.NestedText2).NotNull().WithMessage("NestedText2 cannot be null");
+        RuleFor(m => m.NestedModel1.NestedText2)
+            .Must(text => text.StartsWith("NestedText2:"))
+            .WithMessage("NestedText2 is not valid")
+            .When(m => m.NestedModel1.NestedText2 != null);
     }
 }
 
