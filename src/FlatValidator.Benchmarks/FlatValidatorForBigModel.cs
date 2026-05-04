@@ -47,10 +47,10 @@ public class FlatValidatorForBigModel : FlatValidator<BigModel>
 
         //
         ErrorIf(static m => m.NestedModel1.NestedText1 is null, "NestedText1 cannot be null", m => m.NestedModel1.NestedText1);
-        ErrorIf(static m => m.NestedModel1.NestedText1 is null || !m.NestedModel1.NestedText1.StartsWith("NestedText1:"), "NestedText1 is not valid", m => m.NestedModel1.NestedText1);
+        ErrorIf(static m => m.NestedModel1.NestedText1 is null || !m.NestedModel1.NestedText1.StartsWith("NestedText1:"), "NestedText1 is invalid", m => m.NestedModel1.NestedText1);
 
         ErrorIf(static m => m.NestedModel1.NestedText2 is null, "NestedText2 cannot be null", m => m.NestedModel1.NestedText2);
-        ErrorIf(static m => m.NestedModel1.NestedText2 is null || !m.NestedModel1.NestedText2.StartsWith("NestedText2:"), "NestedText2 is not valid", m => m.NestedModel1.NestedText1);
+        ErrorIf(static m => m.NestedModel1.NestedText2 is null || !m.NestedModel1.NestedText2.StartsWith("NestedText2:"), "NestedText2 is invalid", m => m.NestedModel1.NestedText2);
     }
 }
 
