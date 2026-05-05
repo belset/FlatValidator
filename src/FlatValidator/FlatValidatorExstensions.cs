@@ -86,15 +86,44 @@ public static partial class FlatValidatorExstensions
                 return ((ParameterExpression)expression).Name!;
 
             case ExpressionType.MemberAccess:
-                return (((MemberExpression)expression).Expression?.NodeType == ExpressionType.MemberAccess)
-                    ? $"{GetMemberName(((MemberExpression)expression).Expression!)}.{((MemberExpression)expression).Member.Name}"
-                    : ((MemberExpression)expression).Member.Name;
-            
+                var m = (MemberExpression)expression;
+                if (m.Expression is not null)
+                {
+                    // if root is 'Parameter', get only name of Property
+                    if (m.Expression.NodeType == ExpressionType.Parameter)
+                        return m.Member.Name;
+
+                    // if root is 'Constant', clear technical parts
+                    if (m.Expression.NodeType == ExpressionType.Constant)
+                        return CleanDisplayClass(m);
+
+                    // in other case it is chain of Properties
+                    return $"{GetMemberName(m.Expression)}.{m.Member.Name}";
+                }
+                return m.Member.DeclaringType is null ? m.Member.Name : $"{m.Member.DeclaringType.Name}.{m.Member.Name}";
+
             case ExpressionType.Constant:
-                return ((ConstantExpression)expression).Value?.ToString() ?? string.Empty;
+                var ce = (ConstantExpression)expression;
+                if (ce.Value is string s) return s; // separately, to get rid of "..."
+                if (ce.Value is null) return "null";
+                return ce.Value.ToString() ?? "";
 
             case ExpressionType.Call:
-                return ((MethodCallExpression)expression).Method.Name;
+                var mc = (MethodCallExpression)expression;
+
+                // proceed indexer (List[i])
+                if (mc.Method.Name == "get_Item" && mc.Object != null)
+                {
+                    var indexArgs = string.Join(", ", mc.Arguments.Select(CleanDisplayClass));
+                    return $"{GetMemberName(mc.Object)}[{indexArgs}]";
+                }
+
+                // ClassName.MethodName(arg1, arg2) or MethodName(arg1, arg2)
+                var prefix = mc.Method.DeclaringType is not null && mc.Object is null ? $"{mc.Method.DeclaringType.Name}." : "";
+                var args = string.Join(", ", mc.Arguments.Select(CleanDisplayClass));
+                return $"{prefix}{mc.Method.Name}({args})";
+            // mc.Method.DeclaringType - class name for static methods, but GetMemberName(mc.Object) will add prefix 'x.'
+            //var prefix = mc.Object is null ? mc.Method.DeclaringType?.Name : GetMemberName(mc.Object);
 
             case ExpressionType.Convert:
             case ExpressionType.ConvertChecked:
@@ -110,7 +139,20 @@ public static partial class FlatValidatorExstensions
                 return $"{GetMemberName(((UnaryExpression)expression).Operand)}.Length";
 
             default:
-                throw new Exception("not a proper member selector");
+                return expression.ToString();
+        }
+
+        // get rid of technical prefixes
+        string CleanDisplayClass(Expression exp)
+        {
+            string raw = exp.ToString();
+            int last = raw.LastIndexOf("<>c__DisplayClass");
+            if (last >= 0)
+            {
+                last = raw.LastIndexOf('.', last);
+                return last >= 0 ? raw.Substring(last + 1) : raw;
+            }
+            return raw;
         }
     }
 
