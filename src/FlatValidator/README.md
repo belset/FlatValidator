@@ -139,11 +139,6 @@ if (!result) // check, is there any errors?
             v.ValidIf(m => m.IsEmail(), m => $"Email {m.Email} is invalid.", m => m.Email);
         });
 
-        // or approach with inheritance
-        var validator = new UserValidator();
-        validationResult = await validator.ValidateAsync(model);
-
-        //
         if (validationResult.IsValid)
         {
             // Proceed with saving valid data
