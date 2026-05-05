@@ -25,16 +25,58 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void When(Func<TModel, bool> conditions, Action<TModel> @then, Action<TModel> @else = null!)
-        => rules.Add(RuleType.WhenSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
+    //=> rules.Add(RuleType.WhenSynch, conditions, @then, @else, null!, null!, null!, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WhenSynch,
+            conditions: conditions,
+            whenThen: @then,
+            whenElse: @else,
+            messageFunc: null!,
+            message: null!,
+            memberSelector1: null!,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void When(Func<TModel, ValueTask<bool>> conditions, Action<TModel> @then, Action<TModel> @else = null!)
-        => rules.Add(RuleType.WhenAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+    //=> rules.Add(RuleType.WhenAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WhenAsync,
+            conditions: conditions,
+            whenThen: @then,
+            whenElse: @else,
+            messageFunc: null!,
+            message: null!,
+            memberSelector1: null!,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void When(Func<TModel, CancellationToken, ValueTask<bool>> conditions,
                             Action<TModel, CancellationToken> @then, Action<TModel, CancellationToken> @else = null!)
-        => rules.Add(RuleType.WhenCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+    //=> rules.Add(RuleType.WhenCancelledAsync, conditions, @then, @else, null!, null!, null!, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WhenCancelledAsync,
+            conditions: conditions,
+            whenThen: @then,
+            whenElse: @else,
+            messageFunc: null!,
+            message: null!,
+            memberSelector1: null!,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // When methods
 
@@ -42,73 +84,242 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void Error<T1>(Func<TModel, string> error, Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector, null!, null!);
+    //=> rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorConst,
+            conditions: null!,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void Error<T1, T2>(Func<TModel, string> error,
                                 Expression<Func<TModel, T1>> memberSelector1,
                                 Expression<Func<TModel, T2>> memberSelector2)
-    => rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    //=> rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    {
+
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorConst,
+            conditions: null!,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void Error<T1, T2, T3>(Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    //=> rules.Add(RuleType.ErrorConst, null!, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorConst,
+            conditions: null!,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void Error<T1>(string errorMessage, Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    //    => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorConst,
+            conditions: null!,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public void Error<T1, T2>(string errorMessage, Expression<Func<TModel, T1>> memberSelector1, Expression<Func<TModel, T2>> memberSelector2) 
-        => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    public void Error<T1, T2>(string errorMessage, Expression<Func<TModel, T1>> memberSelector1, Expression<Func<TModel, T2>> memberSelector2)
+    //    => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorConst,
+            conditions: null!,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void Error<T1, T2, T3>(string errorMessage, Expression<Func<TModel, T1>> memberSelector1, Expression<Func<TModel, T2>> memberSelector2, Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.ErrorConst, null!, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorConst,
+            conditions: null!,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Constant Error
 
     #region Synchronous ErrorIf
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public void ErrorIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> error, 
-                                    Expression<Func<TModel, T1>> memberSelector) 
-        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector.Body, null!, null!);
+    public void ErrorIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> error,
+                                    Expression<Func<TModel, T1>> memberSelector)
+    //  => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ErrorIf<T1, T2>(Func<TModel, bool> conditions, Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
-                                    Expression<Func<TModel, T2>> memberSelector2) 
-        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, null!);
+                                    Expression<Func<TModel, T2>> memberSelector2)
+    //    => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ErrorIf<T1, T2, T3>(Func<TModel, bool> conditions, Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
-                                    Expression<Func<TModel, T3>> memberSelector3) 
-        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+                                    Expression<Func<TModel, T3>> memberSelector3)
+    //    => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ErrorIf<T1>(Func<TModel, bool> conditions, string errorMessage, 
                                     Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector.Body, null!, null!);
+    //  => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector.Body, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ErrorIf<T1, T2>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, null!);
+    //    => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ErrorIf<T1, T2, T3>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    //    => rules.Add(RuleType.ErrorSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Synchronous ErrorIf
 
@@ -117,39 +328,123 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ErrorIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error, 
                                  Expression<Func<TModel, T1>> memberSelector)
-    => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    //  => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ErrorIf<T1,T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-    => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    //=> rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ErrorIf<T1,T2,T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ErrorIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage, 
                             Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    //=> rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ErrorIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                                 Expression<Func<TModel, T1>> memberSelector1,
                                 Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    //    => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ErrorIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.ErrorAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Asynchronous ErrorIf
 
@@ -157,39 +452,123 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ErrorIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    //    => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ErrorIf<T1,T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error, 
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    //    => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ErrorIf<T1,T2,T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     //
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ErrorIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    //    => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ErrorIf<T1, T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                                 Expression<Func<TModel, T1>> memberSelector1,
                                 Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    //    => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ErrorIf<T1, T2, T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.ErrorCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ErrorCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Asynchronous ErrorIf with Cancellation
 
@@ -198,39 +577,123 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ValidIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> error, 
                                     Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector.Body, null!, null!);
+    //=> rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector.Body, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ValidIf<T1,T2>(Func<TModel, bool> conditions, Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, null!);
+    //    => rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ValidIf<T1,T2,T3>(Func<TModel, bool> conditions, Func<TModel, string> error,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    //    => rules.Add(RuleType.ValidSynch, conditions, null!, null!, error, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1.Body,
+            memberSelector2: memberSelector2.Body,
+            memberSelector3: memberSelector3.Body
+        );
+        rules.Add(in rule);
+    }
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ValidIf<T1>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector.Body, null!, null!);
+    //=> rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector.Body, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector.Body,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ValidIf<T1, T2>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, null!);
+    //    => rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void ValidIf<T1, T2, T3>(Func<TModel, bool> conditions, string errorMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    //    => rules.Add(RuleType.ValidSynch, conditions, null!, null!, null!, errorMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Synchronous ValidIf
 
@@ -239,39 +702,124 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ValidIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                             Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    //=> rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector.Body,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ValidIf<T1,T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    //    => rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1.Body,
+            memberSelector2: memberSelector2.Body,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ValidIf<T1,T2,T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2,
                                Expression<Func<TModel, T3>> memberSelector3)
-       => rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    //   => rules.Add(RuleType.ValidAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1.Body,
+            memberSelector2: memberSelector2.Body,
+            memberSelector3: memberSelector3.Body
+        );
+        rules.Add(in rule);
+    }
 
     //
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ValidIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    //=> rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector.Body,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
+    
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ValidIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector1,
                             Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    //    => rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1.Body,
+            memberSelector2: memberSelector2.Body,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
     public void ValidIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.ValidAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1.Body,
+            memberSelector2: memberSelector2.Body,
+            memberSelector3: memberSelector3.Body
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Asynchronous ValidIf
 
@@ -280,39 +828,123 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ValidIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                             Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    //    => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ValidIf<T1,T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    //    => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ValidIf<T1,T2,T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, Func<TModel, string> error,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: error,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     //
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ValidIf<T1>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    //    => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ValidIf<T1, T2>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                             Expression<Func<TModel, T1>> memberSelector1,
                             Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    //    => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async with CancellationToken
     public void ValidIf<T1, T2, T3>(Func<TModel, CancellationToken, ValueTask<bool>> conditions, string errorMessage,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.ValidCancelledAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.ValidCancelledAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: errorMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Asynchronous ValidIf with Cancellation
 
@@ -321,80 +953,248 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void WarningIf<T1>(Func<TModel, bool> conditions, Func<TModel, string> warning,
                                     Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector.Body, null!, null!);
+    //    => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector.Body, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: warning,
+            message: null!,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void WarningIf<T1, T2>(Func<TModel, bool> conditions, Func<TModel, string> warning,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, null!);
+    //    => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: warning,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void WarningIf<T1, T2, T3>(Func<TModel, bool> conditions, Func<TModel, string> warning,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    //    => rules.Add(RuleType.WarningSynch, conditions, null!, null!, warning, null!, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: warning,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void WarningIf<T1>(Func<TModel, bool> conditions, string warningMessage,
                                     Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector.Body, null!, null!);
+    //    => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector.Body, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: warningMessage,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void WarningIf<T1, T2>(Func<TModel, bool> conditions, string warningMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, null!);
+    //    => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: warningMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
     public void WarningIf<T1, T2, T3>(Func<TModel, bool> conditions, string warningMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    //    => rules.Add(RuleType.WarningSynch, conditions, null!, null!, null!, warningMessage, memberSelector1.Body, memberSelector2.Body, memberSelector3.Body);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningSynch,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: warningMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Synchronous WarningIf
 
     #region Asynchronous WarningIf
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public void WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> warning,
                                  Expression<Func<TModel, T1>> memberSelector)
-    => rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector, null!, null!);
+    //=> rules.Add(RuleType.WarningAsync, conditions, null!, null!, warning, null!, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: warning,
+            message: null!,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public void WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> warning,
                                Expression<Func<TModel, T1>> memberSelector1,
                                Expression<Func<TModel, T2>> memberSelector2)
-    => rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, null!);
+    //=> rules.Add(RuleType.WarningAsync, conditions, null!, null!, warning, null!, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: warning,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Async
-    public void WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> error,
+    public void WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, Func<TModel, string> warning,
                                   Expression<Func<TModel, T1>> memberSelector1,
                                   Expression<Func<TModel, T2>> memberSelector2,
                                   Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.WarningAsync, conditions, null!, null!, error, null!, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.WarningAsync, conditions, null!, null!, warning, null!, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: warning,
+            message: null!,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     //
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public void WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void WarningIf<T1>(Func<TModel, ValueTask<bool>> conditions, string warningMessage,
                             Expression<Func<TModel, T1>> memberSelector)
-        => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector, null!, null!);
+    //    => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, warningMessage, memberSelector, null!, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: warningMessage,
+            memberSelector1: memberSelector,
+            memberSelector2: null!,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public void WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void WarningIf<T1, T2>(Func<TModel, ValueTask<bool>> conditions, string warningMessage,
                                 Expression<Func<TModel, T1>> memberSelector1,
                                 Expression<Func<TModel, T2>> memberSelector2)
-        => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, null!);
+    //    => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, warningMessage, memberSelector1, memberSelector2, null!);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: warningMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: null!
+        );
+        rules.Add(in rule);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Synch
-    public void WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string errorMessage,
+    public void WarningIf<T1, T2, T3>(Func<TModel, ValueTask<bool>> conditions, string warningMessage,
                                     Expression<Func<TModel, T1>> memberSelector1,
                                     Expression<Func<TModel, T2>> memberSelector2,
                                     Expression<Func<TModel, T3>> memberSelector3)
-        => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, errorMessage, memberSelector1, memberSelector2, memberSelector3);
+    //    => rules.Add(RuleType.WarningAsync, conditions, null!, null!, null!, warningMessage, memberSelector1, memberSelector2, memberSelector3);
+    {
+        var rule = new Rule<TModel>(
+            ruleType: RuleType.WarningAsync,
+            conditions: conditions,
+            whenThen: null!,
+            whenElse: null!,
+            messageFunc: null!,
+            message: warningMessage,
+            memberSelector1: memberSelector1,
+            memberSelector2: memberSelector2,
+            memberSelector3: memberSelector3
+        );
+        rules.Add(in rule);
+    }
 
     #endregion // Asynchronous WarningIf
 
@@ -474,120 +1274,117 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
         {
             for (int i = fromIndex; i < toIndex; i++)
             {
-                var rule = rules.GetRule(i);
+                ref readonly var rule = ref rules[i];
                 switch (rule.RuleType)
                 {
                     case RuleType.ErrorSynch:
-                        if (((Func<TModel, bool>)rule.Conditions)(model))
-                        {
-                            ProcessRuleErrors(rule, validationResult);
-                        }
+                        if (Unsafe.As<Func<TModel, bool>>(rule.Conditions)(model))
+                            ProcessRuleErrors(in rule, validationResult);
                         break;
 
                     case RuleType.ValidSynch:
-                        if (!((Func<TModel, bool>)rule.Conditions)(model))
-                        {
-                            ProcessRuleErrors(rule, validationResult);
-                        }
+                        if (!Unsafe.As<Func<TModel, bool>>(rule.Conditions)(model))
+                            ProcessRuleErrors(in rule, validationResult);
                         break;
 
                     case RuleType.ErrorAsync:
-                        if (await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model))
-                        {
-                            ProcessRuleErrors(rule, validationResult);
-                        }
+                        if (await Unsafe.As<Func<TModel, ValueTask<bool>>>(rule.Conditions)(model))
+                            ProcessRuleErrors(in rules[i], validationResult);
                         break;
 
                     case RuleType.ErrorCancelledAsync:
-                        if (await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation))
-                        {
-                            ProcessRuleErrors(rule, validationResult);
-                        }
+                        if (await Unsafe.As<Func<TModel, CancellationToken, ValueTask<bool>>>(rule.Conditions)(model, cancellation))
+                            ProcessRuleErrors(in rules[i], validationResult);
                         break;
 
                     case RuleType.ValidAsync:
-                        if (!await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model))
-                        {
-                            ProcessRuleErrors(rule, validationResult);
-                        }
+                        if (!await Unsafe.As<Func<TModel, ValueTask<bool>>>(rule.Conditions)(model))
+                            ProcessRuleErrors(in rules[i], validationResult);
                         break;
 
                     case RuleType.ValidCancelledAsync:
-                        if (!await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation))
-                        {
-                            ProcessRuleErrors(rule, validationResult);
-                        }
+                        if (!await Unsafe.As<Func<TModel, CancellationToken, ValueTask<bool>>>(rule.Conditions)(model, cancellation))
+                            ProcessRuleErrors(in rules[i], validationResult);
                         break;
 
                     case RuleType.ErrorConst:
-                        ProcessRuleErrors(rule, validationResult);
+                        ProcessRuleErrors(in rule, validationResult);
                         break;
 
                     case RuleType.WarningSynch:
-                        if (((Func<TModel, bool>)rule.Conditions)(model))
-                        {
-                            ProcessRuleWarnings(rule, validationResult);
-                        }
+                        if (Unsafe.As<Func<TModel, bool>>(rule.Conditions)(model))
+                            ProcessRuleWarnings(in rule, validationResult);
                         break;
 
                     case RuleType.WarningAsync:
-                        if (await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model))
-                        {
-                            ProcessRuleWarnings(rule, validationResult);
-                        }
+                        if (await Unsafe.As<Func<TModel, ValueTask<bool>>>(rule.Conditions)(model))
+                            ProcessRuleWarnings(in rules[i], validationResult);
                         break;
 
                     case RuleType.WhenSynch:
-                        if (((Func<TModel, bool>)rule.Conditions)(model))
+                        if (Unsafe.As<Func<TModel, bool>>(rule.Conditions)(model))
                         {
                             if (rule.WhenThen is not null)
                             {
                                 var startIndex = rules.Count;
-                                ((Action<TModel>)rule.WhenThen)(model);
-                                await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
+                                Unsafe.As<Action<TModel>>(rule.WhenThen)(model);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
                             }
                         }
-                        else if (rule.WhenElse is not null)
+                        else
                         {
-                            var startIndex = rules.Count;
-                            ((Action<TModel>)rule.WhenElse)(model);
-                            await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
+                            if (rule.WhenElse is not null)
+                            {
+                                var startIndex = rules.Count;
+                                Unsafe.As<Action<TModel>>(rule.WhenElse)(model);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
+                            }
                         }
                         break;
 
                     case RuleType.WhenAsync:
-                        if (await ((Func<TModel, ValueTask<bool>>)rule.Conditions)(model))
+                        if (await Unsafe.As<Func<TModel, ValueTask<bool>>>(rule.Conditions)(model))
                         {
-                            if (rule.WhenThen is not null)
+                            ref readonly var rule2 = ref rules[i];
+                            if (rule2.WhenThen is not null)
                             {
                                 var startIndex = rules.Count;
-                                ((Action<TModel>)rule.WhenThen)(model);
-                                await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
+                                Unsafe.As<Action<TModel>>(rule2.WhenThen)(model);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
                             }
                         }
-                        else if (rule.WhenElse is not null)
+                        else
                         {
-                            var startIndex = rules.Count;
-                            ((Action<TModel>)rule.WhenElse)(model);
-                            await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
+                            ref readonly var rule2 = ref rules[i];
+                            if (rule2.WhenElse is not null)
+                            {
+                                var startIndex = rules.Count;
+                                Unsafe.As<Action<TModel>>(rule2.WhenElse)(model);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
+                            }
                         }
                         break;
 
                     case RuleType.WhenCancelledAsync:
-                        if (await ((Func<TModel, CancellationToken, ValueTask<bool>>)rule.Conditions)(model, cancellation))
+                        if (await Unsafe.As<Func<TModel, CancellationToken, ValueTask<bool>>>(rule.Conditions)(model, cancellation))
                         {
-                            if (rule.WhenThen is not null)
+                            ref readonly var rule2 = ref rules[i];
+                            if (rule2.WhenThen is not null)
                             {
                                 var startIndex = rules.Count;
-                                ((Action<TModel, CancellationToken>)rule.WhenThen)(model, cancellation);
-                                await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
+                                Unsafe.As<Action<TModel, CancellationToken>>(rule2.WhenThen)(model, cancellation);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
                             }
                         }
-                        else if (rule.WhenElse is not null)
+                        else
                         {
-                            var startIndex = rules.Count;
-                            ((Action<TModel, CancellationToken>)rule.WhenElse)(model, cancellation);
-                            await ProcessRules(startIndex, rules.Count, validationResult).ConfigureAwait(false);
+                            ref readonly var rule2 = ref rules[i];
+                            if (rule2.WhenElse is not null)
+                            {
+                                var startIndex = rules.Count;
+                                Unsafe.As<Action<TModel, CancellationToken>>(rule2.WhenElse)(model, cancellation);
+                                await ProcessRules(startIndex, rules.Count, validationResult);
+                            }
                         }
                         break;
                 }
@@ -595,9 +1392,9 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ProcessRuleErrors(in Rule rule, FlatValidationResult validationResult)
+        void ProcessRuleErrors(ref readonly Rule<TModel> rule, FlatValidationResult validationResult)
         {
-            var errorMessage = rule.FuncMessage is not null ? ((Func<TModel, string>)rule.FuncMessage)(model) : rule.ConstMessage;
+            var errorMessage = rule.ErrorFunc is not null ? rule.ErrorFunc(model) : rule.ErrorText;
             if (errorMessage is not null)
             {
                 if (rule.MemberSelector1 is not null)
@@ -616,9 +1413,9 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ProcessRuleWarnings(in Rule rule, FlatValidationResult validationResult)
+        void ProcessRuleWarnings(ref readonly Rule<TModel> rule, FlatValidationResult validationResult)
         {
-            var errorMessage = rule.FuncMessage is not null ? ((Func<TModel, string>)rule.FuncMessage)(model) : rule.ConstMessage;
+            var errorMessage = rule.ErrorFunc is not null ? rule.ErrorFunc(model) : rule.ErrorText;
             if (errorMessage is not null)
             {
                 if (rule.MemberSelector1 is not null)
@@ -645,13 +1442,13 @@ public static partial class FlatValidator
     public static FlatValidationResult Validate<TModel>(in TModel model, Action<FlatValidator<TModel>> action)
     {
         var validator = new FlatValidator<TModel>();
-        validator.When((_) => true, m => action(validator));
+        validator.When(static (_) => true, m => action(validator));
         return validator.Validate(model);
     }
     public static ValueTask<FlatValidationResult> ValidateAsync<TModel>(in TModel model, Action<FlatValidator<TModel>> action, CancellationToken cancellationToken = default)
     {
         var validator = new FlatValidator<TModel>();
-        validator.When((_) => true, m => action(validator));
+        validator.When(static (_) => true, m => action(validator));
         return validator.ValidateAsync(model, cancellationToken);
     }
     #endregion // Static inline validation methods
