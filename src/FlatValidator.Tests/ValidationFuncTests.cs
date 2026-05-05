@@ -1,5 +1,6 @@
 ﻿using System.Validation;
 
+
 namespace FlatValidatorTests;
 
 public class ValidationFuncTests
