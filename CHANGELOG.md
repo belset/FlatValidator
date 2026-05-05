@@ -4,6 +4,15 @@
 - Exception on first error.
 - Specific ValidationFuncs (?).
 
+### 3.1.0 - 2026-04-05
+- performance improved
+- FYI: now 'x => x.Dict["key"]' returns 'Dict["key"]'
+- FYI: now 'x => x.GetNested().Id' returns 'GetNested().Id'
+- FYI: got rid of c__DisplayClass 
+- base benchmark model was fixed in part of validation by FluentValidation (found by Pjotrtje)
+- spec updated in part of Balzor
+- tests updated
+
 ### 3.0.0 - 2025-11-13
 - .NET 10.0 applied
 
