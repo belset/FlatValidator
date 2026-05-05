@@ -23,6 +23,10 @@ builder.Services.AddScoped<IFlatValidator<Todo>, TodoValidator>();
 
 var app = builder.Build();
 
+app.MapGet("/", () => {
+    return TypedResults.Content("http://localhost:5400/demo or http://localhost:5400/todos (GET/POST)");
+});
+
 app.MapGet("/demo", () =>
 {
     var ret = sampleTodos.Select(m => FlatValidator.Validate(m, v => // inline validation
