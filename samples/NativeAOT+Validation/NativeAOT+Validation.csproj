@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FlatValidator" Version="3.0.0" />
+    <PackageReference Include="FlatValidator" Version="3.1.0" />
   </ItemGroup>
 
 </Project>
