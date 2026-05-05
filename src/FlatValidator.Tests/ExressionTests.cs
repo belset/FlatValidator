@@ -1,9 +1,8 @@
 using System.Linq.Expressions;
 using System.Validation;
 
+
 namespace FlatValidatorTests;
-
-
 public class ExpressionTests
 {
     public record class NestedModel(
@@ -71,21 +70,21 @@ public class ExpressionTests
     public void _07_Nested_Valued_via_Method()
     {
         Expression<Func<BaseModel, int>> expression = x => x.GetNested().Id;
-        Assert.True(expression.GetMemberName() == $"{nameof(NestedModel.Id)}");
+        Assert.True(expression.GetMemberName() == $"{nameof(BaseModel.GetNested)}().{nameof(NestedModel.Id)}");
     }
 
     [Fact]
     public void _08_Nested_Referenced_via_Method()
     {
         Expression<Func<BaseModel, string>> expression = x => x.GetNested().Name;
-        Assert.True(expression.GetMemberName() == $"{nameof(NestedModel.Name)}");
+        Assert.True(expression.GetMemberName() == $"{nameof(BaseModel.GetNested)}().{nameof(NestedModel.Name)}");
     }
 
     [Fact]
     public void _09_Nested_Struct_via_Method()
     {
         Expression<Func<BaseModel, DateTime>> expression = x => x.GetNested().Date;
-        Assert.True(expression.GetMemberName() == $"{nameof(NestedModel.Date)}");
+        Assert.True(expression.GetMemberName() == $"{nameof(BaseModel.GetNested)}().{nameof(NestedModel.Date)}");
     }
 
     [Fact]
@@ -108,7 +107,7 @@ public class ExpressionTests
     public void _12_Base_Dict_StringIndexer()
     {
         Expression<Func<BaseModel, string>> expression = x => x.Dict["key"];
-        Assert.True(expression.GetMemberName() == "get_Item");
+        Assert.True(expression.GetMemberName() == "Dict[\"key\"]");
     }
 }
 
