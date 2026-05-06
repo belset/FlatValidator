@@ -26,14 +26,13 @@ public class BenchmarkWithManyErrors
     [Benchmark(Baseline = true)]
     public void FlatValidator_ManyErrors()
     {
+        var validator = new FlatValidatorForBigModel();
         foreach (var model in _manyErrorModels)
         {
-            var validationResult = new FlatValidatorForBigModel().Validate(model);
-            var validationStatus = validationResult.IsValid;
-            if (!validationStatus)
+            using var validationResult = validator.Validate(model);
+            if (!validationResult.IsValid)
             {
-                var problems = validationResult.ToDictionary();
-                Debug.Assert(problems.Count > 0);
+                Debug.Assert(validationResult.Errors.Count > 0);
             }
         }
     }
@@ -41,14 +40,13 @@ public class BenchmarkWithManyErrors
     [Benchmark]
     public void FluentValidator_ManyErrors()
     {
+        var validator = new FluentValidatorForBigModel();
         foreach (var model in _manyErrorModels)
         {
-            var validationResult = new FluentValidatorForBigModel().Validate(model);
-            var validationStatus = validationResult.IsValid;
-            if (!validationStatus)
+            var validationResult = validator.Validate(model);
+            if (!validationResult.IsValid)
             {
-                var problems = validationResult.ToDictionary();
-                Debug.Assert(problems.Count > 0);
+                Debug.Assert(validationResult.Errors.Count > 0);
             }
         }
     }
