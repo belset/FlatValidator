@@ -93,7 +93,7 @@ public class MultithreadTests
         try
         {
             var cts = new CancellationTokenSource();
-            _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
+            using var _ = await System.Validation.FlatValidator.ValidateAsync(model, validator =>
             {
                 cts.Cancel();
                 validator.When(
@@ -197,8 +197,8 @@ public class MultithreadTests
         {
             try
             {
-                var synchResult = syncConditionsValidator.Validate(model, TimeSpan.FromSeconds(1));
-                var asyncResult = asyncConditionsValidator.Validate(model, TimeSpan.FromSeconds(1));
+                using var synchResult = syncConditionsValidator.Validate(model, TimeSpan.FromSeconds(1));
+                using var asyncResult = asyncConditionsValidator.Validate(model, TimeSpan.FromSeconds(1));
             }
             catch (Exception ex)
             {
@@ -219,8 +219,8 @@ public class MultithreadTests
         {
             try
             {
-                var synchResult = await syncConditionsValidator.ValidateAsync(model, TimeSpan.FromSeconds(1));
-                var asyncResult = await asyncConditionsValidator.ValidateAsync(model, TimeSpan.FromSeconds(1));
+                using var synchResult = await syncConditionsValidator.ValidateAsync(model, TimeSpan.FromSeconds(1));
+                using var asyncResult = await asyncConditionsValidator.ValidateAsync(model, TimeSpan.FromSeconds(1));
             }
             catch (Exception ex)
             {
