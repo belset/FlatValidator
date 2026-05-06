@@ -4,7 +4,7 @@
 /// Define a validation error contaner
 /// </summary>
 [Serializable]
-public record class FlatValidationError(string PropertyName, string ErrorMessage)
+public readonly record struct FlatValidationError(string PropertyName, string ErrorMessage)
 {
     /// <summary>
     /// Userfriendly representation of the error

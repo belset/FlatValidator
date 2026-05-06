@@ -8,12 +8,17 @@ namespace System.Validation;
 /// </summary>
 
 [Serializable, DebuggerDisplay("{DebuggerDisplay(),nq}")]
-public class FlatValidationResult
+public class FlatValidationResult : IDisposable
 {
     #region Members
 
-    private List<FlatValidationError> errors = new();
-    private List<FlatValidationWarning> warnings = new();
+    [ThreadStatic]
+    private static List<FlatValidationError>? t_cachedErrors;
+    [ThreadStatic]
+    private static List<FlatValidationWarning>? t_cachedWarnings;
+
+    private List<FlatValidationError> errors = null!;
+    private List<FlatValidationWarning> warnings = null!;
 
     /// <summary>
     /// A collection of errors.
@@ -38,28 +43,25 @@ public class FlatValidationResult
     /// <summary>
     /// Whether validation succeeded.
     /// </summary>
-    public bool IsValid => errors.Count == 0 && Exception is null;
+    public bool IsValid
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => errors.Count == 0 && Exception is null;
+    }
 
     #endregion // Members
 
     #region Constructors
 
     /// <summary>
-    /// Creates a new ValidationResult.
-    /// </summary>
-    /// <param name="metaData">Custom contaner that may be used to store imtermediate info about validation process.</param>
-    public FlatValidationResult(IReadOnlyDictionary<string, string?> metaData)
-    {
-        MetaData = metaData;
-    }
-
-    /// <summary>
     /// Creates a new ValidationResult from a collection of errors.
     /// </summary>
     /// <param name="metaData">Custom contaner that may be used to store imtermediate info about validation process.</param>
     /// <param name="exception">Instance of <see cref="Exception"/> which is later available through the <see cref="Exception"/> property.</param>
-    public FlatValidationResult(IReadOnlyDictionary<string, string?> metaData, Exception exception)
+    public FlatValidationResult(IReadOnlyDictionary<string, string?> metaData, Exception? exception = null)
     {
+        errors = Interlocked.Exchange(ref t_cachedErrors, null) ?? [];
+        warnings = Interlocked.Exchange(ref t_cachedWarnings, null) ?? [];
         MetaData = metaData;
         Exception = exception;
     }
@@ -70,8 +72,8 @@ public class FlatValidationResult
     /// <param name="result">Another instance of the <see cref="FlatValidationResult"/> that has to be cloned.</param>
     public FlatValidationResult(FlatValidationResult result)
     {
-        errors.AddRange(result.errors);
-        warnings.AddRange(result.warnings);
+        errors = [.. result.errors];
+        warnings = [.. result.warnings];
         MetaData = result.MetaData;
         Exception = result.Exception;
     }
@@ -85,6 +87,22 @@ public class FlatValidationResult
     public static implicit operator bool(in FlatValidationResult result) => result.IsValid;
 
     #endregion // Operators
+
+    #region IDisposable implementation
+    public void Dispose()
+    {
+        if (errors.Count < 32)
+        {
+            errors.Clear();
+            Interlocked.CompareExchange(ref t_cachedErrors, errors, null);
+        }
+        if (warnings.Count < 32)
+        {
+            warnings.Clear();
+            Interlocked.CompareExchange(ref t_cachedWarnings, warnings, null);
+        }
+    }
+    #endregion // IDisposable implementation
 
     #region Public methods
 
