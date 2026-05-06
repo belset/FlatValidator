@@ -6,6 +6,9 @@
 
 ### 3.1.1 - 2026-04-06
 - performance improved
+- benchmark updated
+- specs updated
+- tests updated
 
 ### 3.1.0 - 2026-04-05
 - performance improved
