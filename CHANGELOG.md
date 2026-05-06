@@ -4,6 +4,9 @@
 - Exception on first error.
 - Specific ValidationFuncs (?).
 
+### 3.1.1 - 2026-04-06
+- performance improved
+
 ### 3.1.0 - 2026-04-05
 - performance improved
 - FYI: now 'x => x.Dict["key"]' returns 'Dict["key"]'
