@@ -17,7 +17,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
     /// <summary>
     /// A collection with meta data.
     /// </summary>
-    public Dictionary<string, string?> MetaData { get; } = new();
+    public Dictionary<string, string?> MetaData { get; } = [];
 
     #endregion // Members
 
@@ -1266,7 +1266,7 @@ public class FlatValidator<TModel> : IFlatValidator<TModel>
         }
         finally
         {
-            rules.RestoreSnapshot(snapshot);
+            rules.RestoreSnapshot(/* in */ snapshot);
             Interlocked.Exchange(ref semaphoreState, 0);
         }
 

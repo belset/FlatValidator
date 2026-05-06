@@ -52,7 +52,7 @@ internal readonly struct Rule<TModel>(
 internal struct FlatValidatorRules<TModel>
 {
     #region Nested classes
-    internal struct Snapshot(int count) 
+    internal readonly struct Snapshot(int count) 
     {
         internal readonly int Count = count;
     };
@@ -116,7 +116,7 @@ internal struct FlatValidatorRules<TModel>
     //        memberSelector3);
     //}
 
-    internal Snapshot MakeSnapshot() => new Snapshot(count);
+    internal readonly Snapshot MakeSnapshot() => new(count);
     internal void RestoreSnapshot(in Snapshot snapshot)
     {
         count = snapshot.Count;

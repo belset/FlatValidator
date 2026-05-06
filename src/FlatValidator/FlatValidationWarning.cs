@@ -4,7 +4,7 @@
 /// Define a validation warning contaner
 /// </summary>
 [Serializable]
-public record class FlatValidationWarning(string PropertyName, string WarningMessage)
+public readonly record struct FlatValidationWarning(string PropertyName, string WarningMessage)
 {
     /// <summary>
     /// Userfriendly representation of the warning
