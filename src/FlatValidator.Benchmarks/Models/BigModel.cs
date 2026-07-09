@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using System.Buffers;
 
 namespace FlatValidatorBenchmarks.Models;
 
@@ -76,7 +77,11 @@ public class BigModel
         .RuleFor(m => m.DecimalCollection, f => Enumerable.Range(1, 100).Select(_ => f.Random.Decimal(-10_000, 10_000)).ToList())
         .RuleFor(h => h.NestedModel1, () => CreateNestedWithManyErrors());
 
-    public static Func<string, bool> IsValidStringInCollection => (s) => s.All(ch => Chars.HexLowerCase.Contains(ch));
-    public static Func<int, bool> IsValidIntInCollection => (x) => x >= 0 && x <= 10_000;
-    public static Func<decimal, bool> IsValidDecimalInCollection => (x) => x >= 0 && x <= 10_000;
+
+    //public static Func<string, bool> IsValidStringInCollection => (s) => s.All(ch => Chars.HexLowerCase.Contains(ch));
+    private static readonly SearchValues<char> _IsValidStringInCollectionSearchValues = SearchValues.Create(Chars.HexLowerCase);
+    public static Func<string, bool> IsValidStringInCollection => static (s) => !s.AsSpan().ContainsAnyExcept(_IsValidStringInCollectionSearchValues);
+    
+    public static Func<int, bool> IsValidIntInCollection => static (x) => x >= 0 && x <= 10_000;
+    public static Func<decimal, bool> IsValidDecimalInCollection => static (x) => x >= 0 && x <= 10_000;
 }
