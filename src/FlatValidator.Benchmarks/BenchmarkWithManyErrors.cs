@@ -32,7 +32,7 @@ public class BenchmarkWithManyErrors
         var validator = new FlatValidatorForBigModel();
         foreach (var model in _manyErrorModels)
         {
-            var validationResult = validator.Validate(model);
+            using var validationResult = validator.Validate(model);
             if (!validationResult.IsValid)
             {
                 Debug.Assert(validationResult.Errors.Count > 0);
