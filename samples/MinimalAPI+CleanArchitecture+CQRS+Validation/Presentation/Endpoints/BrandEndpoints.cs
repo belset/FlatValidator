@@ -13,9 +13,7 @@ public static class BrandEndpoints
 {
     public static WebApplication MapBrandEndpoints(this WebApplication app)
     {
-        var root = app.MapGroup("/api/brands")
-            .WithTags("Brands")
-            .WithOpenApi();
+        var root = app.MapGroup("/api/brands").WithTags("Brands");
 
         root.MapGet("/", async ([AsParameters] GetBrandsQuery query, IQueryDispatcher dispatcher) =>
         {

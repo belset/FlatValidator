@@ -13,9 +13,7 @@ public static class StoreEndpoints
 {
     public static WebApplication MapStoreEndpoints(this WebApplication app)
     {
-        var root = app.MapGroup("/api/stores")
-            .WithTags("Stores")
-            .WithOpenApi();
+        var root = app.MapGroup("/api/stores").WithTags("Stores");
 
         root.MapGet("/", async ([AsParameters] GetStoresQuery query, IQueryDispatcher dispatcher) =>
         {
