@@ -45,7 +45,7 @@ public class FluentValidatorForBigModel : AbstractValidator<BigModel>
         RuleFor(x => x.StringCollection).Must(coll => coll.All(BigModel.IsValidStringInCollection))
             .WithMessage("String collection").When(m => m.StringCollection != null);
 
-        RuleFor(x => x.StringCollection).NotNull();
+        RuleFor(x => x.IntCollection).NotNull();
         RuleFor(x => x.IntCollection).Must(coll => coll.All(BigModel.IsValidIntInCollection))
             .WithMessage("Int collection").When(m => m.IntCollection != null);
 

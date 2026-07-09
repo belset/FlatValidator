@@ -20,7 +20,10 @@ public class BenchmarkWithManyErrors
     [GlobalSetup]
     public void GlobalSetup()
     {
-        _manyErrorModels = Enumerable.Range(0, 999).Select(x => BigModel.CreateWithManyErrors()).ToList();
+        Bogus.Randomizer.Seed = new Random(1000);
+
+        _manyErrorModels = Enumerable.Range(0, Size).Select(x => BigModel.CreateWithManyErrors()).ToList();
+
     }
 
     [Benchmark(Baseline = true)]
@@ -29,7 +32,7 @@ public class BenchmarkWithManyErrors
         var validator = new FlatValidatorForBigModel();
         foreach (var model in _manyErrorModels)
         {
-            using var validationResult = validator.Validate(model);
+            var validationResult = validator.Validate(model);
             if (!validationResult.IsValid)
             {
                 Debug.Assert(validationResult.Errors.Count > 0);

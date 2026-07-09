@@ -20,7 +20,9 @@ public class BenchmarkWithNoErrors
     [GlobalSetup]
     public void GlobalSetup()
     {
-        _noErrorModels = Enumerable.Range(0, 999).Select(x => BigModel.CreateWithNoErrors()).ToList();
+        Bogus.Randomizer.Seed = new Random(1000);
+
+        _noErrorModels = Enumerable.Range(0, Size).Select(x => BigModel.CreateWithNoErrors()).ToList();
 
         foreach (var model in _noErrorModels)
         {
@@ -38,12 +40,13 @@ public class BenchmarkWithNoErrors
     [Benchmark(Baseline = true)]
     public void FlatValidator_NoErrors()
     {
+        var validator = new FlatValidatorForBigModel();
         foreach (var model in _noErrorModels)
         {
-            using var validationResult = new FlatValidatorForBigModel().Validate(model);
+            var validationResult = validator.Validate(model);
             if (!validationResult.IsValid)
             {
-                Debug.Assert(validationResult.Errors.Count > 0);
+                Debug.Assert(validationResult.Errors.Count == 0);
             }
         }
     }
@@ -51,12 +54,13 @@ public class BenchmarkWithNoErrors
     [Benchmark]
     public void FluentValidator_NoErrors()
     {
+        var validator = new FluentValidatorForBigModel();
         foreach (var model in _noErrorModels)
         {
-            var validationResult = new FluentValidatorForBigModel().Validate(model);
+            var validationResult = validator.Validate(model);
             if (!validationResult.IsValid)
             {
-                Debug.Assert(validationResult.Errors.Count > 0);
+                Debug.Assert(validationResult.Errors.Count == 0);
             }
         }
     }
