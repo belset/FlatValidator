@@ -18,9 +18,7 @@ public static class ProductEndpoints
 {
     public static WebApplication MapProductEndpoints(this WebApplication app)
     {
-        var root = app.MapGroup("/api/products")
-            .WithTags("Products")
-            .WithOpenApi();
+        var root = app.MapGroup("/api/products").WithTags("Products");
 
         root.MapGet("/", async ([AsParameters] GetProductsQuery query, IQueryDispatcher dispatcher) =>
         {
