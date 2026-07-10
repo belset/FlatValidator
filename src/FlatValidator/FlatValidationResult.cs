@@ -17,8 +17,8 @@ public class FlatValidationResult : IDisposable
     [ThreadStatic]
     private static List<FlatValidationWarning>? t_cachedWarnings;
 
-    private List<FlatValidationError> errors = null!;
-    private List<FlatValidationWarning> warnings = null!;
+    private List<FlatValidationError> errors;
+    private List<FlatValidationWarning> warnings;
 
     /// <summary>
     /// A collection of errors.
@@ -89,7 +89,7 @@ public class FlatValidationResult : IDisposable
     #endregion // Operators
 
     #region IDisposable implementation
-    public void Dispose()
+    void IDisposable.Dispose()
     {
         if (errors.Count < 32)
         {
