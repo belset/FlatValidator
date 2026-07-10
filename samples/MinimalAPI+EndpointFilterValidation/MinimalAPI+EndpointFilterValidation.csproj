@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FlatValidator" Version="3.0.0" />
-    <PackageReference Include="FlatValidator.DependencyInjection" Version="3.0.0" />
+    <PackageReference Include="FlatValidator" Version="3.1.2" />
+    <PackageReference Include="FlatValidator.DependencyInjection" Version="3.1.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
   </ItemGroup>
 
