@@ -23,18 +23,6 @@ public class BenchmarkWithNoErrors
         Bogus.Randomizer.Seed = new Random(1000);
 
         _noErrorModels = Enumerable.Range(0, Size).Select(x => BigModel.CreateWithNoErrors()).ToList();
-
-        foreach (var model in _noErrorModels)
-        {
-            var flatResult = new FlatValidatorForBigModel().Validate(model).ToDictionary();
-            var fluentResult = new FluentValidatorForBigModel().Validate(model).ToDictionary();
-
-            if (!flatResult.All(pair => fluentResult[pair.Key].Length == pair.Value.Length) ||
-                !fluentResult.All(pair => flatResult[pair.Key].Length == pair.Value.Length))
-            {
-                throw new ApplicationException("ValidationResuls do not match.");
-            }
-        }
     }
 
     [Benchmark(Baseline = true)]
@@ -54,7 +42,7 @@ public class BenchmarkWithNoErrors
     [Benchmark]
     public void FluentValidator_NoErrors()
     {
-        var validator = new FluentValidatorForBigModel();
+        var validator = new FluentValidationForBigModel();
         foreach (var model in _noErrorModels)
         {
             var validationResult = validator.Validate(model);

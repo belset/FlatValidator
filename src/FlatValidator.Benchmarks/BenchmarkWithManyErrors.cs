@@ -23,7 +23,6 @@ public class BenchmarkWithManyErrors
         Bogus.Randomizer.Seed = new Random(1000);
 
         _manyErrorModels = Enumerable.Range(0, Size).Select(x => BigModel.CreateWithManyErrors()).ToList();
-
     }
 
     [Benchmark(Baseline = true)]
@@ -43,7 +42,7 @@ public class BenchmarkWithManyErrors
     [Benchmark]
     public void FluentValidator_ManyErrors()
     {
-        var validator = new FluentValidatorForBigModel();
+        var validator = new FluentValidationForBigModel();
         foreach (var model in _manyErrorModels)
         {
             var validationResult = validator.Validate(model);
