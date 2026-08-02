@@ -1,9 +1,9 @@
 ﻿using FlatValidatorBenchmarks.Models;
 using FluentValidation;
 
-public class FluentValidatorForBigModel : AbstractValidator<BigModel>
+public class FluentValidationForBigModel : AbstractValidator<BigModel>
 {
-    public FluentValidatorForBigModel()
+    public FluentValidationForBigModel()
     {
         RuleFor(x => x.Text1).NotNull();
         RuleFor(x => x.Text1).Must(t => t.Contains('a', StringComparison.InvariantCultureIgnoreCase))

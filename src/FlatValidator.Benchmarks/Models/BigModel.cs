@@ -31,11 +31,11 @@ public class BigModel
 
     public required NestedModel NestedModel1 { get; set; } = new();
 
-    public static NestedModel CreateNestedWithNoErrors() => new Faker<NestedModel>()
+    private static NestedModel CreateNestedWithNoErrors() => new Faker<NestedModel>()
         .RuleFor(m => m.NestedText1, m => "NestedText1: " + m.Lorem.Word())  // startsWith("NestedText1:")
         .RuleFor(m => m.NestedText2, m => "NestedText2: " + m.Lorem.Word()); // startsWith("NestedText2:")
 
-    public static NestedModel CreateNestedWithManyErrors() => new Faker<NestedModel>()
+    private static NestedModel CreateNestedWithManyErrors() => new Faker<NestedModel>()
         .RuleFor(m => m.NestedText1, f => f.Lorem.Word().OrNull(f, 0.5f))
         .RuleFor(m => m.NestedText2, f => f.Lorem.Word().OrNull(f, 0.5f));
 
